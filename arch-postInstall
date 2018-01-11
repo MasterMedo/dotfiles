@@ -1,0 +1,12 @@
+# Arch post install packages in no particular order
+
+connman
+visual-studo-code-bin
+git
+firefox
+qutebrowser
+i3-gaps
+alsamixer
+ranger
+urxvt-unicode
+ 
