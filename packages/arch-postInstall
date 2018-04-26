@@ -4,9 +4,8 @@ connman
 visual-studo-code-bin
 git
 firefox
-qutebrowser
 i3-gaps
 alsamixer
 ranger
 urxvt-unicode
- 
+xbacklight

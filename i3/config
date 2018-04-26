@@ -12,14 +12,14 @@ set $mod Mod4
 set $term terminator
 
 #FOR ALSA/AMIXER
-#set $inc --no-startup-id amixer sset Master 2%+
-set $biginc --no-startup-id amixer sset Master 5%+
-#set $dec --no-startup-id amixer sset Master 2%-
-set $bigdec --no-startup-id amixer sset Master 5%-
+set $inc --no-startup-id amixer sset Master 2%+
+set $biginc --no-startup-id amixer sset Master 20%+
+set $dec --no-startup-id amixer sset Master 2%-
+set $bigdec --no-startup-id amixer sset Master 20%-
 set $mute --no-startup-id amixer sset Master toggle
-#set $truemute --no-startup-id amixer sset Master mute
-#set $screencast  --no-startup-id bash ~/.config/Scripts/screencast_alsa.sh
-#set $audio --no-startup-id bash ~/.config/Scripts/audio_alsa.sh
+set $truemute --no-startup-id amixer sset Master mute
+set $screencast  --no-startup-id bash ~/.config/Scripts/screencast_alsa.sh
+set $audio --no-startup-id bash ~/.config/Scripts/audio_alsa.sh
 
 ###---Basic Bindings---###
 bindsym $mod+Return 		exec $term
@@ -27,6 +27,8 @@ bindsym $mod+Return 		exec $term
 bindsym $mod+Shift+Escape 	exec i3-msg exit
 
 bindsym $mod+Shift+BackSpace	exec sudo reboot
+
+bindsym $mod+space exec bash ~/.config/i3/scripts/toggleKBlayout.sh
 
 #STOP/HIDE EVERYTHING:
 bindsym $mod+Shift+Delete	exec $truemute ; exec $truepause ; workspace lmao ; exec $term -e htop ; exec $term -e ranger
@@ -36,7 +38,7 @@ bindsym $mod+q			kill
 bindsym $mod+Shift+q		kill
 
 #bindsym $mod+w			
-#bindsym $mod+Shift+w		
+bindsym $mod+Shift+w		gaps inner current plus 5; gaps outer current plus 5
 
 #bindsym $mod+e
 #bindsym $mod+Shift+e
@@ -71,9 +73,9 @@ bindsym $mod+i 			exec $term -e htop
 bindsym $mod+Shift+a		gaps inner current set 15; gaps outer current set 15
 
 #bindsym $mod+s
-#bindsym $mod+Shift+s
+bindsym $mod+Shift+s		gaps inner current minus 5; gaps outer current minus 5
 
-bindsym $mod+d			exec rofi -show run -lines 5 -eh 2 -width 100 -padding 500 -opacity "80" -bw 0 -bc "#1f222d" -bg "#252936"-fg "ffffff" -hlbg "#d1d4e0" -columns 1 -hlfg "#9575cd"
+bindsym $mod+d			exec ~/.config/i3/rofi.sh
 bindsym $mod+Shift+d		gaps inner current set 0; gaps outer current set 0
 
 bindsym $mod+f			fullscreen toggle
@@ -84,15 +86,19 @@ bindsym $mod+f			fullscreen toggle
 
 bindsym $mod+h			focus left
 bindsym $mod+Shift+h		move left 30
+bindsym $mod+Ctrl+h		resize grow width 1 px or 1 ppt
 
 bindsym $mod+j			focus down
 bindsym $mod+Shift+j		move down 30
+bindsym $mod+Ctrl+j		resize shrink height 1 px or 1 ppt
 
 bindsym $mod+k			focus up
 bindsym $mod+Shift+k		move up 30
+bindsym $mod+Ctrl+k		resize grow height 1 px or 1 ppt
 
 bindsym $mod+l			focus right
 bindsym $mod+Shift+l		move right 30
+bindsym $mod+Ctrl+l		resize shrink width 1 px or 1 ppt
 
 #bindsym $mod+;
 #bindsym $mod+Shift+;
@@ -346,6 +352,10 @@ bindsym XF86KbdBrightnessUp	exec --no-startup-id python3.6 ~/.i3/kb-lights.py +
 bindsym XF86Documents		exec $term -e ranger ~/Documents
 #bindsym XF86Battery		exec
 #bindsym XF86Bluetooth		exec
-bindsym XF86WLAN		exec --no-startup-id sudo systemctl restart NetworkManager
+bindsym XF86WLAN		exec --no-startup-id sudo systemctl restart connman
 
-exec_always feh --bg-scale Downloads/arch-mountains.png
+set $RAND_BG $(ls /home/medo/images/ | shuf -n 1)
+
+exec_always feh --bg-scale images/$RAND_BG
+exec sudo systemctl restart connman
+exec compton -b -i 0.7 -f -D 3 --active-opacity 0.95 --mark-wmwin-focused --config ~/.config/compton.conf
