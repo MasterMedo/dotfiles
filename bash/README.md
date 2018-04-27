@@ -1,3 +1,3 @@
 # Bash config
 
-## .bash_profile - starts x
+### .bash_profile - starts x

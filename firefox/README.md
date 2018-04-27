@@ -1,6 +1,6 @@
 # Firefox config file
 
-## Put it in .mozilla/firefox/<random-number>.default/chrome/
+### Put it in .mozilla/firefox/<random-number>.default/chrome/
 
 ## What it does?
 ### Makes it possible to have rows of tabs, instead of 1 row

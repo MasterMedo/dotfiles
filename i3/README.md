@@ -5,13 +5,13 @@
 
 # i3lock.sh
 
-## Takes a screenshot
-## Applies one of the following effects to the image
+### Takes a screenshot
+### Applies one of the following effects to the image
 - Blur
 - Spread
 - Pixelize
 - Swirl
-## Reduces screen brightness
-## Locks the screen
-## After unlocking returns brightness to normal
-## Removes the picture
+### Reduces screen brightness
+### Locks the screen
+### After unlocking returns brightness to normal
+### Removes the picture
