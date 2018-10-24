@@ -5,3 +5,5 @@ if status --is-login
 		exec startx -- -keeptty
 	end
 end
+
+cat ~/.cache/wal/sequences
