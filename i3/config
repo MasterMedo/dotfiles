@@ -2,6 +2,7 @@
 
 ###---Basic Definitions---###
 #Needed for i3-gaps
+border_radius 10
 hide_edge_borders both
 for_window [class="^.*"] border pixel 0
 new_window none
@@ -10,8 +11,8 @@ gaps outer 15
 font pango:mono 0
 set $mod Mod4
 #set $term terminator
-set $term urxvt
-#set $term st
+#set $term urxvt
+set $term st
 
 #FOR ALSA/AMIXER
 set $inc --no-startup-id amixer sset Master 2%+
@@ -20,8 +21,8 @@ set $dec --no-startup-id amixer sset Master 2%-
 set $bigdec --no-startup-id amixer sset Master 20%-
 set $mute --no-startup-id amixer sset Master toggle
 set $truemute --no-startup-id amixer sset Master mute
-set $screencast  --no-startup-id bash ~/.config/Scripts/screencast_alsa.sh
-set $audio --no-startup-id bash ~/.config/Scripts/audio_alsa.sh
+#set $screencast  --no-startup-id bash ~/.scripts/screencast_alsa.sh
+#set $audio --no-startup-id bash ~/.scripts/audio_alsa.sh
 
 ###---Basic Bindings---###
 bindsym $mod+Return 		exec $term
@@ -30,9 +31,9 @@ bindsym $mod+Shift+Escape 	exec i3-msg exit
 
 bindsym $mod+Shift+BackSpace	exec reboot
 
-bindsym $mod+space exec bash ~/.config/i3/scripts/toggleKBlayout.sh
+bindsym $mod+space exec bash ~/.scripts/toggleKBlayout.sh
 
-bindsym $mod+Escape exec bash ~/.config/i3/scripts/dvorak-qwerty.sh
+bindsym $mod+Escape exec bash ~/.scripts/dvorak-qwerty.sh
 
 #STOP/HIDE EVERYTHING:
 bindsym $mod+Shift+Delete	exec $truemute ; exec $truepause ; workspace lmao ; exec $term -e htop ; exec $term -e ranger
@@ -41,7 +42,7 @@ bindsym $mod+Shift+Delete	exec $truemute ; exec $truepause ; workspace lmao ; ex
 bindsym $mod+q			kill
 bindsym $mod+Shift+q		kill
 
-#bindsym $mod+w			
+#bindsym $mod+w
 bindsym $mod+Shift+w		gaps inner current plus 5; gaps outer current plus 5
 
 bindsym $mod+e exec exec $term -e fish -i -c sc-im
@@ -51,12 +52,12 @@ bindsym $mod+r 			exec $term -e fish -i -c ranger
 bindsym $mod+Shift+r		restart
 
 bindsym $mod+t			split toggle
-#bindsym $mod+Shift+t		
+#bindsym $mod+Shift+t
 
-#bindsym $mod+y 
-#bindsym $mod+Shift+y 
+#bindsym $mod+y
+#bindsym $mod+Shift+y
 
-#bindsym $mod+u exec ~/.config/i3/scripts/record.sh
+bindsym $mod+u exec ~/.scripts/record.sh
 bindsym $mod+Shift+u exec pkill ffmpeg
 
 bindsym $mod+i 			exec $term -e fish -i -c htop
@@ -66,8 +67,8 @@ bindsym $mod+i 			exec $term -e fish -i -c htop
 #bindsym $mod+Shift+o exec --no-startup-id xprop -id $(xprop -root _NET_ACTIVE_WINDOW | awk '{ print $5 }') -f FORCE_OPAQUE 8s -set FORCE_OPAQUE "yes"
 #bindsym $mod+Shift+o
 
-#bindsym $mod+p
-#bindsym $mod+Shift+p
+bindsym $mod+p exec compton -b --config ~/.config/compton/compton.conf
+bindsym $mod+Shift+p exec killall compton
 
 #bindsym $mod+[
 #bindsym $mod+Shift+[
@@ -81,7 +82,7 @@ bindsym $mod+Shift+a		gaps inner current set 15; gaps outer current set 15
 #bindsym $mod+s
 bindsym $mod+Shift+s		gaps inner current minus 5; gaps outer current minus 5
 
-bindsym $mod+d			exec ~/.config/i3/scripts/rofi.sh
+bindsym $mod+d			exec ~/.scripts/rofi.sh
 bindsym $mod+Shift+d		gaps inner current set 0; gaps outer current set 0
 
 bindsym $mod+f			fullscreen toggle
@@ -118,10 +119,10 @@ bindsym $mod+Ctrl+l		resize shrink width 1 px or 1 ppt
 #bindsym $mod+z
 #bindsym $mod+Shift+z
 
-bindsym $mod+x			exec --no-startup-id ~/.config/i3/scripts/lock.sh
+bindsym $mod+x			exec --no-startup-id ~/.scripts/twist-lock.sh
 bindsym $mod+Shift+x		exec shutdown -h now
 
-bindsym $mod+c			exec --no-startup-id $term -e fish -i -c "vim ~/.config/i3/config"
+bindsym $mod+c			exec --no-startup-id $term -e fish -i -c "nvim ~/.config/i3/config"
 bindsym $mod+Shift+c exec chromium
 
 #bindsym $mod+v
@@ -209,7 +210,7 @@ for_window [class="Firefox"] move to workspace $ws2
 
 
 ###---Function Buttons---###
-#bindsym F1		
+#bindsym F1
 #bindsym F2
 #bindsym F3
 #bindsym F4
@@ -223,7 +224,7 @@ for_window [class="Firefox"] move to workspace $ws2
 #bindsym F12
 
 #bindsym $mod+F1		exec --no-startup-id vim ~/.config/i3/config
-#bindsym $mod+F2		exec --no-startup-id python ~/.config/Scripts/shortcuts.py
+#bindsym $mod+F2		exec --no-startup-id python ~/.scripts/shortcuts.py
 #bindsym $mod+F3		exec --no-startup-id arandr
 #bindsym $mod+F4		exec --no-startup-id sudo zzz
 #bindsym $mod+F5		exec --no-startup-id sudo systemctl restart NetworkManager
@@ -283,7 +284,7 @@ bindsym Shift+Print 		exec --no-startup-id flameshot gui
 bindsym XF86AudioMute		exec $mute
 bindsym XF86AudioLowerVolume	exec $dec
 bindsym XF86AudioRaiseVolume	exec $inc
-bindsym XF86PowerOff		exec --no-startup-id ~/.config/i3/scripts/lock.sh
+bindsym XF86PowerOff		exec --no-startup-id ~/.scripts/twist-lock.sh
 #bindsym XF86Copy		exec
 #bindsym XF86Open		exec
 #bindsym XF86Paste		exec
@@ -297,7 +298,7 @@ bindsym XF86PowerOff		exec --no-startup-id ~/.config/i3/scripts/lock.sh
 #bindsym XF86Xfer		exec
 #bindsym XF86WWW			exec --no-startup-id $BROWSER
 #bindsym XF86DOS		exec
-#bindsym XF86ScreenSaver		exec exec --no-startup-id ~/.config/i3/scripts/lock.sh
+#bindsym XF86ScreenSaver		exec exec --no-startup-id ~/.scripts/twist-lock.sh
 #bindsym XF86RotateWindows	exec
 #bindsym XF86TaskPane		exec
 #bindsym XF86Favorites		exec
@@ -333,7 +334,7 @@ bindsym XF86AudioMicMute	exec $micmute
 #bindsym XF86TouchpadToggle	exec
 #bindsym XF86TouchpadOn		exec --no-startup-id exec synclient TouchpadOff=0
 #bindsym XF86TouchpadOff		exec --no-startup-id exec synclient TouchpadOff=1
-bindsym XF86Suspend		exec --no-startup-id ~/.config/i3/scripts/lock.sh
+bindsym XF86Suspend		exec --no-startup-id ~/.scripts/twist-lock.sh
 #bindsym XF86Close		kill
 #bindsym XF86WebCam		exec mpv /dev/video0
 #bindsym XF86Mail		exec $term -e neomutt
@@ -358,11 +359,13 @@ bindsym XF86KbdBrightnessUp	exec --no-startup-id python3.6 ~/.i3/kb-lights.py +
 #bindsym XF86Bluetooth		exec
 #bindsym XF86WLAN		exec --no-startup-id sudo systemctl restart networkmanager
 
-set $RAND_BG $(ls /home/medo/images/wallpapers/sharp/ | shuf -n 1)
+set $RAND_BG $(ls /home/medo/images/wallpapers/pattern/ | shuf -n 1)
 
-exec_always wal -i images/wallpapers/sharp/$RAND_BG -qe
-exec compton -b -i 0.7 -f -D 3 --active-opacity 0.95 --mark-wmwin-focused
-exec xrdb /home/medo/.Xresources
-exec flameshot
+exec_always wal -i files/images/wallpapers/pattern/$RAND_BG -qe
+
+exec xrdb ~/.Xresources
+exec compton -b --config ~/.config/compton/compton.conf
+exec xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 exec xinput disable "ETPS/2 Elantech Touchpad"
 exec sudo rmmod pcspkr
+exec flameshot &
