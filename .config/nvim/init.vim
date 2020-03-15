@@ -1,225 +1,332 @@
-"        _
-" __   _(_)_ __ ___  _ __ ___
-" \ \ / / | '_ ` _ \| '__/ __|
-"  \ V /| | | | | | | | | (__
-"   \_/ |_|_| |_| |_|_|  \___|
+" variables {{{
+  let mapleader = " "
+  let $vim_config = '~/.config/nvim/init.vim'
+" }}}
+" plugins {{{
+  call plug#begin('~/.vim/plugged')
+  " visual plugins {{{
+    " goyo {{{
+      Plug 'junegunn/goyo.vim'
+      autocmd! User GoyoEnter Limelight
+      autocmd! User GoyoLeave Limelight!
+      nnoremap <silent> <F11> :Goyo<bar>set linebreak<cr>
+    " }}}
+    " limelight {{{
+      Plug 'junegunn/limelight.vim'
+      let g:limelight_conceal_ctermfg = 240
+    " }}}
+    Plug 'ap/vim-css-color'
+    Plug 'mhinz/vim-startify'
+    Plug 'ryanoasis/vim-devicons'
+    " Plug 'vim-airline/vim-airline'
+    " nerd tree {{{
+      Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+      Plug 'preservim/nerdtree'
+      " let NERDTreeShowHidden=1
+      nnoremap <leader>n :NERDTreeToggle<cr>
+    " }}}
+  " }}}
+  " command plugins {{{
+    " vim-math {{{
+      Plug 'nixon/vim-vmath'
+      vnoremap <expr>  ++  VMATH_YankAndAnalyse()
+      nnoremap         ++  vip++
+    " }}}
+    " vim objects {{{
+      " Plug 'wellle/targets.vim' " issue #246
+      Plug 'tpope/vim-commentary'
+      Plug 'tpope/vim-surround'
+      Plug 'kana/vim-textobj-user'
+      Plug 'kana/vim-textobj-indent'
+      Plug 'kana/vim-textobj-line'
+      Plug 'kana/vim-textobj-entire'
+    " }}}
+    " fzf {{{
+      Plug 'junegunn/fzf', {'do': './install --bin' }
+      Plug 'junegunn/fzf.vim'
+      nnoremap <silent> <leader>b :Buffers<cr>
+      nnoremap <silent> <leader>f :Files<cr>
+    " }}}
+  " }}}
+  " syntax plugins {{{
+    Plug 'fatih/vim-go'
+    Plug 'dag/vim-fish'
+    Plug 'xolox/vim-misc'
+    Plug 'jreybert/vimagit'
+    Plug 'vim-scripts/lua.vim'
+    Plug 'PotatoesMaster/i3-vim-syntax'
+    Plug 'neovim/nvim-lsp'
+    " mucomplete {{{
+      Plug 'lifepillar/vim-mucomplete'
+      set completeopt+=menuone,noselect,longest
+      set completeopt-=preview
+      set shortmess+=c
+    " }}}
+  " }}}
+  call plug#end()
+  nnoremap <leader>pi :PlugInstall<cr>
+  nnoremap <leader>pu :PlugUpdate<cr>
+" }}}
+" ui {{{
+  " basics {{{
+    syntax on
+    filetype plugin on
+    set encoding=utf-8
+    set background=dark
+    set termguicolors& " should probably set this up
+    " colorscheme name " should create my own...
+    set scrolloff=5
+    set number
+    set relativenumber
+    set ignorecase
+    set smartcase
+    set wrap
+    set linebreak
+    " set textwidth=80 " auto creates <eol>
+    set laststatus=0   " who needs a status line
+  " }}}
+  " tabs {{{
+    set shiftround
+    set shiftwidth=2
+    set tabstop=2
+    set softtabstop=2
+    set expandtab
+  " }}}
+  " special characters {{{
+    set list
+    set showbreak=↪\
+    set listchars=tab:‹-›,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+    set fillchars=vert:\ ,fold:\ ,foldopen:\ ,foldclose:\ ,eob:x
+  " }}}
+" }}}
+" highlighting {{{
+  " word highlighter {{{
+    " copied from Steve Losh
+    function! HighlightWord(n)
+        normal! mz"zyiw
+        let match_id = 97531 + a:n
+        silent! call matchdelete(match_id)
+        let word_pattern = '\V\<'.escape(@z, '\').'\>'
+        call matchadd("highlightedword".a:n, word_pattern, 1, match_id)
+        normal! `z
+    endfunction
 
-let mapleader =" "
+    nnoremap <silent> <leader>1 :call HighlightWord(1)<cr>
+    nnoremap <silent> <leader>2 :call HighlightWord(2)<cr>
+    nnoremap <silent> <leader>3 :call HighlightWord(3)<cr>
+    nnoremap <silent> <leader>4 :call HighlightWord(4)<cr>
+    nnoremap <silent> <leader>5 :call HighlightWord(5)<cr>
+    nnoremap <silent> <leader>6 :call HighlightWord(6)<cr>
 
-call plug#begin('~/.vim/plugged')
-Plug 'vim-airline/vim-airline'
-Plug 'ap/vim-css-color'
-Plug 'wellle/targets.vim'
-Plug 'junegunn/goyo.vim'
-Plug 'PotatoesMaster/i3-vim-syntax'
-Plug 'jreybert/vimagit'
-Plug 'LukeSmithxyz/vimling'
-Plug 'vimwiki/vimwiki'
-Plug 'dylanaraps/wal.vim'
-Plug 'fatih/vim-go'
-Plug 'dag/vim-fish'
-call plug#end()
+    highlight highlightedword1 ctermfg=16 ctermbg=214
+    highlight highlightedword2 ctermfg=16 ctermbg=154
+    highlight highlightedword3 ctermfg=16 ctermbg=121
+    highlight highlightedword4 ctermfg=16 ctermbg=160
+    highlight highlightedword5 ctermfg=16 ctermbg=211
+    highlight highlightedword6 ctermfg=16 ctermbg=195
+  " }}}
+  set cursorline
+  call matchadd('ColorColumn', '\%81c') " set colorcolumn=+1
+  highlight cursorline    ctermbg=234 cterm=NONE
+  highlight nontext       ctermfg=236
+  highlight whitespace    ctermfg=236
+  highlight pmenu         ctermbg=150
+  highlight pmenu         ctermfg=0
+  highlight pmenusel      ctermbg=180
+  highlight pmenusel      ctermfg=230
+  highlight incsearch     ctermfg=4   ctermbg=0
+" }}}
+" file finder {{{
+  set path=.,,**
+  set complete-=i
+  set wildmenu
+  set wildmode=longest:full,full
+  set wildignore+=**/node_modules/**                " javascript modules
+  set wildignore+=**/env/**                         " python environment
+  set wildignore+=.hg,.git,.svn                     " Version control
+  set wildignore+=*.aux,*.out,*.toc                 " LaTeX intermediate files
+  set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg    " binary images
+  set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
+  set wildignore+=*.sw?                             " Vim swap files
+" }}}
+" window splits{{{
+  set hidden
+  set splitbelow splitright
+  map <c-h> <c-w>h
+  map <c-j> <c-w>j
+  map <c-k> <c-w>k
+  map <c-l> <c-w>l
+  map <c-m-h> <c-w>H
+  map <c-m-j> <c-w>J
+  map <c-m-k> <c-w>K
+  map <c-m-l> <c-w>L
+" }}}
+" commands {{{
+  " common {{{
+    nnoremap ' `
+    nnoremap * *N
+    nnoremap j gj
+    nnoremap k gk
+    nnoremap gj j
+    nnoremap gk k
+    nnoremap Y y$
+  " }}}
+  " heresy {{{
+    map  <c-s>      :w<cr>
+    map  <c-c>      "+y
+    map  <c-v>      "+p
+    imap <c-s> <esc>:w<cr>a
+    imap <c-c> <esc>"+y
+    imap <c-v> <esc>"+pa
+    noremap! <c-a> <home>
+    noremap! <c-e> <end>
+  " }}}
+  " useful {{{
+    map  <F1> <nop>
+    imap <F1> <esc>
+    nnoremap <c-p> "+p
+    nnoremap <cr> moo<esc>`o
+    nnoremap c* *Ncgn
+    inoremap <expr> <c-j> pumvisible() ? "\<c-n>" : "\<c-j>"
+    inoremap <expr> <c-k> pumvisible() ? "\<c-p>" : "\<c-k>"
+    nnoremap vb <c-v>
+  " }}}
+  " leader {{{
+    " fold everything except current line
+    nnoremap <leader>z zMzvzz
+    " clear last command
+    nnoremap <leader>l :echo<cr>
+    " panic button - ROT13 whole file
+    nnoremap <space><space> mzggg?G`z
 
-" Color scheme:
-" set termguicolors
-"	colorscheme nameofcolorsheme
-	syntax on
+    nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<cr>
+    nnoremap <silent> <leader>/ :noh<cr>
+  " }}}
+  " specific files {{{
+    nnoremap <silent> <leader>ev   :vsp    $vim_config<cr>
+    nnoremap <silent> <leader>sv m":source $vim_config<cr>
+  " }}}
+" }}}
+" training commands {{{
+  nnoremap `` :echo "use ''"<cr>
+" }}}
+" backups {{{
+set backup                        " enable backups
+set undodir=~/.vim/tmp/undo//
+set backupdir=~/.vim/tmp/backup//
+set directory=~/.vim/tmp/swap//
+if !isdirectory(expand(&undodir))
+    call mkdir(expand(&undodir), "p")
+endif
+if !isdirectory(expand(&backupdir))
+    call mkdir(expand(&backupdir), "p")
+endif
+if !isdirectory(expand(&directory))
+    call mkdir(expand(&directory), "p")
+endif
+" }}}
+" auto commands {{{
+ " autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
-" Some basics:
-	set nocompatible
-	filetype plugin on
-	syntax on
-	set encoding=utf-8
-	set number relativenumber
-	set tabstop=2
-	set expandtab
-	set shiftwidth=2
-	set wrap
-	set linebreak
-" Enable autocompletion:
-	set wildmode=longest,list,full
-" Disables automatic commenting on newline:
-	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+ " kludgy but works
+  set fo-=c fo-=r fo-=o fo+=1 fo+=t
 
-" Goyo plugin makes text more readable when writing prose:
-	map <leader>f :Goyo \| set linebreak<CR>
+  " remove trailing spaces upon saving
+  autocmd BufWritePre * %s/\s\+$//e
 
-" Spell-check set to <leader>o, 'o' for 'orthography':
-	map <leader>o :setlocal spell! spelllang=en_us<CR>
+  " reload .Xresources, should probably do it with 'entr' though
+  autocmd BufWritePost ~/.Xresources,~/.Xdefaults !xrdb %
 
-" Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
-	set splitbelow splitright
+  " when opening a file position the cursor to where it last was
+  autocmd BufReadPost *
+    \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |
+    \   execute 'normal! g`"zvzz' |
+    \ endif
+" }}}
+" abbreviations {{{
+  iabbrev todo TODO
+" }}}
+" snippets {{{
+" }}}
+" Filetype specific {{{
+" C {{{
+augroup ft_c
+    au!
+    au FileType c setlocal foldmethod=marker foldmarker={,}
+    au FileType c setlocal ts=8 sts=8 sw=8 noexpandtab
+augroup END
+" }}}
+" C++ {{{
+augroup ft_cpp
+    au!
+    au FileType cpp setlocal foldmethod=marker foldmarker={,}
+    au FileType cpp setlocal ts=8 sts=8 sw=8 noexpandtab
+augroup END
+" }}}
+" }}}
+" TODO {{{
+  " sometimes when I yiw or ciw it selects the whole fold??
+  " tab sometimes not working in insert mode
+  " unfold zv line after folding has taken place
+  " Language Server Protocol, Linter, autocomplete etc.
+  " lua highlighting in vimrc
+  " custom highlighting of words under the cursor
+  " command for :call clearmatches() that clears only one type of a match
+  "                  as I don't want to clear the colorcolumn hack I use
+  " undo tree visualizer
+  " stop using swap files, start using backups
+  " managing swap file to open diff in two windows
+  " add a bunch of training commands
+  " add a bunch of abbreviations
+  " startify config
+  " normal regexes nnoremap / /\v
+" }}}
+" LSP settings {{{
+lua << EOF
+require'nvim_lsp'.pyls.setup{}
+local nvim_lsp = require('nvim_lsp')
+local buf_set_keymap = vim.api.nvim_buf_set_keymap
 
-" Shortcutting split navigation, saving a keypress:
-	map <C-h> <C-w>h
-	map <C-j> <C-w>j
-	map <C-k> <C-w>k
-	map <C-l> <C-w>l
+local on_attach = function(_, bufnr)
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-" Check file in shellcheck:
-	map <leader>s :!clear && shellcheck %<CR>
+  -- Mappings.
 
-" Compile document, be it groff/LaTeX/markdown/etc.
-	map <leader>c :w! \| !compiler <c-r>%<CR><CR>
+  local opts = { noremap=true, silent=true }
+  buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap(bufnr, 'n', ',rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap(bufnr, 'n', '[I', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap(bufnr, 'n', ',e', '<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>', opts)
+end
 
-" Open corresponding .pdf/.html or preview
-	map <leader>p :!opout <c-r>%<CR><CR>
-
-" Runs a script that cleans out tex build files whenever I close out of a .tex file.
-	autocmd VimLeave *.tex !texclear %
-
-" Ensure files are read as what I want:
-	let g:vimwiki_ext2syntax = {'.Rmd': 'markdown', '.rmd': 'markdown','.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
-	autocmd BufRead,BufNewFile /tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
-	autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set filetype=groff
-	autocmd BufRead,BufNewFile *.tex set filetype=tex
-
-" Readmes autowrap text:
-	autocmd BufRead,BufNewFile *.md set tw=79
-
-" Use urlscan to choose and open a url:
-	:noremap <leader>u :w<Home> !urlscan -r 'linkhandler {}'<CR>
-	:noremap ,, !urlscan -r 'linkhandler {}'<CR>
-
-" Copy selected text to system clipboard (requires gvim/nvim/vim-x11 installed):
-	vnoremap <C-c> "+y
-	map <C-p> "+P
-
-" Enable Goyo by default for mutt writting
-	" Goyo's width will be the line limit in mutt.
-	autocmd BufRead,BufNewFile /tmp/neomutt* let g:goyo_width=80
-	autocmd BufRead,BufNewFile /tmp/neomutt* :Goyo
-
-" Automatically deletes all trailing whitespace on save.
-	autocmd BufWritePre * %s/\s\+$//e
-
-" When shortcut files are updated, renew bash and ranger configs with new material:
-	autocmd BufWritePost ~/.bm* !shortcuts
-
-" Run xrdb whenever Xdefaults or Xresources are updated.
-	autocmd BufWritePost ~/.Xresources,~/.Xdefaults !xrdb %
-
-" Navigating with guides
-	inoremap <Space><Tab> <Esc>/<++><Enter>"_c4l
-	vnoremap <Space><Tab> <Esc>/<++><Enter>"_c4l
-	map <Space><Tab> <Esc>/<++><Enter>"_c4l
-
- "____        _                  _
-"/ ___| _ __ (_)_ __  _ __   ___| |_ ___
-"\___ \| '_ \| | '_ \| '_ \ / _ \ __/ __|
- "___) | | | | | |_) | |_) |  __/ |_\__ \
-"|____/|_| |_|_| .__/| .__/ \___|\__|___/
-              "|_|   |_|
-
-"""LATEX
-	" Word count:
-	autocmd FileType tex map <leader><leader>o :w !detex \| wc -w<CR>
-	" Code snippets
-	autocmd FileType tex inoremap ,fr \begin{frame}<Enter>\frametitle{}<Enter><Enter><++><Enter><Enter>\end{frame}<Enter><Enter><++><Esc>6kf}i
-	autocmd FileType tex inoremap ,fi \begin{fitch}<Enter><Enter>\end{fitch}<Enter><Enter><++><Esc>3kA
-	autocmd FileType tex inoremap ,exe \begin{exe}<Enter>\ex<Space><Enter>\end{exe}<Enter><Enter><++><Esc>3kA
-	autocmd FileType tex inoremap ,em \emph{}<++><Esc>T{i
-	autocmd FileType tex inoremap ,bf \textbf{}<++><Esc>T{i
-	autocmd FileType tex vnoremap , <ESC>`<i\{<ESC>`>2la}<ESC>?\\{<Enter>a
-	autocmd FileType tex inoremap ,it \textit{}<++><Esc>T{i
-	autocmd FileType tex inoremap ,ct \textcite{}<++><Esc>T{i
-	autocmd FileType tex inoremap ,cp \parencite{}<++><Esc>T{i
-	autocmd FileType tex inoremap ,glos {\gll<Space><++><Space>\\<Enter><++><Space>\\<Enter>\trans{``<++>''}}<Esc>2k2bcw
-	autocmd FileType tex inoremap ,x \begin{xlist}<Enter>\ex<Space><Enter>\end{xlist}<Esc>kA<Space>
-	autocmd FileType tex inoremap ,ol \begin{enumerate}<Enter><Enter>\end{enumerate}<Enter><Enter><++><Esc>3kA\item<Space>
-	autocmd FileType tex inoremap ,ul \begin{itemize}<Enter><Enter>\end{itemize}<Enter><Enter><++><Esc>3kA\item<Space>
-	autocmd FileType tex inoremap ,li <Enter>\item<Space>
-	autocmd FileType tex inoremap ,ref \ref{}<Space><++><Esc>T{i
-	autocmd FileType tex inoremap ,tab \begin{tabular}<Enter><++><Enter>\end{tabular}<Enter><Enter><++><Esc>4kA{}<Esc>i
-	autocmd FileType tex inoremap ,ot \begin{tableau}<Enter>\inp{<++>}<Tab>\const{<++>}<Tab><++><Enter><++><Enter>\end{tableau}<Enter><Enter><++><Esc>5kA{}<Esc>i
-	autocmd FileType tex inoremap ,can \cand{}<Tab><++><Esc>T{i
-	autocmd FileType tex inoremap ,con \const{}<Tab><++><Esc>T{i
-	autocmd FileType tex inoremap ,v \vio{}<Tab><++><Esc>T{i
-	autocmd FileType tex inoremap ,a \href{}{<++>}<Space><++><Esc>2T{i
-	autocmd FileType tex inoremap ,sc \textsc{}<Space><++><Esc>T{i
-	autocmd FileType tex inoremap ,chap \chapter{}<Enter><Enter><++><Esc>2kf}i
-	autocmd FileType tex inoremap ,sec \section{}<Enter><Enter><++><Esc>2kf}i
-	autocmd FileType tex inoremap ,ssec \subsection{}<Enter><Enter><++><Esc>2kf}i
-	autocmd FileType tex inoremap ,sssec \subsubsection{}<Enter><Enter><++><Esc>2kf}i
-	autocmd FileType tex inoremap ,st <Esc>F{i*<Esc>f}i
-	autocmd FileType tex inoremap ,beg \begin{DELRN}<Enter><++><Enter>\end{DELRN}<Enter><Enter><++><Esc>4k0fR:MultipleCursorsFind<Space>DELRN<Enter>c
-	autocmd FileType tex inoremap ,up <Esc>/usepackage<Enter>o\usepackage{}<Esc>i
-	autocmd FileType tex nnoremap ,up /usepackage<Enter>o\usepackage{}<Esc>i
-	autocmd FileType tex inoremap ,tt \texttt{}<Space><++><Esc>T{i
-	autocmd FileType tex inoremap ,bt {\blindtext}
-	autocmd FileType tex inoremap ,nu $\varnothing$
-	autocmd FileType tex inoremap ,col \begin{columns}[T]<Enter>\begin{column}{.5\textwidth}<Enter><Enter>\end{column}<Enter>\begin{column}{.5\textwidth}<Enter><++><Enter>\end{column}<Enter>\end{columns}<Esc>5kA
-	autocmd FileType tex inoremap ,rn (\ref{})<++><Esc>F}i
-
-"""HTML
-	autocmd FileType html inoremap ,b <b></b><Space><++><Esc>FbT>i
-	autocmd FileType html inoremap ,it <em></em><Space><++><Esc>FeT>i
-	autocmd FileType html inoremap ,1 <h1></h1><Enter><Enter><++><Esc>2kf<i
-	autocmd FileType html inoremap ,2 <h2></h2><Enter><Enter><++><Esc>2kf<i
-	autocmd FileType html inoremap ,3 <h3></h3><Enter><Enter><++><Esc>2kf<i
-	autocmd FileType html inoremap ,p <p></p><Enter><Enter><++><Esc>02kf>a
-	autocmd FileType html inoremap ,a <a<Space>href=""><++></a><Space><++><Esc>14hi
-	autocmd FileType html inoremap ,e <a<Space>target="_blank"<Space>href=""><++></a><Space><++><Esc>14hi
-	autocmd FileType html inoremap ,ul <ul><Enter><li></li><Enter></ul><Enter><Enter><++><Esc>03kf<i
-	autocmd FileType html inoremap ,li <Esc>o<li></li><Esc>F>a
-	autocmd FileType html inoremap ,ol <ol><Enter><li></li><Enter></ol><Enter><Enter><++><Esc>03kf<i
-	autocmd FileType html inoremap ,im <img src="" alt="<++>"><++><esc>Fcf"a
-	autocmd FileType html inoremap ,td <td></td><++><Esc>Fdcit
-	autocmd FileType html inoremap ,tr <tr></tr><Enter><++><Esc>kf<i
-	autocmd FileType html inoremap ,th <th></th><++><Esc>Fhcit
-	autocmd FileType html inoremap ,tab <table><Enter></table><Esc>O
-	autocmd FileType html inoremap ,gr <font color="green"></font><Esc>F>a
-	autocmd FileType html inoremap ,rd <font color="red"></font><Esc>F>a
-	autocmd FileType html inoremap ,yl <font color="yellow"></font><Esc>F>a
-	autocmd FileType html inoremap ,dt <dt></dt><Enter><dd><++></dd><Enter><++><esc>2kcit
-	autocmd FileType html inoremap ,dl <dl><Enter><Enter></dl><enter><enter><++><esc>3kcc
-	autocmd FileType html inoremap &<space> &amp;<space>
-	autocmd FileType html inoremap á &aacute;
-	autocmd FileType html inoremap é &eacute;
-	autocmd FileType html inoremap í &iacute;
-	autocmd FileType html inoremap ó &oacute;
-	autocmd FileType html inoremap ú &uacute;
-	autocmd FileType html inoremap ä &auml;
-	autocmd FileType html inoremap ë &euml;
-	autocmd FileType html inoremap ï &iuml;
-	autocmd FileType html inoremap ö &ouml;
-	autocmd FileType html inoremap ü &uuml;
-	autocmd FileType html inoremap ã &atilde;
-	autocmd FileType html inoremap ẽ &etilde;
-	autocmd FileType html inoremap ĩ &itilde;
-	autocmd FileType html inoremap õ &otilde;
-	autocmd FileType html inoremap ũ &utilde;
-	autocmd FileType html inoremap ñ &ntilde;
-	autocmd FileType html inoremap à &agrave;
-	autocmd FileType html inoremap è &egrave;
-	autocmd FileType html inoremap ì &igrave;
-	autocmd FileType html inoremap ò &ograve;
-	autocmd FileType html inoremap ù &ugrave;
-
-
-""".bib
-	autocmd FileType bib inoremap ,a @article{<Enter>author<Space>=<Space>{<++>},<Enter>year<Space>=<Space>{<++>},<Enter>title<Space>=<Space>{<++>},<Enter>journal<Space>=<Space>{<++>},<Enter>volume<Space>=<Space>{<++>},<Enter>pages<Space>=<Space>{<++>},<Enter>}<Enter><++><Esc>8kA,<Esc>i
-	autocmd FileType bib inoremap ,b @book{<Enter>author<Space>=<Space>{<++>},<Enter>year<Space>=<Space>{<++>},<Enter>title<Space>=<Space>{<++>},<Enter>publisher<Space>=<Space>{<++>},<Enter>}<Enter><++><Esc>6kA,<Esc>i
-	autocmd FileType bib inoremap ,c @incollection{<Enter>author<Space>=<Space>{<++>},<Enter>title<Space>=<Space>{<++>},<Enter>booktitle<Space>=<Space>{<++>},<Enter>editor<Space>=<Space>{<++>},<Enter>year<Space>=<Space>{<++>},<Enter>publisher<Space>=<Space>{<++>},<Enter>}<Enter><++><Esc>8kA,<Esc>i
-
-"MARKDOWN
-	autocmd Filetype markdown,rmd map <leader>w yiWi[<esc>Ea](<esc>pa)
-	autocmd Filetype markdown,rmd inoremap ,n ---<Enter><Enter>
-	autocmd Filetype markdown,rmd inoremap ,b ****<++><Esc>F*hi
-	autocmd Filetype markdown,rmd inoremap ,s ~~~~<++><Esc>F~hi
-	autocmd Filetype markdown,rmd inoremap ,e **<++><Esc>F*i
-	autocmd Filetype markdown,rmd inoremap ,h ====<Space><++><Esc>F=hi
-	autocmd Filetype markdown,rmd inoremap ,i ![](<++>)<++><Esc>F[a
-	autocmd Filetype markdown,rmd inoremap ,a [](<++>)<++><Esc>F[a
-	autocmd Filetype markdown,rmd inoremap ,1 #<Space><Enter><++><Esc>kA
-	autocmd Filetype markdown,rmd inoremap ,2 ##<Space><Enter><++><Esc>kA
-	autocmd Filetype markdown,rmd inoremap ,3 ###<Space><Enter><++><Esc>kA
-	autocmd Filetype markdown,rmd inoremap ,l --------<Enter>
-	autocmd Filetype rmd inoremap ,r ```{r}<CR>```<CR><CR><esc>2kO
-	autocmd Filetype rmd inoremap ,p ```{python}<CR>```<CR><CR><esc>2kO
-	autocmd Filetype rmd inoremap ,c ```<cr>```<cr><cr><esc>2kO
-
-""".xml
-	autocmd FileType xml inoremap ,e <item><Enter><title><++></title><Enter><guid<space>isPermaLink="false"><++></guid><Enter><pubDate><Esc>:put<Space>=strftime('%a, %d %b %Y %H:%M:%S %z')<Enter>kJA</pubDate><Enter><link><++></link><Enter><description><![CDATA[<++>]]></description><Enter></item><Esc>?<title><enter>cit
-	autocmd FileType xml inoremap ,a <a href="<++>"><++></a><++><Esc>F"ci"
-
+local servers = {'gopls', 'rust_analyzer', 'sumneko_lua', 'tsserver', 'pyls'}
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+  }
+end
+EOF
+" Set up mucomplete
+  let g:mucomplete#enable_auto_at_startup = 0
+  set completeopt+=noinsert,noselect
+  syntax region par1 matchgroup=luaCode start="^lua << EOF$" end="^EOF$"
+  highlight luaCode ctermfg=14
+" }}}
+" text objects {{{
+  " folds {{{
+    " onoremap iz :<c-u>normal! [z0jV]zk<cr>
+    " onoremap az :<c-u>normal! [zV]z<cr>
+    " vnoremap iz :<c-u>normal! [z0jV]zk<cr>
+    " vnoremap az :<c-u>normal! [zV]z<cr>
+    " onoremap if :<c-u>normal! [z0jV]zk<cr>
+    " onoremap af :<c-u>normal! [zV]z<cr>
+    " vnoremap if :<c-u>normal! [z0jV]zk<cr>
+    " vnoremap af :<c-u>normal! [zV]z<cr>
+  " }}}
+" }}}
+" folding {{{
+  set foldenable
+  set foldlevelstart=0
+  set foldnestmax=10
+" }}} vim: fdm=marker fdl=0
