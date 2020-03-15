@@ -1,14 +1,11 @@
+# Defined in /home/medo/.config/fish/functions/fish_prompt.fish @ line 2
+
 function _git_branch_name
-  echo (command git symbolic-ref HEAD 2> /dev/null | sed -e 's|^refs/heads/||')
+  echo (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
 end
 
 function _is_git_dirty
-  set -l show_untracked (git config --bool bash.showUntrackedFiles)
-  set untracked ''
-  if [ "$theme_display_git_untracked" = 'no' -o "$show_untracked" = 'false' ]
-    set untracked '--untracked-files=no'
-  end
-  echo (command git status -s --ignore-submodules=dirty $untracked 2> /dev/null)
+  echo (command git status -s --ignore-submodules=dirty ^/dev/null)
 end
 
 function fish_prompt
@@ -18,7 +15,7 @@ function fish_prompt
   set -l red (set_color -o red)
   set -l blue (set_color -o blue)
   set -l green (set_color -o green)
-	set -l magenta (set_color -o magenta)
+  set -l magenta (set_color -o magenta)
   set -l normal (set_color normal)
 
   set -l cwd (basename (prompt_pwd))
@@ -29,11 +26,17 @@ function fish_prompt
       set cwd "$magenta$cwd"
   end
 
-	if test $USER = "root"
-		set user "$magenta root"
-	else
-		set user ""
-	end
+  if test $USER = "root"
+    set user "$magenta root"
+  else
+    set user ""
+  end
+
+  if set -q VIRTUAL_ENV
+    set venv "$magenta (" (basename "$VIRTUAL_ENV") ")"
+  else
+    set venv ""
+  end
 
   if [ (_git_branch_name) ]
     set -l git_branch $cyan(_git_branch_name)
@@ -45,5 +48,5 @@ function fish_prompt
     end
   end
 
-  echo -n -s $user ' ' $cwd $git_info $normal ' '
+  echo -n -s $venv $user ' ' $cwd $git_info $normal ' '
 end
