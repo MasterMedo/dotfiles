@@ -57,7 +57,8 @@
     Plug 'PotatoesMaster/i3-vim-syntax'
     Plug 'neovim/nvim-lsp'
     " mucomplete {{{
-      Plug 'lifepillar/vim-mucomplete'
+      " Plug 'lifepillar/vim-mucomplete' " remap tab
+      let g:mucomplete#tab_when_no_results = 1
       set completeopt+=menuone,noselect,longest
       set completeopt-=preview
       set shortmess+=c
@@ -101,14 +102,19 @@
 " }}}
 " highlighting {{{
   " word highlighter {{{
-    " copied from Steve Losh
+    let g:word_id = 97531
     function! HighlightWord(n)
         normal! mz"zyiw
-        let match_id = 97531 + a:n
-        silent! call matchdelete(match_id)
+        silent! call matchdelete(g:match_id+a:n)
         let word_pattern = '\V\<'.escape(@z, '\').'\>'
-        call matchadd("highlightedword".a:n, word_pattern, 1, match_id)
+        call matchadd("highlightedword".a:n, word_pattern, 1, g:word_id+a:n)
         normal! `z
+    endfunction
+
+    function! UnHighlightWords()
+      for i in range(1, 6)
+        silent! call matchdelete(g:word_id+i)
+      endfor
     endfunction
 
     nnoremap <silent> <leader>1 :call HighlightWord(1)<cr>
@@ -200,36 +206,21 @@
     nnoremap <space><space> mzggg?G`z
 
     nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<cr>
-    nnoremap <silent> <leader>/ :noh<cr>
+    nnoremap <silent> <leader>/ :noh<bar>call UnHighlightWords()<cr>
   " }}}
   " specific files {{{
     nnoremap <silent> <leader>ev   :vsp    $vim_config<cr>
     nnoremap <silent> <leader>sv m":source $vim_config<cr>
   " }}}
-" }}}
-" training commands {{{
-  nnoremap `` :echo "use ''"<cr>
-" }}}
-" backups {{{
-set backup                        " enable backups
-set undodir=~/.vim/tmp/undo//
-set backupdir=~/.vim/tmp/backup//
-set directory=~/.vim/tmp/swap//
-if !isdirectory(expand(&undodir))
-    call mkdir(expand(&undodir), "p")
-endif
-if !isdirectory(expand(&backupdir))
-    call mkdir(expand(&backupdir), "p")
-endif
-if !isdirectory(expand(&directory))
-    call mkdir(expand(&directory), "p")
-endif
+  " training commands {{{
+    nnoremap `` :echo "use ''"<cr>
+  " }}}
 " }}}
 " auto commands {{{
  " autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
  " kludgy but works
-  set fo-=c fo-=r fo-=o fo+=1 fo+=t
+  autocmd FileType * set fo-=c fo-=r fo-=o fo+=1 fo+=t
 
   " remove trailing spaces upon saving
   autocmd BufWritePre * %s/\s\+$//e
@@ -240,8 +231,30 @@ endif
   " when opening a file position the cursor to where it last was
   autocmd BufReadPost *
     \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |
-    \   execute 'normal! g`"zvzz' |
+    \   execute 'normal! g`"' |
     \ endif
+
+  " modeline folding executes after BufReadPost...
+  autocmd BufEnter    * execute 'normal! zvzz'
+  autocmd SourcePost  * execute 'normal! zvzz'
+" }}}
+" backups {{{
+  set backup
+  set undodir=~/.vim/tmp/undo//
+  set backupdir=~/.vim/tmp/backup//
+  set directory=~/.vim/tmp/swap//
+
+  if !isdirectory(expand(&undodir))
+      call mkdir(expand(&undodir), "p")
+  endif
+
+  if !isdirectory(expand(&backupdir))
+      call mkdir(expand(&backupdir), "p")
+  endif
+
+  if !isdirectory(expand(&directory))
+      call mkdir(expand(&directory), "p")
+  endif
 " }}}
 " abbreviations {{{
   iabbrev todo TODO
@@ -265,16 +278,9 @@ augroup END
 " }}}
 " }}}
 " TODO {{{
-  " sometimes when I yiw or ciw it selects the whole fold??
-  " tab sometimes not working in insert mode
-  " unfold zv line after folding has taken place
   " Language Server Protocol, Linter, autocomplete etc.
   " lua highlighting in vimrc
-  " custom highlighting of words under the cursor
-  " command for :call clearmatches() that clears only one type of a match
-  "                  as I don't want to clear the colorcolumn hack I use
   " undo tree visualizer
-  " stop using swap files, start using backups
   " managing swap file to open diff in two windows
   " add a bunch of training commands
   " add a bunch of abbreviations
