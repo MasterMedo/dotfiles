@@ -1,43 +1,51 @@
-""" .vimrc
+""" vimrc
 """ plugins
   call plug#begin('~/.vim/plugged')
-  """ visual {{{
-    Plug 'ap/vim-css-color'
-    Plug 'ryanoasis/vim-devicons'
-    " Plug 'vim-airline/vim-airline'
+
+  """ visual  plugins
+    """ ap/vim-css-color
+      Plug 'ap/vim-css-color'
+
+    """ ryanoasis/vim-devicons
+      Plug 'ryanoasis/vim-devicons'
+
+    """ vim-airline/vim-airline
+      " Plug 'vim-airline/vim-airline'
+
     """ junegunn/goyo.vim
       Plug 'junegunn/goyo.vim'
       autocmd! User GoyoEnter Limelight
       autocmd! User GoyoLeave Limelight!
       nnoremap <silent> <F11> :Goyo<bar>set linebreak<cr>
+
     """ junegunn/limelight.vim
       Plug 'junegunn/limelight.vim'
       let g:limelight_conceal_ctermfg = 240
+
     """ mhinz/vim-startify
       Plug 'mhinz/vim-startify'
       let g:startify_custom_header = ''
-    """ preservim/nerdtree {{{
+
+    """ preservim/nerdtree
       Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
       Plug 'preservim/nerdtree'
       " let NERDTreeShowHidden=1
       nnoremap <leader>n :NERDTreeToggle<cr>
-  """ command
+
+  """ command plugins
     """ tpope/vim-repeat
       Plug 'tpope/vim-repeat'
-      nnoremap <silent> <plug>PasteBelowLine o<esc>"+p
-        \ :call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
-      nnoremap <silent> <plug>MoveLineDown ddp
-        \ :call repeat#set("\<plug>MoveLineDown", v:count)<cr>
-      nnoremap <silent> <plug>MoveLineUp ddkP
-        \ :call repeat#set("\<plug>MoveLineUp", v:count)<cr>
-      nnoremap <silent> <plug>IndentWord F a<tab><esc>lb
-        \ :call repeat#set("\<plug>IndentWord", v:count)<cr>
-      nnoremap <silent> <plug>UnIndentWord F a<bs><esc>lb
-        \ :call repeat#set("\<plug>UnIndentWord", v:count)<cr>
+      nnoremap <silent> <plug>PasteBelowLine o<esc>"+p:call  repeat#set("\<plug>PasteBelowLine", v:count)<cr>
+      nnoremap <silent> <plug>MoveLineDown ddp:call repeat#set("\<plug>MoveLineDown", v:count)<cr>
+      nnoremap <silent> <plug>MoveLineUp ddkP:call repeat#set("\<plug>MoveLineUp", v:count)<cr>
+      nnoremap <silent> <plug>IndentWord F a<tab><esc>w:call repeat#set("\<plug>IndentWord", v:count)<cr>
+      nnoremap <silent> <plug>UnIndentWord F a<bs><esc>w:call repeat#set("\<plug>UnIndentWord", v:count)<cr>
+
     """ nixon/vim-vmath
       Plug 'nixon/vim-vmath'
       vnoremap <expr>  ++  VMATH_YankAndAnalyse()
       nnoremap         ++  vip++
+
     """ vim objects
       " Plug 'wellle/targets.vim' " issue #246
       Plug 'tpope/vim-commentary'
@@ -46,12 +54,14 @@
       Plug 'kana/vim-textobj-indent'
       Plug 'kana/vim-textobj-line'
       Plug 'kana/vim-textobj-entire'
+
     """ junegunn/fzf
       Plug 'junegunn/fzf', {'do': './install --bin' }
       Plug 'junegunn/fzf.vim'
       nnoremap <silent> <leader>b :Buffers<cr>
       nnoremap <silent> <leader>f :Files<cr>
-  """ syntax
+
+  """ syntax  plugins
     Plug 'fatih/vim-go'
     Plug 'dag/vim-fish'
     Plug 'xolox/vim-misc'
@@ -59,6 +69,7 @@
     Plug 'vim-scripts/lua.vim'
     Plug 'PotatoesMaster/i3-vim-syntax'
     Plug 'neovim/nvim-lsp'
+
     """ mucomplete
       " Plug 'lifepillar/vim-mucomplete' " remap tab
       " let g:mucomplete#tab_when_no_results = 1
@@ -66,9 +77,11 @@
       " set completeopt+=menuone,noselect,longest,noinsert
       " set completeopt-=preview
       " set shortmess+=c
+
   call plug#end()
   nnoremap <leader>pi :PlugInstall<cr>
   nnoremap <leader>pu :PlugUpdate<cr>
+
 """ ui
   """ basics
     filetype plugin on
@@ -87,11 +100,13 @@
     set hidden
     set splitbelow
     set splitright
+
   """ colors
     syntax on
     set background=dark
     set termguicolors& " should probably set this up
     " colorscheme name " should create my own...
+
   """ tabs and wrapping
     set shiftround
     set shiftwidth=2
@@ -102,13 +117,15 @@
     set wrap
     set breakindent
     set linebreak
+
   """ special characters
     set list
     set showbreak=↪\
     set listchars=tab:‹-›,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
     set fillchars=vert:\ ,fold:\ ,foldopen:#,foldclose:#,eob:x
-""" highlighting {{{
-  """ word highlighter {{{
+
+""" highlighting
+  """ word highlighter
     let g:word_id = 97531
     function! HighlightWord(n)
         normal! mz"zyiw
@@ -137,6 +154,7 @@
     highlight highlightedword4 ctermfg=16 ctermbg=160
     highlight highlightedword5 ctermfg=16 ctermbg=211
     highlight highlightedword6 ctermfg=16 ctermbg=195
+
   set cursorline
   call matchadd('ColorColumn', '\%81c') " set colorcolumn=+1
   highlight folded        ctermfg=248 ctermbg=236
@@ -148,6 +166,7 @@
   highlight pmenusel      ctermbg=180
   highlight pmenusel      ctermfg=230
   highlight incsearch     ctermfg=4   ctermbg=0
+
 """ file finder
   set path=.,,**
   set complete-=i
@@ -160,9 +179,11 @@
   set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg    " binary images
   set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
   set wildignore+=*.sw?                             " vim swap files
+
 """ commands
   let mapleader = " "
   let maplocalleader = " "
+
   """ common
     nnoremap  '     `
     nnoremap  *     *N
@@ -170,6 +191,8 @@
     nnoremap  k     gk
     nnoremap  gj    j
     nnoremap  gk    k
+    nnoremap  B     ^
+    nnoremap  E     $
     nnoremap  Y     y$
     nnoremap  c*    *Ncgn
     inoremap  kj    <esc>
@@ -178,6 +201,7 @@
     inoremap  <F1>  <esc>
     nnoremap  <F1>  <nop>
     nnoremap  <cr>  o<esc>
+
   """ heresy
     noremap  <c-s> :w<cr>
     noremap  <c-c> "+y
@@ -187,12 +211,14 @@
     inoremap <c-v> <esc>"+pa
     noremap! <c-a> <home>
     noremap! <c-e> <end>
+
   """ multi command repeatable mappings
-    nmap <c-p>  <plug>PasteBelowLine
-    nmap -      <plug>MoveLineDown
-    nmap _      <plug>MoveLineUp
-    nmap >w     <plug>IndentWord
-    nmap <w     <plug>UnIndentWord
+    nmap <c-p>              <plug>PasteBelowLine
+    nmap -                  <plug>MoveLineDown
+    nmap _                  <plug>MoveLineUp
+    nmap >w                 <plug>IndentWord
+    nmap <w                 <plug>UnIndentWord
+
   """ special
     " mappings for navigating the autocomplete menu
     inoremap <expr> <c-j> pumvisible() ? "\<c-n>" : "\<c-j>"
@@ -204,11 +230,12 @@
     " clear last command
     nnoremap <leader>l :echo<cr>
 
-    " panic button - ROT13 whole file
+    " panic button - ROT13 entire file
     nnoremap <space><space> mzggg?G`z
 
     nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<cr>
     nnoremap <silent> <leader>/ :noh<bar>call UnHighlightWords()<cr>
+
   """ window splits
     noremap <c-h>   <c-w>h
     noremap <c-j>   <c-w>j
@@ -218,12 +245,17 @@
     noremap <c-m-j> <c-w>J
     noremap <c-m-k> <c-w>K
     noremap <c-m-l> <c-w>L
+
   """ file specific
     nnoremap <silent> <leader>ev   :vsp    $MYVIMRC<cr>
     nnoremap <silent> <leader>sv m":source $MYVIMRC<cr>
+
   """ training
     nnoremap ``     :echo "use ''"<cr>
-    inoremap <esc>  <nop>
+    nnoremap $      <esc>:echo "use E"<cr>
+    nnoremap ^      <esc>:echo "use B"<cr>
+    inoremap <esc>  <esc>:echo "use jk"<cr>a
+
   """ text objects
     """ folds
       onoremap iz :<c-u>normal! [z0jV]zk<cr>
@@ -234,6 +266,7 @@
       onoremap af :<c-u>normal! [zV]z<cr>
       vnoremap if :<c-u>normal! [z0jV]zk<cr>
       vnoremap af :<c-u>normal! [zV]z<cr>
+
 """ auto commands
   augroup vimrc
     autocmd!
@@ -261,6 +294,7 @@
     " reload .Xresources, should probably do it with 'entr' though
     autocmd BufWritePost ~/.Xresources,~/.Xdefaults !xrdb %
   augroup END
+
 """ backups
   set backup
   set undodir=~/.vim/tmp/undo//
@@ -278,8 +312,10 @@
   if !isdirectory(expand(&directory))
       call mkdir(expand(&directory), "p")
   endif
+
 """ abbreviations
   iabbrev todo TODO
+
 """ LSP settings
 lua << EOF
 require'nvim_lsp'.pyls.setup{}
@@ -308,6 +344,7 @@ end
 EOF
   syntax region par1 matchgroup=luaCode start="^lua << EOF$" end="^EOF$"
   highlight luaCode ctermfg=14
+
 """ TODO
   " Language Server Protocol, Linter, autocomplete etc.
   " add a bunch of abbreviations (filetype specific)
@@ -316,10 +353,7 @@ EOF
   " managing swap file to open diff in two windows
   " normalize diff highlighting
   " add a bunch of training commands
-  " startify config
   " edit status line
-  " fillchars foldopen and foldclose are not working
-  " normal regexes nnoremap / /\v
 
 """ folding
   set foldenable
@@ -327,13 +361,35 @@ EOF
   set foldnestmax=10
   set modelineexpr
 
-  function MyFoldExpr(lnum)
-    if getline(a:lnum)=~'^\s*\"\"\"'
-      return '>'.(indent(a:lnum)/&shiftwidth+1)
-    elseif indent(a:lnum) < indent(a:lnum-1)
-      return 's'.(indent(a:lnum-1)/&shiftwidth-indent(a:lnum)/&shiftwidth)
-    else
-      return '='
-    endif
-  endfunction
-" vim: fdm=expr fdl=0 fde=MyFoldExpr(v\:lnum)
+  """ foldexpr function
+    let g:running_level = 1
+    function Fde(lnum)
+      let line = getline(a:lnum)
+      let level = indent(a:lnum)/&shiftwidth+1
+      if line =~ '\v^\s*\"{3}.*$'
+        let g:running_level = level
+        return '>'.level
+      elseif line !~ '[^\s]'
+        return '='
+      elseif level == 1
+        let g:running_level = 1
+        return 1
+      elseif level <= g:running_level
+        let g:running_level = level-1
+        return level-1
+      else
+        return '='
+      endif
+    endfunction
+
+  """ foldtext function
+    function Fdt()
+      let line   = getline(v:foldstart)
+      let suffix = (v:foldend-v:foldstart).' lines'
+      let width  = winwidth(0) - &fdc - &number * &numberwidth
+      let count  = width - len(line) - len(suffix)
+      let spaces = repeat(' ', count)
+      return line.spaces.suffix
+    endfunction
+
+" vim: fdm=expr fdl=0 fde=Fde(v\:lnum) fdt=Fdt()
