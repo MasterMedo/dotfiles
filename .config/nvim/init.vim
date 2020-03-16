@@ -35,11 +35,11 @@
   """ command plugins
     """ tpope/vim-repeat
       Plug 'tpope/vim-repeat'
-      nnoremap <silent> <plug>PasteBelowLine  o<esc>"+p      :call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
-      nnoremap <silent> <plug>MoveLineDown    ddp            :call repeat#set("\<plug>MoveLineDown", v:count)<cr>
-      nnoremap <silent> <plug>MoveLineUp      ddkP           :call repeat#set("\<plug>MoveLineUp", v:count)<cr>
-      nnoremap <silent> <plug>IndentWord      F a<tab><esc>w:call  repeat#set("\<plug>IndentWord", v:count)<cr>
-      nnoremap <silent> <plug>UnIndentWord    F a<bs><esc>w:call   repeat#set("\<plug>UnIndentWord", v:count)<cr>
+      nnoremap <silent> <plug>PasteBelowLine  o<esc>"+p     :call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
+      nnoremap <silent> <plug>MoveLineDown    ddp           :call repeat#set("\<plug>MoveLineDown",   v:count)<cr>
+      nnoremap <silent> <plug>MoveLineUp      ddkP          :call repeat#set("\<plug>MoveLineUp",     v:count)<cr>
+      nnoremap <silent> <plug>IndentWord      F a<tab><esc>w:call repeat#set("\<plug>IndentWord",     v:count)<cr>
+      nnoremap <silent> <plug>UnIndentWord    F a<bs><esc>w:call  repeat#set("\<plug>UnIndentWord",   v:count)<cr>
 
     """ nixon/vim-vmath
       Plug 'nixon/vim-vmath'
