@@ -1,7 +1,3 @@
-" variables {{{
-  let mapleader = " "
-  let $vim_config = '~/.config/nvim/init.vim'
-" }}}
 " plugins {{{
   call plug#begin('~/.vim/plugged')
   " visual plugins {{{
@@ -27,6 +23,19 @@
     " }}}
   " }}}
   " command plugins {{{
+    " vim-repeat {{{
+      Plug 'tpope/vim-repeat'
+      nnoremap <silent> <plug>PasteBelowLine o<esc>"+p
+        \ :call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
+      nnoremap <silent> <plug>MoveLineDown ddp
+        \ :call repeat#set("\<plug>MoveLineDown", v:count)<cr>
+      nnoremap <silent> <plug>MoveLineUp ddkP
+        \ :call repeat#set("\<plug>MoveLineUp", v:count)<cr>
+      nnoremap <silent> <plug>IndentWord F a<tab><esc>lb
+        \ :call repeat#set("\<plug>IndentWord", v:count)<cr>
+      nnoremap <silent> <plug>UnIndentWord F a<bs><esc>lb
+        \ :call repeat#set("\<plug>UnIndentWord", v:count)<cr>
+    " }}}
     " vim-math {{{
       Plug 'nixon/vim-vmath'
       vnoremap <expr>  ++  VMATH_YankAndAnalyse()
@@ -72,6 +81,7 @@
 " ui {{{
   " basics {{{
     filetype plugin on
+    set lazyredraw
     set encoding=utf-8
     set scrolloff=5
     set sidescrolloff=5
@@ -115,7 +125,7 @@
     let g:word_id = 97531
     function! HighlightWord(n)
         normal! mz"zyiw
-        silent! call matchdelete(g:match_id+a:n)
+        silent! call matchdelete(g:word_id+a:n)
         let word_pattern = '\V\<'.escape(@z, '\').'\>'
         call matchadd("highlightedword".a:n, word_pattern, 1, g:word_id+a:n)
         normal! `z
@@ -160,49 +170,53 @@
   set wildmode=longest:full,full
   set wildignore+=**/node_modules/**                " javascript modules
   set wildignore+=**/env/**                         " python environment
-  set wildignore+=.hg,.git,.svn                     " Version control
+  set wildignore+=.hg,.git,.svn                     " version control
   set wildignore+=*.aux,*.out,*.toc                 " LaTeX intermediate files
   set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg    " binary images
   set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
-  set wildignore+=*.sw?                             " Vim swap files
+  set wildignore+=*.sw?                             " vim swap files
 " }}}
 " commands {{{
+  let mapleader = " "
+  let maplocalleader = " "
   " common {{{
-    nnoremap ' `
-    nnoremap * *N
-    nnoremap j gj
-    nnoremap k gk
-    nnoremap gj j
-    nnoremap gk k
-    nnoremap Y y$
+    nnoremap  '     `
+    nnoremap  *     *N
+    nnoremap  j     gj
+    nnoremap  k     gk
+    nnoremap  gj    j
+    nnoremap  gk    k
+    nnoremap  Y     y$
+    nnoremap  c*    *Ncgn
+    inoremap  kj    <esc>
+    inoremap  jk    <esc>
+    nnoremap  vb    <c-v>
+    inoremap  <F1>  <esc>
+    nnoremap  <F1>  <nop>
+    nnoremap  <cr>  o<esc>
   " }}}
   " heresy {{{
-    map  <c-s>      :w<cr>
-    map  <c-c>      "+y
-    map  <c-v>      "+p
-    imap <c-s> <esc>:w<cr>a
-    imap <c-c> <esc>"+y
-    imap <c-v> <esc>"+pa
+    noremap  <c-s> :w<cr>
+    noremap  <c-c> "+y
+    noremap  <c-v> "+p
+    inoremap <c-s> <esc>:w<cr>a
+    inoremap <c-c> <esc>"+y
+    inoremap <c-v> <esc>"+pa
     noremap! <c-a> <home>
     noremap! <c-e> <end>
   " }}}
-  " useful {{{
-    map  <F1> <nop>
-    imap <F1> <esc>
-    nnoremap <c-p> "+p
-    nnoremap <cr> i<cr><esc>
-
-    " stay on the word c* was executed on
-    nnoremap c* *Ncgn
-
+  " multi command repeatable mappings {{{
+    nmap <c-p>  <plug>PasteBelowLine
+    nmap -      <plug>MoveLineDown
+    nmap _      <plug>MoveLineUp
+    nmap >w     <plug>IndentWord
+    nmap <w     <plug>UnIndentWord
+  " }}}
+  " special {{{
     " mappings for navigating the autocomplete menu
     inoremap <expr> <c-j> pumvisible() ? "\<c-n>" : "\<c-j>"
     inoremap <expr> <c-k> pumvisible() ? "\<c-p>" : "\<c-k>"
 
-    " visual block mode
-    nnoremap vb <c-v>
-  " }}}
-  " special {{{
     " fold everything except current line
     nnoremap <leader>z zMzvzz
 
@@ -215,46 +229,64 @@
     nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<cr>
     nnoremap <silent> <leader>/ :noh<bar>call UnHighlightWords()<cr>
   " }}}
-  " window splits{{{
-    map <c-h> <c-w>h
-    map <c-j> <c-w>j
-    map <c-k> <c-w>k
-    map <c-l> <c-w>l
-    map <c-m-h> <c-w>H
-    map <c-m-j> <c-w>J
-    map <c-m-k> <c-w>K
-    map <c-m-l> <c-w>L
+  " window splits {{{
+    noremap <c-h>   <c-w>h
+    noremap <c-j>   <c-w>j
+    noremap <c-k>   <c-w>k
+    noremap <c-l>   <c-w>l
+    noremap <c-m-h> <c-w>H
+    noremap <c-m-j> <c-w>J
+    noremap <c-m-k> <c-w>K
+    noremap <c-m-l> <c-w>L
   " }}}
   " file specific {{{
-    nnoremap <silent> <leader>ev   :vsp    $vim_config<cr>
-    nnoremap <silent> <leader>sv m":source $vim_config<cr>
+    nnoremap <silent> <leader>ev   :vsp    $MYVIMRC<cr>
+    nnoremap <silent> <leader>sv m":source $MYVIMRC<cr>
   " }}}
   " training {{{
-    nnoremap `` :echo "use ''"<cr>
+    nnoremap ``     :echo "use ''"<cr>
+    inoremap <esc>  <nop>
+  " }}}
+  " text objects {{{
+    " folds {{{
+      onoremap iz :<c-u>normal! [z0jV]zk<cr>
+      onoremap az :<c-u>normal! [zV]z<cr>
+      vnoremap iz :<c-u>normal! [z0jV]zk<cr>
+      vnoremap az :<c-u>normal! [zV]z<cr>
+      onoremap if :<c-u>normal! [z0jV]zk<cr>
+      onoremap af :<c-u>normal! [zV]z<cr>
+      vnoremap if :<c-u>normal! [z0jV]zk<cr>
+      vnoremap af :<c-u>normal! [zV]z<cr>
+    " }}}
   " }}}
 " }}}
 " auto commands {{{
- " autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
+  augroup vimrc
+    autocmd!
 
- " plugins just have to mess with these...
-  autocmd FileType * set fo-=c fo-=r fo-=o fo+=1 fo+=t
-  autocmd FileType * set textwidth=0
+    " when opening a file position the cursor to where it last was
+    autocmd BufReadPost *
+      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |
+      \   execute 'normal! g`"' |
+      \ endif
 
-  " remove trailing spaces upon saving
-  autocmd BufWritePre * %s/\s\+$//e
+    " plugins just have to mess with these...
+    autocmd FileType *      set fo-=c fo-=r fo-=o fo+=1 fo+=t
+    autocmd FileType *      set textwidth=0
+    autocmd FileType c,cpp  setlocal foldmethod=marker foldmarker={,}
+    autocmd FileType c,cpp  setlocal ts=8 sts=8 sw=8
+    " autocmd FileType py     nnoremap <buffer> <localleader>r command
 
-  " reload .Xresources, should probably do it with 'entr' though
-  autocmd BufWritePost ~/.Xresources,~/.Xdefaults !xrdb %
+    " modeline folding executes after BufReadPost...
+    autocmd BufEnter    * execute 'normal! zvzz'
+    autocmd SourcePost  * execute 'normal! zvzz'
 
-  " when opening a file position the cursor to where it last was
-  autocmd BufReadPost *
-    \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |
-    \   execute 'normal! g`"' |
-    \ endif
+    " remove trailing spaces upon saving
+    autocmd BufWritePre * %s/\s\+$//e
 
-  " modeline folding executes after BufReadPost...
-  autocmd BufEnter    * execute 'normal! zvzz'
-  autocmd SourcePost  * execute 'normal! zvzz'
+    " reload .Xresources, should probably do it with 'entr' though
+    autocmd BufWritePost ~/.Xresources,~/.Xdefaults !xrdb %
+  augroup END
 " }}}
 " backups {{{
   set backup
@@ -276,24 +308,6 @@
 " }}}
 " abbreviations {{{
   iabbrev todo TODO
-" }}}
-" snippets {{{
-" }}}
-" filetype specific {{{
-" C {{{
-augroup ft_c
-    au!
-    au FileType c setlocal foldmethod=marker foldmarker={,}
-    au FileType c setlocal ts=8 sts=8 sw=8 noexpandtab
-augroup END
-" }}}
-" C++ {{{
-augroup ft_cpp
-    au!
-    au FileType cpp setlocal foldmethod=marker foldmarker={,}
-    au FileType cpp setlocal ts=8 sts=8 sw=8 noexpandtab
-augroup END
-" }}}
 " }}}
 " LSP settings {{{
 lua << EOF
@@ -324,28 +338,17 @@ EOF
   syntax region par1 matchgroup=luaCode start="^lua << EOF$" end="^EOF$"
   highlight luaCode ctermfg=14
 " }}}
-" text objects {{{
-  " folds {{{
-    onoremap iz :<c-u>normal! [z0jV]zk<cr>
-    onoremap az :<c-u>normal! [zV]z<cr>
-    vnoremap iz :<c-u>normal! [z0jV]zk<cr>
-    vnoremap az :<c-u>normal! [zV]z<cr>
-    onoremap if :<c-u>normal! [z0jV]zk<cr>
-    onoremap af :<c-u>normal! [zV]z<cr>
-    vnoremap if :<c-u>normal! [z0jV]zk<cr>
-    vnoremap af :<c-u>normal! [zV]z<cr>
-  " }}}
-" }}}
 " TODO {{{
   " Language Server Protocol, Linter, autocomplete etc.
+  " add a bunch of abbreviations (filetype specific)
   " lua highlighting in vimrc
   " undo tree visualizer
   " managing swap file to open diff in two windows
   " normalize diff highlighting
   " add a bunch of training commands
-  " add a bunch of abbreviations
-  " custom folding or at least change chars and colors of folds
   " startify config
+  " edit status line
+  " fillchars foldopen and foldclose are not working
   " normal regexes nnoremap / /\v
 " }}}
 " folding {{{
