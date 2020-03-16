@@ -58,10 +58,11 @@
     Plug 'neovim/nvim-lsp'
     " mucomplete {{{
       " Plug 'lifepillar/vim-mucomplete' " remap tab
-      let g:mucomplete#tab_when_no_results = 1
-      set completeopt+=menuone,noselect,longest
-      set completeopt-=preview
-      set shortmess+=c
+      " let g:mucomplete#tab_when_no_results = 1
+      " let g:mucomplete#enable_auto_at_startup = 0
+      " set completeopt+=menuone,noselect,longest,noinsert
+      " set completeopt-=preview
+      " set shortmess+=c
     " }}}
   " }}}
   call plug#end()
@@ -70,34 +71,43 @@
 " }}}
 " ui {{{
   " basics {{{
-    syntax on
     filetype plugin on
     set encoding=utf-8
-    set background=dark
-    set termguicolors& " should probably set this up
-    " colorscheme name " should create my own...
     set scrolloff=5
+    set sidescrolloff=5
     set number
     set relativenumber
     set ignorecase
     set smartcase
-    set wrap
-    set linebreak
-    " set textwidth=80 " auto creates <eol>
-    set laststatus=0   " who needs a status line
+    set visualbell
+    set laststatus=0
+    set helpheight=15
+    set hidden
+    set splitbelow
+    set splitright
   " }}}
-  " tabs {{{
+  " colors {{{
+    syntax on
+    set background=dark
+    set termguicolors& " should probably set this up
+    " colorscheme name " should create my own...
+  " }}}
+  " tabs and wrapping {{{
     set shiftround
     set shiftwidth=2
     set tabstop=2
     set softtabstop=2
     set expandtab
+    set smarttab
+    set wrap
+    set breakindent
+    set linebreak
   " }}}
   " special characters {{{
     set list
     set showbreak=↪\
     set listchars=tab:‹-›,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
-    set fillchars=vert:\ ,fold:\ ,foldopen:\ ,foldclose:\ ,eob:x
+    set fillchars=vert:\ ,fold:\ ,foldopen:#,foldclose:#,eob:x
   " }}}
 " }}}
 " highlighting {{{
@@ -133,7 +143,8 @@
   " }}}
   set cursorline
   call matchadd('ColorColumn', '\%81c') " set colorcolumn=+1
-  highlight cursorline    ctermbg=234 cterm=NONE
+  highlight folded        ctermfg=248 ctermbg=236
+  highlight cursorline                ctermbg=234 cterm=NONE
   highlight nontext       ctermfg=236
   highlight whitespace    ctermfg=236
   highlight pmenu         ctermbg=150
@@ -154,18 +165,6 @@
   set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg    " binary images
   set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
   set wildignore+=*.sw?                             " Vim swap files
-" }}}
-" window splits{{{
-  set hidden
-  set splitbelow splitright
-  map <c-h> <c-w>h
-  map <c-j> <c-w>j
-  map <c-k> <c-w>k
-  map <c-l> <c-w>l
-  map <c-m-h> <c-w>H
-  map <c-m-j> <c-w>J
-  map <c-m-k> <c-w>K
-  map <c-m-l> <c-w>L
 " }}}
 " commands {{{
   " common {{{
@@ -191,36 +190,55 @@
     map  <F1> <nop>
     imap <F1> <esc>
     nnoremap <c-p> "+p
-    nnoremap <cr> moo<esc>`o
+    nnoremap <cr> i<cr><esc>
+
+    " stay on the word c* was executed on
     nnoremap c* *Ncgn
+
+    " mappings for navigating the autocomplete menu
     inoremap <expr> <c-j> pumvisible() ? "\<c-n>" : "\<c-j>"
     inoremap <expr> <c-k> pumvisible() ? "\<c-p>" : "\<c-k>"
+
+    " visual block mode
     nnoremap vb <c-v>
   " }}}
-  " leader {{{
+  " special {{{
     " fold everything except current line
     nnoremap <leader>z zMzvzz
+
     " clear last command
     nnoremap <leader>l :echo<cr>
+
     " panic button - ROT13 whole file
     nnoremap <space><space> mzggg?G`z
 
     nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<cr>
     nnoremap <silent> <leader>/ :noh<bar>call UnHighlightWords()<cr>
   " }}}
-  " specific files {{{
+  " window splits{{{
+    map <c-h> <c-w>h
+    map <c-j> <c-w>j
+    map <c-k> <c-w>k
+    map <c-l> <c-w>l
+    map <c-m-h> <c-w>H
+    map <c-m-j> <c-w>J
+    map <c-m-k> <c-w>K
+    map <c-m-l> <c-w>L
+  " }}}
+  " file specific {{{
     nnoremap <silent> <leader>ev   :vsp    $vim_config<cr>
     nnoremap <silent> <leader>sv m":source $vim_config<cr>
   " }}}
-  " training commands {{{
+  " training {{{
     nnoremap `` :echo "use ''"<cr>
   " }}}
 " }}}
 " auto commands {{{
  " autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
- " kludgy but works
+ " plugins just have to mess with these...
   autocmd FileType * set fo-=c fo-=r fo-=o fo+=1 fo+=t
+  autocmd FileType * set textwidth=0
 
   " remove trailing spaces upon saving
   autocmd BufWritePre * %s/\s\+$//e
@@ -261,7 +279,7 @@
 " }}}
 " snippets {{{
 " }}}
-" Filetype specific {{{
+" filetype specific {{{
 " C {{{
 augroup ft_c
     au!
@@ -276,16 +294,6 @@ augroup ft_cpp
     au FileType cpp setlocal ts=8 sts=8 sw=8 noexpandtab
 augroup END
 " }}}
-" }}}
-" TODO {{{
-  " Language Server Protocol, Linter, autocomplete etc.
-  " lua highlighting in vimrc
-  " undo tree visualizer
-  " managing swap file to open diff in two windows
-  " add a bunch of training commands
-  " add a bunch of abbreviations
-  " startify config
-  " normal regexes nnoremap / /\v
 " }}}
 " LSP settings {{{
 lua << EOF
@@ -313,23 +321,32 @@ for _, lsp in ipairs(servers) do
   }
 end
 EOF
-" Set up mucomplete
-  let g:mucomplete#enable_auto_at_startup = 0
-  set completeopt+=noinsert,noselect
   syntax region par1 matchgroup=luaCode start="^lua << EOF$" end="^EOF$"
   highlight luaCode ctermfg=14
 " }}}
 " text objects {{{
   " folds {{{
-    " onoremap iz :<c-u>normal! [z0jV]zk<cr>
-    " onoremap az :<c-u>normal! [zV]z<cr>
-    " vnoremap iz :<c-u>normal! [z0jV]zk<cr>
-    " vnoremap az :<c-u>normal! [zV]z<cr>
-    " onoremap if :<c-u>normal! [z0jV]zk<cr>
-    " onoremap af :<c-u>normal! [zV]z<cr>
-    " vnoremap if :<c-u>normal! [z0jV]zk<cr>
-    " vnoremap af :<c-u>normal! [zV]z<cr>
+    onoremap iz :<c-u>normal! [z0jV]zk<cr>
+    onoremap az :<c-u>normal! [zV]z<cr>
+    vnoremap iz :<c-u>normal! [z0jV]zk<cr>
+    vnoremap az :<c-u>normal! [zV]z<cr>
+    onoremap if :<c-u>normal! [z0jV]zk<cr>
+    onoremap af :<c-u>normal! [zV]z<cr>
+    vnoremap if :<c-u>normal! [z0jV]zk<cr>
+    vnoremap af :<c-u>normal! [zV]z<cr>
   " }}}
+" }}}
+" TODO {{{
+  " Language Server Protocol, Linter, autocomplete etc.
+  " lua highlighting in vimrc
+  " undo tree visualizer
+  " managing swap file to open diff in two windows
+  " normalize diff highlighting
+  " add a bunch of training commands
+  " add a bunch of abbreviations
+  " custom folding or at least change chars and colors of folds
+  " startify config
+  " normal regexes nnoremap / /\v
 " }}}
 " folding {{{
   set foldenable
