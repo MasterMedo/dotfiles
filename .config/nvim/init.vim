@@ -78,6 +78,7 @@
       " set completeopt-=preview
       " set shortmess+=c
 
+
   call plug#end()
   nnoremap <leader>pi :PlugInstall<cr>
   nnoremap <leader>pu :PlugUpdate<cr>
@@ -181,8 +182,8 @@
   set wildignore+=*.sw?                             " vim swap files
 
 """ commands
-  let mapleader = " "
-  let maplocalleader = " "
+  let mapleader       = " "
+  let maplocalleader  = " "
 
   """ common
     nnoremap  '     `
@@ -362,33 +363,36 @@ EOF
   set modelineexpr
 
   """ foldexpr function
-    let g:running_level = 1
-    function Fde(lnum)
-      let line = getline(a:lnum)
-      let level = indent(a:lnum)/&shiftwidth+1
-      if line =~ '\v^\s*\"{3}.*$'
+    let g:running_level = 1                           " last line fold level
+    function Fde(lnum)                                " fold expr function
+      let line      = getline(a:lnum)                 " current  line text
+      let prev_line = getline(a:lnum-1)               " previous line text
+      let level     = indent(a:lnum)/&shiftwidth+1    " expected fold level
+      if line =~ '\v^\s*\"{3}.*$'                     " is line a fold title?
         let g:running_level = level
-        return '>'.level
-      elseif line !~ '[^\s]'
-        return '='
-      elseif level == 1
-        let g:running_level = 1
+        return '>'.level                              " create a fold
+      elseif line !~ '[^\s]' && prev_line !~ '[^\s]'  " are lines empty?
+        return -1                                     " return undefined
+      elseif line !~ '[^\s]'                          " is current line empty?
+        return '='                                    " use last line fold level
+      elseif level == 1                               " line has no indentation?
+        let g:running_level = 1                       " belongs to fold level 1
         return 1
-      elseif level <= g:running_level
-        let g:running_level = level-1
+      elseif level <= g:running_level                 " belongs to lower level?
+        let g:running_level = level-1                 " reduce the level
         return level-1
-      else
-        return '='
+      else                                            " in all other cases
+        return '='                                    " keep folding
       endif
     endfunction
 
   """ foldtext function
-    function Fdt()
-      let line   = getline(v:foldstart)
-      let suffix = (v:foldend-v:foldstart).' lines'
-      let width  = winwidth(0) - &fdc - &number * &numberwidth
-      let count  = width - len(line) - len(suffix)
-      let spaces = repeat(' ', count)
+    function Fdt()                                              " fold text func
+      let line   = getline(v:foldstart)                         " get line text
+      let suffix = (v:foldend-v:foldstart).' lines'             " e.g. '3 lines'
+      let width  = winwidth(0) - &fdc - &number * &numberwidth  " editor width
+      let count  = width - len(line) - len(suffix)              " spaces count
+      let spaces = repeat(' ', count)                           " create filler
       return line.spaces.suffix
     endfunction
 
