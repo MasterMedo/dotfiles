@@ -1,17 +1,16 @@
 """ TODO
-  " lua highlighting in vimrc
-  " LSP, linter, autocomplete etc.
-  " abbreviations (filetype specific)
-  " undo tree visualizer and moving along the tree (preview changes)
-  " managing swap file to open diff in two windows
-  " normalize diff highlighting
-  " training commands - bad habits
   " edit status line
-  " highlighting based on folding level - vimoutliner has it?
+  " normalize diff highlighting
+  " LSP, linter, autocomplete etc.
+  " training commands - bad habits
+  " abbreviations (filetype specific)
+  " managing swap file to open diff in two windows
+  " undo tree visualizer and moving along the tree (preview changes)
 
 """ vimrc
   let mapleader       = " "
   let maplocalleader  = " "
+  let g:vimsyn_embed  = 'lP' " highlight embedded lua and python code
 
 """ plugins
   call plug#begin('~/.vim/plugged')
@@ -332,33 +331,30 @@
   highlight incsearch     ctermfg=4   ctermbg=0
 
 """ LSP settings
+
 lua << EOF
-require'nvim_lsp'.pyls.setup{}
-local nvim_lsp = require('nvim_lsp')
-local buf_set_keymap = vim.api.nvim_buf_set_keymap
+  require'nvim_lsp'.pyls.setup{}
+  local nvim_lsp = require('nvim_lsp')
+  local buf_set_keymap = vim.api.nvim_buf_set_keymap
 
-local on_attach = function(_, bufnr)
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  local on_attach = function(_, bufnr)
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  -- Mappings.
+    local opts = { noremap=true, silent=true }
+    buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+    buf_set_keymap(bufnr, 'n', ',rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    buf_set_keymap(bufnr, 'n', '[I', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+    buf_set_keymap(bufnr, 'n', ',e', '<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>', opts)
+  end
 
-  local opts = { noremap=true, silent=true }
-  buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap(bufnr, 'n', ',rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap(bufnr, 'n', '[I', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap(bufnr, 'n', ',e', '<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>', opts)
-end
-
-local servers = {'gopls', 'rust_analyzer', 'sumneko_lua', 'tsserver', 'pyls'}
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
-    on_attach = on_attach,
-  }
-end
+  local servers = {'gopls', 'rust_analyzer', 'sumneko_lua', 'tsserver', 'pyls'}
+  for _, lsp in ipairs(servers) do
+    nvim_lsp[lsp].setup {
+      on_attach = on_attach,
+    }
+  end
 EOF
-  syntax region par1 matchgroup=luaCode start="^lua << EOF$" end="^EOF$"
-  highlight luaCode ctermfg=14
 
 """ abbreviations
   iabbrev todo TODO
