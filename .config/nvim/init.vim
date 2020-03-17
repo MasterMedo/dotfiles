@@ -1,4 +1,18 @@
+""" TODO
+  " lua highlighting in vimrc
+  " LSP, linter, autocomplete etc.
+  " abbreviations (filetype specific)
+  " undo tree visualizer and moving along the tree (preview changes)
+  " managing swap file to open diff in two windows
+  " normalize diff highlighting
+  " training commands - bad habits
+  " edit status line
+  " highlighting based on folding level - vimoutliner has it?
+
 """ vimrc
+  let mapleader       = " "
+  let maplocalleader  = " "
+
 """ plugins
   call plug#begin('~/.vim/plugged')
 
@@ -65,11 +79,10 @@
     Plug 'fatih/vim-go'
     Plug 'dag/vim-fish'
     Plug 'xolox/vim-misc'
+    Plug 'neovim/nvim-lsp'
     Plug 'jreybert/vimagit'
     Plug 'vim-scripts/lua.vim'
     Plug 'PotatoesMaster/i3-vim-syntax'
-    Plug 'neovim/nvim-lsp'
-
     """ mucomplete
       " Plug 'lifepillar/vim-mucomplete' " remap tab
       " let g:mucomplete#tab_when_no_results = 1
@@ -83,7 +96,7 @@
   nnoremap <leader>pi :PlugInstall<cr>
   nnoremap <leader>pu :PlugUpdate<cr>
 
-""" ui
+""" settings
   """ basics
     filetype plugin on
     set lazyredraw
@@ -116,14 +129,164 @@
     set expandtab
     set smarttab
     set wrap
-    set breakindent
     set linebreak
+    set breakindent
 
   """ special characters
     set list
     set showbreak=↪\
     set listchars=tab:‹-›,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
     set fillchars=vert:\ ,fold:\ ,foldopen:#,foldclose:#,eob:x
+
+  """ file finder
+    set path=.,,**
+    set complete-=i
+    set wildmenu
+    set wildmode=longest:full,full
+    set wildignore+=**/node_modules/**                " javascript modules
+    set wildignore+=**/env/**                         " python environment
+    set wildignore+=.hg,.git,.svn                     " version control
+    set wildignore+=*.aux,*.out,*.toc                 " LaTeX
+    set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg    " binary images
+    set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
+    set wildignore+=*.sw?                             " vim swap files
+
+  """ backups
+    set backup
+    set undodir=~/.vim/tmp/undo//
+    set backupdir=~/.vim/tmp/backup//
+    set directory=~/.vim/tmp/swap//
+
+    if !isdirectory(expand(&undodir))
+        call mkdir(expand(&undodir), "p")
+    endif
+
+    if !isdirectory(expand(&backupdir))
+        call mkdir(expand(&backupdir), "p")
+    endif
+
+    if !isdirectory(expand(&directory))
+        call mkdir(expand(&directory), "p")
+    endif
+
+""" mappings
+  """ ctrl
+    " noremap  <c-v> "+p
+    " inoremap <c-v> <esc>"+pa
+    nnoremap <c-s> :w<cr>
+    inoremap <c-s> <esc>:w<cr>a
+    vnoremap <c-c> "+ygv"*y
+    noremap! <c-a> <home>
+    noremap! <c-e> <end>
+    nnoremap <c-t> :tabnew<cr>
+    inoremap <c-u> <c-g>u<c-u>
+    inoremap <c-w> <c-g>u<c-w>
+
+  """ common
+    nnoremap  '           `
+    nnoremap  *           *N
+    nnoremap  j           gj
+    nnoremap  k           gk
+    nnoremap  gj          j
+    nnoremap  gk          k
+    nnoremap  B           ^
+    nnoremap  E           $
+    nnoremap  Y           y$
+    nnoremap  c*          *Ncgn
+    nnoremap  vb          <c-v>
+    nnoremap  <cr>        o<esc>
+    nnoremap  <F1>        <nop>
+    nnoremap  <space>     <nop>
+
+  """ leader
+    nnoremap  <leader>w   :w<cr>
+    nnoremap  <leader>q   :wq<cr>
+    nnoremap  <leader>z   zMzvzz
+    nnoremap  <leader>l   :echo<cr>
+    nnoremap  <leader>d   :echo strftime('%c')<cr>
+
+  """ special
+    " mappings for navigating the autocomplete menu
+    inoremap <expr> <c-j> pumvisible() ? "\<c-n>" : "\<c-j>"
+    inoremap <expr> <c-k> pumvisible() ? "\<c-p>" : "\<c-k>"
+
+    " panic button - ROT13 entire file
+    nnoremap <leader><leader> mzggg?G`z
+
+    nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<cr>
+    nnoremap <silent> <leader>/ :noh<bar>call UnHighlightWords()<cr>
+
+  """ training
+    nnoremap ``     :echo "use ''"<cr>
+    nnoremap $      :echo "use E"<cr>
+    nnoremap ^      :echo "use B"<cr>
+    inoremap <esc>  <esc>:echo "use jk"<cr>a
+
+  """ repeatable
+    nmap <c-p>              <plug>PasteBelowLine
+    nmap -                  <plug>MoveLineDown
+    nmap _                  <plug>MoveLineUp
+    nmap >w                 <plug>IndentWord
+    nmap <w                 <plug>UnIndentWord
+
+  """ text objects
+    """ folds
+      onoremap iz :<c-u>normal! [z0jV]zk<cr>
+      onoremap az :<c-u>normal! [zV]z<cr>
+      vnoremap iz :<c-u>normal! [z0jV]zk<cr>
+      vnoremap az :<c-u>normal! [zV]z<cr>
+      onoremap if :<c-u>normal! [z0jV]zk<cr>
+      onoremap af :<c-u>normal! [zV]z<cr>
+      vnoremap if :<c-u>normal! [z0jV]zk<cr>
+      vnoremap af :<c-u>normal! [zV]z<cr>
+
+  """ window splits
+    noremap <c-h>   <c-w>h
+    noremap <c-j>   <c-w>j
+    noremap <c-k>   <c-w>k
+    noremap <c-l>   <c-w>l
+    noremap <c-m-h> <c-w>H
+    noremap <c-m-j> <c-w>J
+    noremap <c-m-k> <c-w>K
+    noremap <c-m-l> <c-w>L
+
+  """ file specific
+    nnoremap <silent> <leader>ev   :vsp    $MYVIMRC<cr>
+    nnoremap <silent> <leader>sv m":source $MYVIMRC<cr>
+
+  """ mappings to <esc>
+    noremap!  kj    <esc>
+    noremap!  jk    <esc>
+    noremap!  KJ    <esc>
+    noremap!  JK    <esc>
+    inoremap  <F1>  <esc>
+
+""" autocmds
+  augroup vimrc
+    autocmd!
+
+    """ :h restore-cursor
+      autocmd BufReadPost *
+        \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |
+        \   execute 'normal! g`"' |
+        \ endif
+
+    """ filetype specific
+      autocmd FileType *      set       fo-=c fo-=r fo-=o fo+=1 fo+=t
+      autocmd FileType *      set       textwidth=0
+      autocmd FileType c,cpp  setlocal  foldmethod=marker foldmarker={,}
+      autocmd FileType c,cpp  setlocal  ts=8 sts=8 sw=8
+
+    autocmd BufEnter    * exec 'normal! zvzz'
+    autocmd SourcePost  * exec 'normal! zvzz'
+    autocmd BufWritePre * %s/\s\+$//e           " trailing spaces
+
+    " doesn't work well with SourcePost autocmd
+    " autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
+
+    " should probably do it with 'entr' though
+    autocmd BufWritePost .Xresources,.Xdefaults silent exec '!xrdb %'
+  augroup END
 
 """ highlighting
   """ word highlighter
@@ -168,155 +331,6 @@
   highlight pmenusel      ctermfg=230
   highlight incsearch     ctermfg=4   ctermbg=0
 
-""" file finder
-  set path=.,,**
-  set complete-=i
-  set wildmenu
-  set wildmode=longest:full,full
-  set wildignore+=**/node_modules/**                " javascript modules
-  set wildignore+=**/env/**                         " python environment
-  set wildignore+=.hg,.git,.svn                     " version control
-  set wildignore+=*.aux,*.out,*.toc                 " LaTeX intermediate files
-  set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg    " binary images
-  set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
-  set wildignore+=*.sw?                             " vim swap files
-
-""" commands
-  let mapleader       = " "
-  let maplocalleader  = " "
-
-  """ common
-    nnoremap  '     `
-    nnoremap  *     *N
-    nnoremap  j     gj
-    nnoremap  k     gk
-    nnoremap  gj    j
-    nnoremap  gk    k
-    nnoremap  B     ^
-    nnoremap  E     $
-    nnoremap  Y     y$
-    nnoremap  c*    *Ncgn
-    inoremap  kj    <esc>
-    inoremap  jk    <esc>
-    nnoremap  vb    <c-v>
-    inoremap  <F1>  <esc>
-    nnoremap  <F1>  <nop>
-    nnoremap  <cr>  o<esc>
-
-  """ heresy
-    noremap  <c-s> :w<cr>
-    noremap  <c-c> "+y
-    noremap  <c-v> "+p
-    inoremap <c-s> <esc>:w<cr>a
-    inoremap <c-c> <esc>"+y
-    inoremap <c-v> <esc>"+pa
-    noremap! <c-a> <home>
-    noremap! <c-e> <end>
-
-  """ multi command repeatable mappings
-    nmap <c-p>              <plug>PasteBelowLine
-    nmap -                  <plug>MoveLineDown
-    nmap _                  <plug>MoveLineUp
-    nmap >w                 <plug>IndentWord
-    nmap <w                 <plug>UnIndentWord
-
-  """ special
-    " mappings for navigating the autocomplete menu
-    inoremap <expr> <c-j> pumvisible() ? "\<c-n>" : "\<c-j>"
-    inoremap <expr> <c-k> pumvisible() ? "\<c-p>" : "\<c-k>"
-
-    " fold everything except current line
-    nnoremap <leader>z zMzvzz
-
-    " clear last command
-    nnoremap <leader>l :echo<cr>
-
-    " panic button - ROT13 entire file
-    nnoremap <space><space> mzggg?G`z
-
-    nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<cr>
-    nnoremap <silent> <leader>/ :noh<bar>call UnHighlightWords()<cr>
-
-  """ window splits
-    noremap <c-h>   <c-w>h
-    noremap <c-j>   <c-w>j
-    noremap <c-k>   <c-w>k
-    noremap <c-l>   <c-w>l
-    noremap <c-m-h> <c-w>H
-    noremap <c-m-j> <c-w>J
-    noremap <c-m-k> <c-w>K
-    noremap <c-m-l> <c-w>L
-
-  """ file specific
-    nnoremap <silent> <leader>ev   :vsp    $MYVIMRC<cr>
-    nnoremap <silent> <leader>sv m":source $MYVIMRC<cr>
-
-  """ training
-    nnoremap ``     :echo "use ''"<cr>
-    nnoremap $      <esc>:echo "use E"<cr>
-    nnoremap ^      <esc>:echo "use B"<cr>
-    inoremap <esc>  <esc>:echo "use jk"<cr>a
-
-  """ text objects
-    """ folds
-      onoremap iz :<c-u>normal! [z0jV]zk<cr>
-      onoremap az :<c-u>normal! [zV]z<cr>
-      vnoremap iz :<c-u>normal! [z0jV]zk<cr>
-      vnoremap az :<c-u>normal! [zV]z<cr>
-      onoremap if :<c-u>normal! [z0jV]zk<cr>
-      onoremap af :<c-u>normal! [zV]z<cr>
-      vnoremap if :<c-u>normal! [z0jV]zk<cr>
-      vnoremap af :<c-u>normal! [zV]z<cr>
-
-""" auto commands
-  augroup vimrc
-    autocmd!
-
-    " when opening a file position the cursor to where it last was
-    autocmd BufReadPost *
-      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |
-      \   execute 'normal! g`"' |
-      \ endif
-
-    " plugins just have to mess with these...
-    autocmd FileType *      set fo-=c fo-=r fo-=o fo+=1 fo+=t
-    autocmd FileType *      set textwidth=0
-    autocmd FileType c,cpp  setlocal foldmethod=marker foldmarker={,}
-    autocmd FileType c,cpp  setlocal ts=8 sts=8 sw=8
-    " autocmd FileType py     nnoremap <buffer> <localleader>r command
-
-    " modeline folding executes after BufReadPost...
-    autocmd BufEnter    * execute 'normal! zvzz'
-    autocmd SourcePost  * execute 'normal! zvzz'
-
-    " remove trailing spaces upon saving
-    autocmd BufWritePre * %s/\s\+$//e
-
-    " reload .Xresources, should probably do it with 'entr' though
-    autocmd BufWritePost ~/.Xresources,~/.Xdefaults !xrdb %
-  augroup END
-
-""" backups
-  set backup
-  set undodir=~/.vim/tmp/undo//
-  set backupdir=~/.vim/tmp/backup//
-  set directory=~/.vim/tmp/swap//
-
-  if !isdirectory(expand(&undodir))
-      call mkdir(expand(&undodir), "p")
-  endif
-
-  if !isdirectory(expand(&backupdir))
-      call mkdir(expand(&backupdir), "p")
-  endif
-
-  if !isdirectory(expand(&directory))
-      call mkdir(expand(&directory), "p")
-  endif
-
-""" abbreviations
-  iabbrev todo TODO
-
 """ LSP settings
 lua << EOF
 require'nvim_lsp'.pyls.setup{}
@@ -346,18 +360,13 @@ EOF
   syntax region par1 matchgroup=luaCode start="^lua << EOF$" end="^EOF$"
   highlight luaCode ctermfg=14
 
-""" TODO
-  " Language Server Protocol, Linter, autocomplete etc.
-  " add a bunch of abbreviations (filetype specific)
-  " lua highlighting in vimrc
-  " undo tree visualizer
-  " managing swap file to open diff in two windows
-  " normalize diff highlighting
-  " add a bunch of training commands
-  " edit status line
+""" abbreviations
+  iabbrev todo TODO
+  cabbrev w!!  w !sudo tee > /dev/null %
 
 """ folding
   set foldenable
+  set foldopen-=hor
   set foldlevelstart=0
   set foldnestmax=10
   set modelineexpr
@@ -374,8 +383,8 @@ EOF
       elseif line !~ '[^\s]' && prev_line !~ '[^\s]'  " are lines empty?
         return -1                                     " return undefined
       elseif line !~ '[^\s]'                          " is current line empty?
-        return '='                                    " use last line fold level
-      elseif level == 1                               " line has no indentation?
+        return '='                                    " use last fold level
+      elseif level == 1                               " has no indentation?
         let g:running_level = 1                       " belongs to fold level 1
         return 1
       elseif level <= g:running_level                 " belongs to lower level?
@@ -387,9 +396,9 @@ EOF
     endfunction
 
   """ foldtext function
-    function Fdt()                                              " fold text func
+    function Fdt()                                              " foldtext func
       let line   = getline(v:foldstart)                         " get line text
-      let suffix = (v:foldend-v:foldstart).' lines'             " e.g. '3 lines'
+      let suffix = (v:foldend - v:foldstart).' lines'
       let width  = winwidth(0) - &fdc - &number * &numberwidth  " editor width
       let count  = width - len(line) - len(suffix)              " spaces count
       let spaces = repeat(' ', count)                           " create filler
