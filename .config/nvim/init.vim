@@ -1,16 +1,22 @@
 """ TODO
-  " edit status line
+  " terminal colors -> rgb
   " normalize diff highlighting
-  " LSP, linter, autocomplete etc.
+  " create a custom colorscheme
+  " fillchars add unicode comments
   " training commands - bad habits
   " abbreviations (filetype specific)
   " managing swap file to open diff in two windows
-  " undo tree visualizer and moving along the tree (preview changes)
+  " autocomplete      - LSP
+  " linter            - LSP, quickfix, syntastic, unimpaired
+  " autocomplete      - LSP, mucomplete
+  " code format       - LSP, formatprg
 
 """ vimrc
   let mapleader       = " "
   let maplocalleader  = " "
-  let g:vimsyn_embed  = 'lP' " highlight embedded lua and python code
+
+  " highlight embedded lua and python code
+  let g:vimsyn_embed  = 'lP'
 
 """ plugins
   call plug#begin('~/.vim/plugged')
@@ -19,31 +25,31 @@
     """ ap/vim-css-color
       Plug 'ap/vim-css-color'
 
-    """ ryanoasis/vim-devicons
-      Plug 'ryanoasis/vim-devicons'
-
-    """ vim-airline/vim-airline
-      " Plug 'vim-airline/vim-airline'
-
     """ junegunn/goyo.vim
       Plug 'junegunn/goyo.vim'
       autocmd! User GoyoEnter Limelight
       autocmd! User GoyoLeave Limelight!
       nnoremap <silent> <F11> :Goyo<bar>set linebreak<cr>
 
-    """ junegunn/limelight.vim
-      Plug 'junegunn/limelight.vim'
-      let g:limelight_conceal_ctermfg = 240
-
     """ mhinz/vim-startify
       Plug 'mhinz/vim-startify'
       let g:startify_custom_header = ''
 
     """ preservim/nerdtree
-      Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
       Plug 'preservim/nerdtree'
+      Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
       " let NERDTreeShowHidden=1
       nnoremap <leader>n :NERDTreeToggle<cr>
+
+    """ ryanoasis/vim-devicons
+      Plug 'ryanoasis/vim-devicons'
+
+    """ junegunn/limelight.vim
+      Plug 'junegunn/limelight.vim'
+      let g:limelight_conceal_ctermfg = 240
+
+    """ vim-airline/vim-airline
+      Plug 'vim-airline/vim-airline'
 
   """ command plugins
     """ tpope/vim-repeat
@@ -54,25 +60,32 @@
       nnoremap <silent> <plug>IndentWord      F a<tab><esc>w:call repeat#set("\<plug>IndentWord",     v:count)<cr>
       nnoremap <silent> <plug>UnIndentWord    F a<bs><esc>w:call  repeat#set("\<plug>UnIndentWord",   v:count)<cr>
 
+    """ mbbill/undotree
+      Plug 'mbbill/undotree'
+      let g:undotree_DiffAutoOpen = 0
+      let g:undotree_RelativeTimestamp = 0
+      let g:undotree_SetFocusWhenToggle = 1
+      nnoremap <leader>u :UndotreeToggle<cr>
+
     """ nixon/vim-vmath
       Plug 'nixon/vim-vmath'
-      vnoremap <expr>  ++  VMATH_YankAndAnalyse()
       nnoremap         ++  vip++
+      vnoremap <expr>  ++  VMATH_YankAndAnalyse()
+
+    """ junegunn/fzf
+      Plug 'junegunn/fzf.vim'
+      Plug 'junegunn/fzf', {'do': './install --bin' }
+      nnoremap <silent> <leader>b :Buffers<cr>
+      nnoremap <silent> <leader>f :Files<cr>
 
     """ vim objects
       " Plug 'wellle/targets.vim' " issue #246
-      Plug 'tpope/vim-commentary'
       Plug 'tpope/vim-surround'
+      Plug 'tpope/vim-commentary'
+      Plug 'kana/vim-textobj-line'
       Plug 'kana/vim-textobj-user'
       Plug 'kana/vim-textobj-indent'
-      Plug 'kana/vim-textobj-line'
       Plug 'kana/vim-textobj-entire'
-
-    """ junegunn/fzf
-      Plug 'junegunn/fzf', {'do': './install --bin' }
-      Plug 'junegunn/fzf.vim'
-      nnoremap <silent> <leader>b :Buffers<cr>
-      nnoremap <silent> <leader>f :Files<cr>
 
   """ syntax  plugins
     Plug 'fatih/vim-go'
@@ -261,31 +274,31 @@
     inoremap  <F1>  <esc>
 
 """ autocmds
-  augroup vimrc
-    autocmd!
+augroup vimrc
+  autocmd!
+  """ :h restore-cursor
+    autocmd BufReadPost *
+      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |
+      \   execute 'normal! g`"' |
+      \ endif
 
-    """ :h restore-cursor
-      autocmd BufReadPost *
-        \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |
-        \   execute 'normal! g`"' |
-        \ endif
+  """ filetype specific
+    autocmd FileType *      set       fo-=c fo-=r fo-=o fo+=1 fo+=t
+    autocmd FileType *      set       textwidth=0
+    autocmd FileType c,cpp  setlocal  foldmethod=marker foldmarker={,}
+    autocmd FileType c,cpp  setlocal  ts=8 sts=8 sw=8
 
-    """ filetype specific
-      autocmd FileType *      set       fo-=c fo-=r fo-=o fo+=1 fo+=t
-      autocmd FileType *      set       textwidth=0
-      autocmd FileType c,cpp  setlocal  foldmethod=marker foldmarker={,}
-      autocmd FileType c,cpp  setlocal  ts=8 sts=8 sw=8
+  autocmd BufEnter    * exec 'normal! zvzz'
+  autocmd SourcePost  * exec 'normal! zvzz'
+  autocmd BufWritePre * %s/\s\+$//e
+  autocmd VimEnter * if !argc() | Startify | NERDTree | wincmd w | endif
 
-    autocmd BufEnter    * exec 'normal! zvzz'
-    autocmd SourcePost  * exec 'normal! zvzz'
-    autocmd BufWritePre * %s/\s\+$//e           " trailing spaces
+  " doesn't work well with SourcePost autocmd
+  " autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
 
-    " doesn't work well with SourcePost autocmd
-    " autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
-
-    " should probably do it with 'entr' though
-    autocmd BufWritePost .Xresources,.Xdefaults silent exec '!xrdb %'
-  augroup END
+  " should probably do it with 'entr' though
+  autocmd BufWritePost .Xresources,.Xdefaults silent exec '!xrdb %'
+augroup END
 
 """ highlighting
   """ word highlighter
@@ -363,6 +376,7 @@ EOF
 """ folding
   set foldenable
   set foldopen-=hor
+  set foldopen-=search
   set foldlevelstart=0
   set foldnestmax=10
   set modelineexpr
