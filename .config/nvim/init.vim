@@ -1,8 +1,5 @@
 """ TODO
-  " terminal colors -> rgb
-  " normalize diff highlighting
   " create a custom colorscheme
-  " fillchars add unicode comments
   " training commands - bad habits
   " abbreviations (filetype specific)
   " managing swap file to open diff in two windows
@@ -333,15 +330,17 @@ augroup END
 
   set cursorline
   call matchadd('ColorColumn', '\%81c') " set colorcolumn=+1
-  highlight folded        ctermfg=248 ctermbg=236
-  highlight cursorline                ctermbg=234 cterm=NONE
-  highlight nontext       ctermfg=236
-  highlight whitespace    ctermfg=236
-  highlight pmenu         ctermbg=150
-  highlight pmenu         ctermfg=0
-  highlight pmenusel      ctermbg=180
-  highlight pmenusel      ctermfg=230
-  highlight incsearch     ctermfg=4   ctermbg=0
+  highlight folded      ctermfg=248   ctermbg=236   cterm=none
+  highlight cursorline  ctermfg=none  ctermbg=234   cterm=none
+  highlight nontext     ctermfg=236   ctermbg=none  cterm=none
+  highlight whitespace  ctermfg=236   ctermbg=none  cterm=none
+  highlight pmenu       ctermfg=0     ctermbg=150   cterm=none
+  highlight pmenusel    ctermfg=230   ctermbg=180   cterm=none
+  highlight incsearch   ctermfg=4     ctermbg=0     cterm=none
+  highlight diffadd     ctermfg=76    ctermbg=none  cterm=none
+  highlight diffchange  ctermfg=21    ctermbg=none  cterm=none
+  highlight diffdelete  ctermfg=196   ctermbg=none  cterm=none
+  highlight difftext    ctermfg=208   ctermbg=none  cterm=none
 
 """ LSP settings
 
