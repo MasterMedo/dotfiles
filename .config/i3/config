@@ -48,7 +48,7 @@ bindsym $mod+Shift+r      restart
 bindsym $mod+t            split toggle
 #bindsym $mod+Shift+t
 
-#bindsym $mod+y
+bindsym $mod+y            exec ~/.config/rofi/greenclip.sh
 #bindsym $mod+Shift+y
 
 #bindsym $mod+u           exec ~/.scripts/record.sh
@@ -202,7 +202,6 @@ bindsym $mod+Shift+0    move container to workspace $ws10
 #workspace $ws8 gaps inner 0
 #workspace $ws8 gaps outer 0
 
-
 ###---Function Buttons---###
 #bindsym F1
 #bindsym F2
@@ -229,7 +228,6 @@ bindsym $mod+F6     exec --no-startup-id sudo systemctl restart NetworkManager
 #bindsym $mod+F10
 #bindsym $mod+F11
 #bindsym $mod+F12
-
 
 ###---Arrow Keys---###
 #bindsym $mod+Left              focus left
@@ -270,8 +268,6 @@ bindsym Shift+Print             exec --no-startup-id flameshot gui
 #bindsym $mod+Pause             exec $video
 #bindsym $mod+Delete            exec $stoprec
 #bindsym XF86Launch1            exec $stoprec
-
-
 
 ###---Extra XF86 Keys---###
 #These are the extra media keys that some keyboards have.
