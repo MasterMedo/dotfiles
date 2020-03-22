@@ -1,5 +1,4 @@
 """ TODO
-  " create a custom colorscheme
   " training commands
   " abbreviations (filetype specific)
   " lsp - almost nothing works
@@ -15,8 +14,15 @@
 call plug#begin('~/.vim/plugged')
 
   """ visuals
-    """ gko/vim-coloresque
-      Plug 'gko/vim-coloresque'
+    """ mastermedo/vim-tinge
+      Plug 'mastermedo/vim-tinge'
+
+    """ chrisbra/colorizer
+      Plug 'chrisbra/colorizer'
+      let g:colorizer_debug = 0
+      let g:colorizer_colornames_disable = 1
+      "let g:colorizer_vimhighlight_disable = 1
+      nnoremap <leader>C :ColorToggle<cr>
 
     """ ryanoasis/vim-devicons
       Plug 'ryanoasis/vim-devicons'
@@ -52,8 +58,8 @@ call plug#begin('~/.vim/plugged')
       nnoremap <silent> <plug>PasteBelowLine  o<esc>"+p     :call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
       nnoremap <silent> <plug>MoveLineDown    ddp           :call repeat#set("\<plug>MoveLineDown",   v:count)<cr>
       nnoremap <silent> <plug>MoveLineUp      ddkP          :call repeat#set("\<plug>MoveLineUp",     v:count)<cr>
-      nnoremap <silent> <plug>IndentWord      F a<tab><esc>w:call repeat#set("\<plug>IndentWord",     v:count)<cr>
-      nnoremap <silent> <plug>UnIndentWord    F a<bs><esc>w:call  repeat#set("\<plug>UnIndentWord",   v:count)<cr>
+      nnoremap <silent> <plug>IndentWord      F i<tab><esc>w:call repeat#set("\<plug>IndentWord",     v:count)<cr>
+      nnoremap <silent> <plug>UnIndentWord    F i<bs><esc>w:call  repeat#set("\<plug>UnIndentWord",   v:count)<cr>
 
     """ mhinz/vim-sayonara
       Plug 'mhinz/vim-sayonara'
@@ -97,8 +103,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'kana/vim-textobj-entire'
 
   """ miscellaneous
-    """ xolox/vim-misc
-      Plug 'xolox/vim-misc'
+    Plug 'xolox/vim-misc'
 
   """ filetype specific
     Plug 'fatih/vim-go'
@@ -108,7 +113,7 @@ call plug#begin('~/.vim/plugged')
     """ neovim/nvim-lsp
       Plug 'neovim/nvim-lsp'
       nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-      nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+      "nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
       nnoremap <silent> gh    <cmd>lua vim.lsp.buf.hover()<CR>
       nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
       nnoremap <silent> gs    <cmd>lua vim.lsp.buf.signature_help()<CR>
@@ -138,9 +143,7 @@ call plug#begin('~/.vim/plugged')
 call plug#end()
 nnoremap <leader>pi :PlugInstall<cr>
 nnoremap <leader>pu :PlugUpdate<cr>
-lua << EOF
-  require'nvim_lsp'.pyls.setup{}
-EOF
+lua require'nvim_lsp'.pyls.setup{}
 
 """ settings
   """ basics
@@ -162,10 +165,12 @@ EOF
 
   """ colors
     syntax on
+    set cursorline
     set synmaxcol=300
     set background=dark
-    set termguicolors& " should probably set this up
-    " colorscheme name " should create my own...
+    set termguicolors
+    colorscheme vim-tinge
+    call matchadd('ColorColumn', '\%81c') " set colorcolumn=+1
 
   """ backups
     set backup
@@ -225,7 +230,7 @@ EOF
   """ ctrl
     inoremap <c-v> <esc>"+pa
     nnoremap <c-s> :w<cr>
-    inoremap <c-s> <esc>:w<cr>a
+    inoremap <c-s> <cmd>w<cr>
     vnoremap <c-c> "+ygv"*y
     noremap! <c-a> <home>
     noremap! <c-e> <end>
@@ -276,10 +281,10 @@ EOF
     nnoremap  <silent>  <leader>sv  m":source $MYVIMRC<cr>
 
   """ training
-    nnoremap ``     :echo "use ''"<cr>
-    nnoremap $      :echo "use E"<cr>
-    nnoremap ^      :echo "use B"<cr>
-    inoremap <esc>  <esc>:echo "use jk"<cr>a
+    nnoremap ``     <cmd>echo "use ''"<cr>
+    nnoremap $      <cmd>echo "use E"<cr>
+    nnoremap ^      <cmd>echo "use B"<cr>
+    inoremap <esc>  <cmd>echo "use jk"<cr>
 
   """ repeatable
     nmap <c-p>  <plug>PasteBelowLine
@@ -326,6 +331,7 @@ EOF
 augroup vimrc
   autocmd!
   autocmd VimEnter * if !argc() | Startify | NERDTreeVCS | wincmd w | endif
+
   """ window cursorline
     autocmd WinEnter    * setlocal cursorline
     autocmd WinLeave    * setlocal nocursorline
@@ -333,6 +339,7 @@ augroup vimrc
     autocmd InsertEnter * setlocal cursorline
 
   """ :h restore-cursor
+    autocmd VimEnter    * exec 'normal! zvzz'
     autocmd BufReadPost *
       \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |
       \   execute 'normal! g`"zvzz' |
@@ -358,77 +365,51 @@ augroup vimrc
     " should probably do it with 'entr' though
     autocmd BufWritePost .Xresources,.Xdefaults silent exec '!xrdb %'
     " autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
+
+
 augroup END
 
-""" highlighting
-  set cursorline
-  call matchadd('ColorColumn', '\%81c') " set colorcolumn=+1
-  """ word highlighter
-    """ HighlightWord     function
-      let g:word_id = 97531
-      function! HighlightWord(n)
-          normal! mz"zyiw
-          silent! call matchdelete(g:word_id+a:n)
-          let word_pattern = '\V\<'.escape(@z, '\').'\>'
-          call matchadd("highlightedword".a:n, word_pattern, 1, g:word_id+a:n)
-          normal! `z
-      endfunction
+""" word highlighter
+  """ function HighlightWord
+    let g:word_id = 97531
+    function! HighlightWord(n)
+        normal! mz"zyiw
+        silent! call matchdelete(g:word_id+a:n)
+        let word_pattern = '\V\<'.escape(@z, '\').'\>'
+        call matchadd("highlightedword".a:n, word_pattern, 1, g:word_id+a:n)
+        normal! `z
+    endfunction
 
-    """ UnHighlightWords  function
-      function! UnHighlightWords()
-        for i in range(1, 6)
-          silent! call matchdelete(g:word_id+i)
-        endfor
-      endfunction
+  """ function UnHighlightWords
+    function! UnHighlightWords()
+      for i in range(1, 6)
+        silent! call matchdelete(g:word_id+i)
+      endfor
+    endfunction
 
-    """ mappings
-      nnoremap <silent> <leader>1 :call HighlightWord(1)<cr>
-      nnoremap <silent> <leader>2 :call HighlightWord(2)<cr>
-      nnoremap <silent> <leader>3 :call HighlightWord(3)<cr>
-      nnoremap <silent> <leader>4 :call HighlightWord(4)<cr>
-      nnoremap <silent> <leader>5 :call HighlightWord(5)<cr>
-      nnoremap <silent> <leader>6 :call HighlightWord(6)<cr>
-
-    """ rgb colors
-      highlight highlightedword1 guifg=#000000 guibg=#ffaf00
-      highlight highlightedword2 guifg=#000000 guibg=#afff00
-      highlight highlightedword3 guifg=#000000 guibg=#00ffff
-      highlight highlightedword4 guifg=#000000 guibg=#d70000
-      highlight highlightedword5 guifg=#000000 guibg=#ff5faf
-      highlight highlightedword6 guifg=#000000 guibg=#d7ffff
-
-    """ 256 colors
-      highlight highlightedword1 ctermfg=16 ctermbg=214
-      highlight highlightedword2 ctermfg=16 ctermbg=154
-      highlight highlightedword3 ctermfg=16 ctermbg=51
-      highlight highlightedword4 ctermfg=16 ctermbg=160
-      highlight highlightedword5 ctermfg=16 ctermbg=205
-      highlight highlightedword6 ctermfg=16 ctermbg=195
+  """ mappings
+    nnoremap <silent> <leader>1 :call HighlightWord(1)<cr>
+    nnoremap <silent> <leader>2 :call HighlightWord(2)<cr>
+    nnoremap <silent> <leader>3 :call HighlightWord(3)<cr>
+    nnoremap <silent> <leader>4 :call HighlightWord(4)<cr>
+    nnoremap <silent> <leader>5 :call HighlightWord(5)<cr>
+    nnoremap <silent> <leader>6 :call HighlightWord(6)<cr>
 
   """ rgb colors
-    highlight linenr        guifg=#585858 guibg=#000000 gui=none
-    highlight normal        guifg=#FFFFFF guibg=#000000 gui=none
-    highlight folded        guifg=#a8a8a8 guibg=#303030 gui=italic
-    highlight cursorline    guifg=none    guibg=#1C1C1C gui=none
-    highlight cursorlinenr  guifg=#FFFFFF guibg=#000000 gui=bold
-    highlight nontext       guifg=#303030 guibg=none    gui=none
-    highlight whitespace    guifg=#303030 guibg=none    gui=none
+    highlight highlightedword1 guifg=#000000 guibg=#ffaf00
+    highlight highlightedword2 guifg=#000000 guibg=#afff00
+    highlight highlightedword3 guifg=#000000 guibg=#00ffff
+    highlight highlightedword4 guifg=#000000 guibg=#d70000
+    highlight highlightedword5 guifg=#000000 guibg=#ff5faf
+    highlight highlightedword6 guifg=#000000 guibg=#d7ffff
 
   """ 256 colors
-    highlight normal        ctermfg=15    ctermbg=0     cterm=none
-    highlight folded        ctermfg=248   ctermbg=236   cterm=italic
-    highlight cursorline    ctermfg=none  ctermbg=234   cterm=none
-    highlight linenr        ctermfg=240   ctermbg=0     cterm=none
-    highlight cursorlinenr  ctermfg=255   ctermbg=0     cterm=bold
-    highlight nontext       ctermfg=236   ctermbg=none  cterm=none
-    highlight whitespace    ctermfg=236   ctermbg=none  cterm=none
-    highlight pmenu         ctermfg=0     ctermbg=150   cterm=none
-    highlight pmenusel      ctermfg=230   ctermbg=180   cterm=none
-    highlight incsearch     ctermfg=4     ctermbg=0     cterm=none
-    highlight diffadd       ctermfg=76    ctermbg=none  cterm=none
-    highlight diffchange    ctermfg=21    ctermbg=none  cterm=none
-    highlight diffdelete    ctermfg=196   ctermbg=none  cterm=none
-    highlight difftext      ctermfg=208   ctermbg=none  cterm=none
+    highlight highlightedword1 ctermfg=16 ctermbg=214
+    highlight highlightedword2 ctermfg=16 ctermbg=154
+    highlight highlightedword3 ctermfg=16 ctermbg=51
+    highlight highlightedword4 ctermfg=16 ctermbg=160
+    highlight highlightedword5 ctermfg=16 ctermbg=205
+    highlight highlightedword6 ctermfg=16 ctermbg=195
 
 """ abbreviations
   inoreabbrev         todo  TODO
