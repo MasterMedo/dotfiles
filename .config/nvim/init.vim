@@ -1,7 +1,7 @@
 """ TODO
-  " training commands
-  " abbreviations (filetype specific)
   " lsp - almost nothing works
+  " abbreviations (filetype specific)
+  " cool commands `[, gv, ^r=, c_^f, c_^r^w, :r !shellcmd
 
 """ vimrc
   let mapleader       = " "
@@ -21,7 +21,7 @@ call plug#begin('~/.vim/plugged')
       Plug 'chrisbra/colorizer'
       let g:colorizer_debug = 0
       let g:colorizer_colornames_disable = 1
-      "let g:colorizer_vimhighlight_disable = 1
+      let g:colorizer_vimhighlight_disable = 1
       nnoremap <leader>C :ColorToggle<cr>
 
     """ ryanoasis/vim-devicons
@@ -55,7 +55,7 @@ call plug#begin('~/.vim/plugged')
 
     """ tpope/vim-repeat
       Plug 'tpope/vim-repeat'
-      nnoremap <silent> <plug>PasteBelowLine  o<esc>"+p     :call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
+      nnoremap <silent> <plug>PasteBelowLine  o<esc>"+gp    :call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
       nnoremap <silent> <plug>MoveLineDown    ddp           :call repeat#set("\<plug>MoveLineDown",   v:count)<cr>
       nnoremap <silent> <plug>MoveLineUp      ddkP          :call repeat#set("\<plug>MoveLineUp",     v:count)<cr>
       nnoremap <silent> <plug>IndentWord      F i<tab><esc>w:call repeat#set("\<plug>IndentWord",     v:count)<cr>
@@ -174,10 +174,12 @@ lua require'nvim_lsp'.pyls.setup{}
 
   """ backups
     set backup
-    " set noswapfile
-    set undodir=~/.vim/tmp/undo//
-    set backupdir=~/.vim/tmp/backup//
+    set undofile
+    set swapfile
+
+    set undodir  =~/.vim/tmp/undo//
     set directory=~/.vim/tmp/swap//
+    set backupdir=~/.vim/tmp/backup//
 
     if !isdirectory(expand(&undodir))
       call mkdir(expand(&undodir), "p")
@@ -228,19 +230,20 @@ lua require'nvim_lsp'.pyls.setup{}
 
 """ mappings
   """ ctrl
-    inoremap <c-v> <esc>"+pa
-    nnoremap <c-s> :w<cr>
+    inoremap <c-@> <c-space>
+    inoremap <c-f> <c-x><c-f>
     inoremap <c-s> <cmd>w<cr>
-    vnoremap <c-c> "+ygv"*y
-    noremap! <c-a> <home>
-    noremap! <c-e> <end>
-    nnoremap <c-t> :tabnew<cr>
     inoremap <c-u> <c-g>u<c-u>
     inoremap <c-w> <c-g>u<c-w>
-    inoremap <c-f> <c-x><c-f>
-    inoremap <c-@> <c-space>
     inoremap <c-space> <c-x><c-o>
+    nnoremap <c-s> :w<cr>
+    nnoremap <c-t> :tabnew<cr>
+    noremap! <c-a> <home>
+    noremap! <c-e> <end>
+    noremap! <c-v> <c-r>+
+    vnoremap <c-c> "+ygv"*y
     """ window splits
+      " ^w + - < > :only
       noremap <c-h>   <c-w>h
       noremap <c-j>   <c-w>j
       noremap <c-k>   <c-w>k
@@ -268,8 +271,10 @@ lua require'nvim_lsp'.pyls.setup{}
     nnoremap  <leader>c zc
     nnoremap  <leader>o zo
     nnoremap  <leader>z zMzvzz
+    nnoremap  <leader>n :cnext<cr>
+    nnoremap  <leader>p :cprev<cr>
     nnoremap  <leader>w :w<cr>
-    nnoremap  <leader>q :wq<cr>
+    nnoremap  <leader>q :q<cr>
     nnoremap  <leader>l :echo<cr>
     nnoremap  <leader>d :echo strftime('%c')<cr>
     nnoremap  <leader>i :echom 'battery: '.system('bat')[:-2].'%'<cr>
