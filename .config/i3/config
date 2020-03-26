@@ -354,6 +354,7 @@ set $RAND_BG $(ls /home/medo/images/wallpapers/pattern/ | shuf -n 1)
 exec_always wal -i files/images/wallpapers/pattern/$RAND_BG -qe
 
 exec xrdb ~/.Xresources
+exec redshift &
 exec compton -b --config ~/.config/compton/compton.conf
 exec xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 exec xinput disable "ETPS/2 Elantech Touchpad"
