@@ -1,7 +1,6 @@
 """ TODO
   " lsp - almost nothing works
-  " abbreviations (filetype specific)
-  " cool commands `[, gv, ^r=, c_^f, c_^r^w, :r !shellcmd
+  " commands to use more often `[, gv, ^r=, c_^f, c_^r^w, :r !shellcmd, ^e, ^y
 
 """ vimrc
   let mapleader       = " "
@@ -40,8 +39,10 @@ call plug#begin('~/.vim/plugged')
 
     """ Yggdroot/indentline               issue 298
       Plug 'Yggdroot/indentline'
-      let g:indentLine_color_term = 239
       let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+      let g:indentLine_setColors = 0
+      let g:indentLine_setConceal = 0
+      let g:indentLine_fileTypeExclude = ['help']
 
     """ junegunn/limelight.vim
       Plug 'junegunn/limelight.vim'
@@ -55,11 +56,11 @@ call plug#begin('~/.vim/plugged')
 
     """ tpope/vim-repeat
       Plug 'tpope/vim-repeat'
-      nnoremap <silent> <plug>PasteBelowLine  o<esc>"+gp    :call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
-      nnoremap <silent> <plug>MoveLineDown    ddp           :call repeat#set("\<plug>MoveLineDown",   v:count)<cr>
-      nnoremap <silent> <plug>MoveLineUp      ddkP          :call repeat#set("\<plug>MoveLineUp",     v:count)<cr>
-      nnoremap <silent> <plug>IndentWord      F i<tab><esc>w:call repeat#set("\<plug>IndentWord",     v:count)<cr>
-      nnoremap <silent> <plug>UnIndentWord    F i<bs><esc>w:call  repeat#set("\<plug>UnIndentWord",   v:count)<cr>
+      nnoremap <silent> <plug>PasteBelowLine  o<esc>"+gp:call  repeat#set("\<plug>PasteBelowLine", v:count)<cr>
+      nnoremap <silent> <plug>MoveLineDown    ddp:call repeat#set("\<plug>MoveLineDown",   v:count)<cr>
+      nnoremap <silent> <plug>MoveLineUp      ddkP:call repeat#set("\<plug>MoveLineUp",     v:count)<cr>
+      nnoremap <silent> <plug>IndentWord      viWo<esc>i<tab><esc>llB:call repeat#set("\<plug>IndentWord",     v:count)<cr>
+    nnoremap <silent> <plug>UnIndentWord      viWo<esc>i<bs><esc>llB:call  repeat#set("\<plug>UnIndentWord",   v:count)<cr>
 
     """ mhinz/vim-sayonara
       Plug 'mhinz/vim-sayonara'
@@ -124,20 +125,21 @@ call plug#begin('~/.vim/plugged')
 
   """ plugins to check out
     """ lifepillar/vim-mucomplete
-      " Plug 'lifepillar/vim-mucomplete' " remap tab
+      " Plug 'lifepillar/vim-mucomplete' " remap tab, mapclear
       " let g:mucomplete#tab_when_no_results = 1
       " let g:mucomplete#enable_auto_at_startup = 0
 
     " Chiel92/vim-autoformat
-    " vim-syntastic/syntastic
-    " tpope/vim-unimpaired
-    " jreybert/vimagit
     " Shougo/deoplete.nvim
-    " tpope/vim-fugitive
-    " airblade/vim-gutter
     " Xuyuanp/nerdtree-git-plugin
-    " terryma/vim-multiple-cursors
     " Yggdroot/LeaderF
+    " airblade/vim-gutter
+    " chrisbra/matchit
+    " jreybert/vimagit
+    " terryma/vim-multiple-cursors
+    " tpope/vim-fugitive
+    " tpope/vim-unimpaired
+    " vim-syntastic/syntastic
 
 
 call plug#end()
@@ -170,6 +172,8 @@ lua require'nvim_lsp'.pyls.setup{}
     set background=dark
     set termguicolors
     colorscheme vim-tinge
+    set conceallevel=2
+    set concealcursor=inc
     call matchadd('ColorColumn', '\%81c') " set colorcolumn=+1
 
   """ backups
@@ -351,14 +355,13 @@ augroup vimrc
       \ endif
 
   """ filetype specific
-    autocmd SourcePost  * set filetype+=
-
-    autocmd FileType *      setlocal  fo-=c fo-=r fo-=o fo+=1 fo+=t
-    autocmd FileType *      setlocal  textwidth=0
-    autocmd FileType c,cpp  setlocal  foldmethod=marker foldmarker={,}
-    autocmd FileType c,cpp  setlocal  ts=8 sts=8 sw=8
-    autocmd FileType python setlocal  ts=4 sts=4 sw=4
-    autocmd Filetype python setlocal  omnifunc=v:lua.vim.lsp.omnifunc
+    autocmd SourcePost  *       set filetype+=
+    autocmd FileType    *       setlocal  fo-=c fo-=r fo-=o fo+=1 fo+=t
+    autocmd FileType    *       setlocal  textwidth=0
+    autocmd FileType    c,cpp   setlocal  foldmethod=marker foldmarker={,}
+    autocmd FileType    c,cpp   setlocal  ts=8 sts=8 sw=8
+    autocmd FileType    python  setlocal  ts=4 sts=4 sw=4
+    autocmd Filetype    python  setlocal  omnifunc=v:lua.vim.lsp.omnifunc
 
   """ trailing spaces and blanks
     " remove trailing spaces at the end of the line
@@ -366,10 +369,10 @@ augroup vimrc
     " remove trailing blanks at the end of the file
     autocmd BufWritePre * %s/\($\n\s*\)\+\%$//e
 
-  """ specific files
-    " should probably do it with 'entr' though
+  """ commands that should be done by 'entr'
     autocmd BufWritePost .Xresources,.Xdefaults silent exec '!xrdb %'
-    " autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
+    autocmd FileType tex autocmd BufWritePost <buffer> silent exec '!pdflatex %'
+    autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
 
 
 augroup END
@@ -417,12 +420,16 @@ augroup END
     highlight highlightedword6 ctermfg=16 ctermbg=195
 
 """ abbreviations
+  inoreabbrev         #i    #include
+  inoreabbrev         #d    #define
   inoreabbrev         todo  TODO
   cnoreabbrev         w!!   w !sudo tee > /dev/null %
   cnoreabbrev <expr>  q     v:char =~ "!" ? "q" : "Sayonara"
   cnoreabbrev <expr>  wq    v:char =~ "!" ? "wq" : "w<bar>Sayonara"
-  " cnoreabbrev         wq!   w<bar>Sayonara!!
-  " cnoreabbrev         q!    Sayonara!!
+  inoreabbrev cap \chapter{}<left><cmd>call getchar(0)<cr>
+  inoreabbrev sec \section{}<left><cmd>call getchar(0)<cr>
+  inoreabbrev ssec \subsection{}<left><cmd>call getchar(0)<cr>
+  inoreabbrev fn \footnote{}<left><cmd>call getchar(0)<cr>
 
 """ folding
   set foldenable
@@ -460,9 +467,13 @@ augroup END
   """ foldtext function
     function Fdt()                                              " foldtext func
       let line   = getline(v:foldstart)                         " get line text
+      let marker = split(&foldmarker, ',')[0]                   " fold marker
+      let line   = substitute(line, marker, '', 'g')            " remove marker
+      let cchar  = split(&commentstring, '%s')[0]               " comment char
+      let line   = substitute(line, cchar, '', 'g')             " remove cchar
       let suffix = (v:foldend - v:foldstart).' lines'
       let width  = winwidth(0) - &fdc - &number * &numberwidth  " editor width
-      let count  = width - len(line) - len(suffix)              " spaces count
+      let count  = width - strdisplaywidth(line) - len(suffix)  " spaces count
       let spaces = repeat(' ', count)                           " create filler
       return line.spaces.suffix
     endfunction
