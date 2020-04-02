@@ -10,19 +10,17 @@ gaps inner 15
 gaps outer 15
 font pango:mono 0
 set $mod Mod4
-#set $term terminator
-#set $term urxvt
 set $term st
 
 #FOR ALSA/AMIXER
-set $inc --no-startup-id amixer sset Master 2%+
-set $biginc --no-startup-id amixer sset Master 20%+
-set $dec --no-startup-id amixer sset Master 2%-
-set $bigdec --no-startup-id amixer sset Master 20%-
-set $mute --no-startup-id amixer sset Master toggle
-set $truemute --no-startup-id amixer sset Master mute
-#set $screencast  --no-startup-id bash ~/.scripts/screencast_alsa.sh
-#set $audio --no-startup-id bash ~/.scripts/audio_alsa.sh
+set $inc          --no-startup-id amixer sset Master 2%+
+set $biginc       --no-startup-id amixer sset Master 20%+
+set $dec          --no-startup-id amixer sset Master 2%-
+set $bigdec       --no-startup-id amixer sset Master 20%-
+set $mute         --no-startup-id amixer sset Master toggle
+set $truemute     --no-startup-id amixer sset Master mute
+# set $screencast   --no-startup-id bash ~/.scripts/screencast_alsa.sh
+# set $audio        --no-startup-id bash ~/.scripts/audio_alsa.sh
 
 ###---Basic Bindings---###
 bindsym $mod+Return             exec $term
