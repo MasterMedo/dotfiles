@@ -470,7 +470,7 @@ augroup END
       let marker = split(&foldmarker, ',')[0]                   " fold marker
       let line   = substitute(line, marker, '', 'g')            " remove marker
       let cchar  = split(&commentstring, '%s')[0]               " comment char
-      let line   = substitute(line, '\v'.cchar.' *', '', 'g')   " remove cchar
+      let line   = substitute(line, cchar.' *', '', 'g')        " remove cchar
       let suffix = (v:foldend - v:foldstart).' lines'
       let width  = winwidth(0) - &fdc - &number * &numberwidth  " editor width
       let count  = width - strdisplaywidth(line) - len(suffix)  " spaces count
