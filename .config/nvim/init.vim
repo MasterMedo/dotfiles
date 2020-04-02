@@ -60,7 +60,7 @@ call plug#begin('~/.vim/plugged')
       nnoremap <silent> <plug>MoveLineDown    ddp:call repeat#set("\<plug>MoveLineDown",   v:count)<cr>
       nnoremap <silent> <plug>MoveLineUp      ddkP:call repeat#set("\<plug>MoveLineUp",     v:count)<cr>
       nnoremap <silent> <plug>IndentWord      viWo<esc>i<tab><esc>llB:call repeat#set("\<plug>IndentWord",     v:count)<cr>
-    nnoremap <silent> <plug>UnIndentWord      viWo<esc>i<bs><esc>llB:call  repeat#set("\<plug>UnIndentWord",   v:count)<cr>
+      nnoremap <silent> <plug>UnIndentWord      viWo<esc>i<bs><esc>llB:call  repeat#set("\<plug>UnIndentWord",   v:count)<cr>
 
     """ mhinz/vim-sayonara
       Plug 'mhinz/vim-sayonara'
@@ -114,7 +114,7 @@ call plug#begin('~/.vim/plugged')
     """ neovim/nvim-lsp
       Plug 'neovim/nvim-lsp'
       nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-      "nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+      " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
       nnoremap <silent> gh    <cmd>lua vim.lsp.buf.hover()<CR>
       nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
       nnoremap <silent> gs    <cmd>lua vim.lsp.buf.signature_help()<CR>
@@ -470,7 +470,7 @@ augroup END
       let marker = split(&foldmarker, ',')[0]                   " fold marker
       let line   = substitute(line, marker, '', 'g')            " remove marker
       let cchar  = split(&commentstring, '%s')[0]               " comment char
-      let line   = substitute(line, cchar, '', 'g')             " remove cchar
+      let line   = substitute(line, '\v'.cchar.' *', '', 'g')   " remove cchar
       let suffix = (v:foldend - v:foldstart).' lines'
       let width  = winwidth(0) - &fdc - &number * &numberwidth  " editor width
       let count  = width - strdisplaywidth(line) - len(suffix)  " spaces count
