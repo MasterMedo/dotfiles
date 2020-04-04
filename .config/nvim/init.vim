@@ -1,6 +1,7 @@
 """ TODO
   " lsp - almost nothing works
-  " commands to use more often `[, gv, ^r=, c_^f, c_^r^w, :r !shellcmd, ^e, ^y
+  " `[, gv, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, :r !shellcmd, ^e, ^y
+  " do macro to the end of the file 1000@k or qj@k@jq@j
 
 """ vimrc
   let mapleader       = " "
@@ -56,11 +57,11 @@ call plug#begin('~/.vim/plugged')
 
     """ tpope/vim-repeat
       Plug 'tpope/vim-repeat'
-      nnoremap <silent> <plug>PasteBelowLine  o<esc>"+gp:call  repeat#set("\<plug>PasteBelowLine", v:count)<cr>
+      nnoremap <silent> <plug>PasteBelowLine  o<esc>"+gp:call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
       nnoremap <silent> <plug>MoveLineDown    ddp:call repeat#set("\<plug>MoveLineDown",   v:count)<cr>
       nnoremap <silent> <plug>MoveLineUp      ddkP:call repeat#set("\<plug>MoveLineUp",     v:count)<cr>
       nnoremap <silent> <plug>IndentWord      viWo<esc>i<tab><esc>llB:call repeat#set("\<plug>IndentWord",     v:count)<cr>
-      nnoremap <silent> <plug>UnIndentWord      viWo<esc>i<bs><esc>llB:call  repeat#set("\<plug>UnIndentWord",   v:count)<cr>
+      nnoremap <silent> <plug>UnIndentWord    viWo<esc>i<bs><esc>llB:call  repeat#set("\<plug>UnIndentWord",   v:count)<cr>
 
     """ mhinz/vim-sayonara
       Plug 'mhinz/vim-sayonara'
@@ -113,15 +114,15 @@ call plug#begin('~/.vim/plugged')
     Plug 'PotatoesMaster/i3-vim-syntax'
     """ neovim/nvim-lsp
       Plug 'neovim/nvim-lsp'
-      nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-      " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-      nnoremap <silent> gh    <cmd>lua vim.lsp.buf.hover()<CR>
-      nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-      nnoremap <silent> gs    <cmd>lua vim.lsp.buf.signature_help()<CR>
-      nnoremap <silent> gt    <cmd>lua vim.lsp.buf.type_definition()<CR>
-      nnoremap <silent> gre   <cmd>lua vim.lsp.buf.references()<CR>
-      nnoremap <silent> grn   <cmd>lua vim.lsp.buf.rename()<CR>
-      nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+      nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
+      " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
+      nnoremap <silent> gh    <cmd>lua vim.lsp.buf.hover()<cr>
+      nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
+      nnoremap <silent> gs    <cmd>lua vim.lsp.buf.signature_help()<cr>
+      nnoremap <silent> gt    <cmd>lua vim.lsp.buf.type_definition()<cr>
+      nnoremap <silent> gre   <cmd>lua vim.lsp.buf.references()<cr>
+      nnoremap <silent> grn   <cmd>lua vim.lsp.buf.rename()<cr>
+      nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
 
   """ plugins to check out
     """ lifepillar/vim-mucomplete
@@ -424,8 +425,9 @@ augroup END
   inoreabbrev         #d    #define
   inoreabbrev         todo  TODO
   cnoreabbrev         w!!   w !sudo tee > /dev/null %
+  " cnoreabbrev <expr>  w     v:char =~ "!" ? "w" : "noa w"
   cnoreabbrev <expr>  q     v:char =~ "!" ? "q" : "Sayonara"
-  cnoreabbrev <expr>  wq    v:char =~ "!" ? "wq" : "w<bar>Sayonara"
+  cnoreabbrev <expr>  wq    v:char =~ "!" ? "wq" : "noa w<bar>Sayonara"
   inoreabbrev cap \chapter{}<left><cmd>call getchar(0)<cr>
   inoreabbrev sec \section{}<left><cmd>call getchar(0)<cr>
   inoreabbrev ssec \subsection{}<left><cmd>call getchar(0)<cr>
@@ -439,14 +441,18 @@ augroup END
   set foldnestmax=10
   set foldtext=Fdt()
   set modelineexpr
+  function Fde_paragraph()
+	  return getline(v:lnum-1)=~'^\s*$'&&getline(v:lnum)=~'\S'?'>1':1
+  endfunction
 
   """ foldexpr function
     let g:running_level = 1                           " last line fold level
-    function Fde(lnum)                                " fold expr function
-      let line      = getline(a:lnum)                 " current  line text
-      let prev_line = getline(a:lnum-1)               " previous line text
-      let level     = indent(a:lnum)/&shiftwidth+1    " expected fold level
-      if line =~ '\v^\s*\"{3}.*$'                     " is line a fold title?
+    function Fde()                                    " fold expr function
+      let line      = getline(v:lnum)                 " current  line text
+      let prev_line = getline(v:lnum-1)               " previous line text
+      let level     = indent(v:lnum)/&shiftwidth+1    " expected fold level
+      let char = trim(split(&commentstring, '%s')[0]) " comment char
+      if line =~ '\v^\s*\'.char.'{3}.*$'              " is line a fold title?
         let g:running_level = level
         return '>'.level                              " create a fold
       elseif line !~ '[^\s]' && prev_line !~ '[^\s]'  " are lines empty?
@@ -469,8 +475,8 @@ augroup END
       let line   = getline(v:foldstart)                         " get line text
       let marker = split(&foldmarker, ',')[0]                   " fold marker
       let line   = substitute(line, marker, '', 'g')            " remove marker
-      let cchar  = split(&commentstring, '%s')[0]               " comment char
-      let line   = substitute(line, cchar.' *', '', 'g')        " remove cchar
+      let cchar  = trim(split(&commentstring, '%s')[0])         " comment char
+      let line   = substitute(line, '\V'.cchar.' \*', '', 'g')  " remove cchar
       let suffix = (v:foldend - v:foldstart).' lines'
       let width  = winwidth(0) - &fdc - &number * &numberwidth  " editor width
       let count  = width - strdisplaywidth(line) - len(suffix)  " spaces count
@@ -478,4 +484,4 @@ augroup END
       return line.spaces.suffix
     endfunction
 
-" vim: ts=2 sw=2 sts=2 fdm=expr fde=Fde(v\:lnum) fdt=Fdt()
+" vim: ts=2 sw=2 sts=2 fdm=expr fde=Fde()
