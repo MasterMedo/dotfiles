@@ -150,6 +150,7 @@ lua require'nvim_lsp'.pyls.setup{}
 
 """ settings
   """ basics
+    set nobomb
     filetype plugin on
     set lazyredraw
     set encoding=utf-8
@@ -425,6 +426,7 @@ augroup END
   inoreabbrev         #d    #define
   inoreabbrev         todo  TODO
   cnoreabbrev         w!!   w !sudo tee > /dev/null %
+  cnoreabbrev         W     noa w
   " cnoreabbrev <expr>  w     v:char =~ "!" ? "w" : "noa w"
   cnoreabbrev <expr>  q     v:char =~ "!" ? "q" : "Sayonara"
   cnoreabbrev <expr>  wq    v:char =~ "!" ? "wq" : "noa w<bar>Sayonara"
@@ -442,7 +444,7 @@ augroup END
   set foldtext=Fdt()
   set modelineexpr
   function Fde_paragraph()
-	  return getline(v:lnum-1)=~'^\s*$'&&getline(v:lnum)=~'\S'?'>1':1
+    return getline(v:lnum-1)=~'^\s*$'&&getline(v:lnum)=~'\S'?'>1':1
   endfunction
 
   """ foldexpr function
