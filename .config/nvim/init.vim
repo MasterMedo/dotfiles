@@ -1,7 +1,9 @@
 """ TODO
   " lsp - almost nothing works
-  " `[, gv, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, :r !shellcmd, ^e, ^y
-  " do macro to the end of the file 1000@k or qj@k@jq@j
+  " `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y
+  " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
+  " look into pasting - noautoindent on all terminals
+  " mapping to get into last empty target on the line (), '', "", etc.
 
 """ vimrc
   let mapleader       = " "
@@ -112,17 +114,26 @@ call plug#begin('~/.vim/plugged')
     Plug 'dag/vim-fish'
     Plug 'vim-scripts/lua.vim'
     Plug 'PotatoesMaster/i3-vim-syntax'
+    """ dense-analysis/ale
+      Plug 'dense-analysis/ale'
+      let g:ale_python_flake8_options = '--ignore=E501'
+      let g:ale_sign_error = '☠'
+      let g:ale_sign_warning = '⚠'
+      let g:ale_sign_info = 'i'
+      let g:ale_sign_style_error = '☠s'
+      let g:ale_sign_style_warning = '⚠s'
+
     """ neovim/nvim-lsp
-      Plug 'neovim/nvim-lsp'
-      nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
+      " Plug 'neovim/nvim-lsp'
+      " nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
       " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
-      nnoremap <silent> gh    <cmd>lua vim.lsp.buf.hover()<cr>
-      nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
-      nnoremap <silent> gs    <cmd>lua vim.lsp.buf.signature_help()<cr>
-      nnoremap <silent> gt    <cmd>lua vim.lsp.buf.type_definition()<cr>
-      nnoremap <silent> gre   <cmd>lua vim.lsp.buf.references()<cr>
-      nnoremap <silent> grn   <cmd>lua vim.lsp.buf.rename()<cr>
-      nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
+      " nnoremap <silent> gh    <cmd>lua vim.lsp.buf.hover()<cr>
+      " nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
+      " nnoremap <silent> gs    <cmd>lua vim.lsp.buf.signature_help()<cr>
+      " nnoremap <silent> gt    <cmd>lua vim.lsp.buf.type_definition()<cr>
+      " nnoremap <silent> gre   <cmd>lua vim.lsp.buf.references()<cr>
+      " nnoremap <silent> grn   <cmd>lua vim.lsp.buf.rename()<cr>
+      " nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
 
   """ plugins to check out
     """ lifepillar/vim-mucomplete
@@ -146,7 +157,7 @@ call plug#begin('~/.vim/plugged')
 call plug#end()
 nnoremap <leader>pi :PlugInstall<cr>
 nnoremap <leader>pu :PlugUpdate<cr>
-lua require'nvim_lsp'.pyls.setup{}
+" lua require'nvim_lsp'.pyls.setup{}
 
 """ settings
   """ basics
@@ -246,7 +257,7 @@ lua require'nvim_lsp'.pyls.setup{}
     nnoremap <c-t> :tabnew<cr>
     noremap! <c-a> <home>
     noremap! <c-e> <end>
-    noremap! <c-v> <c-r>+
+    noremap! <c-v> <cmd>set paste<cr><c-r>+<cmd>set nopaste<cr>
     vnoremap <c-c> "+ygv"*y
     """ window splits
       " ^w + - < > :only
@@ -268,6 +279,7 @@ lua require'nvim_lsp'.pyls.setup{}
     nnoremap  Y       y$
     nnoremap  c*      *Ncgn
     nnoremap  vb      <c-v>
+    nnoremap  Q       <nop>
     nnoremap  <cr>    o<esc>
     nnoremap  <F1>    <nop>
     nnoremap  <space> <nop>
@@ -368,14 +380,15 @@ augroup vimrc
   """ trailing spaces and blanks
     " remove trailing spaces at the end of the line
     autocmd BufWritePre * %s/\s\+$//e
+
     " remove trailing blanks at the end of the file
     autocmd BufWritePre * %s/\($\n\s*\)\+\%$//e
 
   """ commands that should be done by 'entr'
     autocmd BufWritePost .Xresources,.Xdefaults silent exec '!xrdb %'
-    autocmd FileType tex autocmd BufWritePost <buffer> silent exec '!pdflatex %'
+    " autocmd FileType tex autocmd BufWritePost <buffer> silent exec '!pdflatex %'
+    autocmd BufWritePost <buffer> if &ft=~'tex'|silent exec '!pdflatex %'|endif
     autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
-
 
 augroup END
 
@@ -422,18 +435,20 @@ augroup END
     highlight highlightedword6 ctermfg=16 ctermbg=195
 
 """ abbreviations
-  inoreabbrev         #i    #include
-  inoreabbrev         #d    #define
-  inoreabbrev         todo  TODO
-  cnoreabbrev         w!!   w !sudo tee > /dev/null %
-  cnoreabbrev         W     noa w
-  " cnoreabbrev <expr>  w     v:char =~ "!" ? "w" : "noa w"
-  cnoreabbrev <expr>  q     v:char =~ "!" ? "q" : "Sayonara"
-  cnoreabbrev <expr>  wq    v:char =~ "!" ? "wq" : "noa w<bar>Sayonara"
-  inoreabbrev cap \chapter{}<left><cmd>call getchar(0)<cr>
-  inoreabbrev sec \section{}<left><cmd>call getchar(0)<cr>
-  inoreabbrev ssec \subsection{}<left><cmd>call getchar(0)<cr>
-  inoreabbrev fn \footnote{}<left><cmd>call getchar(0)<cr>
+  inoreabbrev #i    #include
+  inoreabbrev #d    #define
+  inoreabbrev todo  TODO
+  inoreabbrev cap   \chapter{}<left><cmd>call getchar(0)<cr>
+  inoreabbrev sec   \section{}<left><cmd>call getchar(0)<cr>
+  inoreabbrev ssec  \subsection{}<left><cmd>call getchar(0)<cr>
+  inoreabbrev fn    \footnote{}<left><cmd>call getchar(0)<cr>
+  inoreabbrev wop   with open('') as f:<cmd>call getchar(0)<cr>
+
+  cnoreabbrev         w!! w !sudo tee > /dev/null %
+  cnoreabbrev         W   noa w
+  cnoreabbrev <expr>  w   v:char =~ "!" ? "w" : "noa w"
+  cnoreabbrev <expr>  q   v:char =~ "!" ? "q" : "Sayonara"
+  cnoreabbrev <expr>  wq  v:char =~ "!" ? "wq" : "noa w<bar>Sayonara"
 
 """ folding
   set foldenable
@@ -443,9 +458,11 @@ augroup END
   set foldnestmax=10
   set foldtext=Fdt()
   set modelineexpr
-  function Fde_paragraph()
-    return getline(v:lnum-1)=~'^\s*$'&&getline(v:lnum)=~'\S'?'>1':1
-  endfunction
+
+  """ foldexpr by paragraph
+    function Fde_paragraph()
+      return getline(v:lnum-1)=~'^\s*$'&&getline(v:lnum)=~'\S'?'>1':1
+    endfunction
 
   """ foldexpr function
     let g:running_level = 1                           " last line fold level
