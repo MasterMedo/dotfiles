@@ -1,9 +1,8 @@
 """ TODO
-  " lsp - almost nothing works
+  " lsp - autocomplete, documentation
   " `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y
   " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
   " look into pasting - noautoindent on all terminals
-  " mapping to get into last empty target on the line (), '', "", etc.
 
 """ vimrc
   let mapleader       = " "
@@ -459,6 +458,25 @@ augroup END
   set foldtext=Fdt()
   set modelineexpr
 
+  """ buffer width function
+    function! BufWidth()
+      let width = winwidth(0)
+      let numberwidth = max([&numberwidth, strlen(line('$')) + 1])
+      let numwidth = (&number || &relativenumber) ? numberwidth : 0
+      let foldwidth = &foldcolumn
+
+      if &signcolumn == 'yes'
+        let signwidth = 2
+      elseif &signcolumn == 'auto'
+        let signs = execute(printf('sign place buffer=%d', bufnr('')))
+        let signs = split(signs, '\n')
+        let signwidth = len(signs) > 1 ? 2 : 0
+      else
+        let signwidth = 0
+      endif
+      return width - numwidth - foldwidth - signwidth
+    endfunction
+
   """ foldexpr by paragraph
     function Fde_paragraph()
       return getline(v:lnum-1)=~'^\s*$'&&getline(v:lnum)=~'\S'?'>1':1
@@ -497,7 +515,7 @@ augroup END
       let cchar  = trim(split(&commentstring, '%s')[0])         " comment char
       let line   = substitute(line, '\V'.cchar.' \*', '', 'g')  " remove cchar
       let suffix = (v:foldend - v:foldstart).' lines'
-      let width  = winwidth(0) - &fdc - &number * &numberwidth  " editor width
+      let width  = BufWidth()
       let count  = width - strdisplaywidth(line) - len(suffix)  " spaces count
       let spaces = repeat(' ', count)                           " create filler
       return line.spaces.suffix
