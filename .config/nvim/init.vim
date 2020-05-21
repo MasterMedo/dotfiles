@@ -33,6 +33,10 @@ call plug#begin('~/.vim/plugged')
       " let g:XkbSwitchLib = "/usr/lib/libxkbswitch.so"
       " let g:airline#extensions#xkblayout#enabled = 1
 
+    """ junegunn/limelight.vim
+      Plug 'junegunn/limelight.vim'
+      let g:limelight_conceal_ctermfg = 240
+
     """ junegunn/goyo.vim
       Plug 'junegunn/goyo.vim'
       autocmd! User GoyoEnter Limelight
@@ -46,9 +50,10 @@ call plug#begin('~/.vim/plugged')
       let g:indentLine_setConceal = 0
       let g:indentLine_fileTypeExclude = ['help']
 
-    """ junegunn/limelight.vim
-      Plug 'junegunn/limelight.vim'
-      let g:limelight_conceal_ctermfg = 240
+    """ psliwka/vim-smoothie
+      Plug 'psliwka/vim-smoothie'
+      nmap K <c-b>
+      nmap J <c-f>
 
   """ commands
     """ nixon/vim-vmath
@@ -116,7 +121,8 @@ call plug#begin('~/.vim/plugged')
     """ dense-analysis/ale
       Plug 'dense-analysis/ale'
       let g:ale_python_flake8_options = '--ignore=E501'
-      let b:ale_linters = {'python': ['flake8', 'pyls']}
+      " let b:ale_linters = {'python': ['flake8', 'pyls']}
+      let b:ale_linters = {'python': ['flake8']}
       let g:ale_sign_error = '☠'
       let g:ale_sign_warning = '⚠'
       let g:ale_sign_info = 'i'
@@ -339,8 +345,6 @@ nnoremap <leader>pu :PlugUpdate<cr>
   """ relative motions
     nnoremap  <expr> j  v:count == 0 ? 'gj' : 'j'
     nnoremap  <expr> k  v:count == 0 ? 'gk' : 'k'
-    nnoremap  K   5k
-    nnoremap  J   5j
     nnoremap  gj  j
     nnoremap  gk  k
     nnoremap  B   g^
