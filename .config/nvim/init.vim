@@ -1,5 +1,5 @@
 """ TODO
-  " lsp - autocomplete, documentation
+  " lsp - documentation
   " `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y
   " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
   " look into pasting - noautoindent on all terminals
@@ -116,23 +116,14 @@ call plug#begin('~/.vim/plugged')
     """ dense-analysis/ale
       Plug 'dense-analysis/ale'
       let g:ale_python_flake8_options = '--ignore=E501'
+      let b:ale_linters = {'python': ['flake8', 'pyls']}
       let g:ale_sign_error = '☠'
       let g:ale_sign_warning = '⚠'
       let g:ale_sign_info = 'i'
       let g:ale_sign_style_error = '☠s'
       let g:ale_sign_style_warning = '⚠s'
-
-    """ neovim/nvim-lsp
-      " Plug 'neovim/nvim-lsp'
-      " nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
-      " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
-      " nnoremap <silent> gh    <cmd>lua vim.lsp.buf.hover()<cr>
-      " nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
-      " nnoremap <silent> gs    <cmd>lua vim.lsp.buf.signature_help()<cr>
-      " nnoremap <silent> gt    <cmd>lua vim.lsp.buf.type_definition()<cr>
-      " nnoremap <silent> gre   <cmd>lua vim.lsp.buf.references()<cr>
-      " nnoremap <silent> grn   <cmd>lua vim.lsp.buf.rename()<cr>
-      " nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
+      let g:ale_completion_enabled = 1
+      set omnifunc=ale#completion#OmniFunc
 
   """ plugins to check out
     """ lifepillar/vim-mucomplete
@@ -156,7 +147,6 @@ call plug#begin('~/.vim/plugged')
 call plug#end()
 nnoremap <leader>pi :PlugInstall<cr>
 nnoremap <leader>pu :PlugUpdate<cr>
-" lua require'nvim_lsp'.pyls.setup{}
 
 """ settings
   """ basics
@@ -223,8 +213,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set wildignore+=*.sw?                             " vim swap files
 
   """ autocomplete
-    set completeopt+=menuone,noselect,longest,noinsert
-    set completeopt-=preview
+    set completeopt=menuone,longest
     set shortmess+=c
 
   """ tabs and wrapping
@@ -269,8 +258,25 @@ nnoremap <leader>pu :PlugUpdate<cr>
       noremap <c-a-k> <c-w>K
       noremap <c-a-l> <c-w>L
 
-    inoremap <expr> <c-j> pumvisible() ? "\<c-n>" : "\<c-j>"
-    inoremap <expr> <c-k> pumvisible() ? "\<c-p>" : "\<c-k>"
+  """ autocomplete
+    let select_first = "\<c-x>\<c-o>"
+      \ ."\<C-R>=pumvisible()?\"\\<down>\":\"\"\<cr>"
+      \ ."\<cmd>echo\<cr>"
+
+    function! s:check_back_space() abort
+      let col = col('.') - 1
+      return !col || getline('.')[col - 1]  =~# '\s'
+    endfunction
+
+    inoremap <expr> .     "." . select_first
+    inoremap <expr> <c-j> pumvisible() ? "\<down>" : "\<c-j>"
+    inoremap <expr> <c-k> pumvisible() ? "\<up>"   : "\<c-k>"
+    inoremap <expr> <esc> pumvisible() ? "\<c-e>"  : "\<esc>"
+    inoremap <expr> <tab> pumvisible() ? "\<c-y>"  :
+             \ <sid>check_back_space() ? "\<tab>"  : select_first
+
+    " inoremap <expr> <c-j> pumvisible() ? "\<c-n>"  : "\<c-j>"
+    " inoremap <expr> <c-k> pumvisible() ? "\<c-p>"  : "\<c-k>"
 
   """ common
     nnoremap  '       `
@@ -306,7 +312,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     nnoremap ``     <cmd>echo "use ''"<cr>
     nnoremap $      <cmd>echo "use E"<cr>
     nnoremap ^      <cmd>echo "use B"<cr>
-    inoremap <esc>  <cmd>echo "use jk"<cr>
+    " inoremap <esc>  <cmd>echo "use jk"<cr>
 
   """ repeatable
     nmap <c-p>  <plug>PasteBelowLine
@@ -353,6 +359,14 @@ nnoremap <leader>pu :PlugUpdate<cr>
 augroup vimrc
   autocmd!
   autocmd VimEnter * if !argc() | Startify | NERDTreeVCS | wincmd w | endif
+  """ autocomplete
+    autocmd CompleteDone <buffer> if v:completed_item.word =~ '\.$'
+                              \| call feedkeys("\<bs>")
+                              \| endif
+
+    autocmd CompleteDone <buffer> if v:completed_item.word =~ '($'
+                              \| call feedkeys(")\<Left>", 'in')
+                              \| endif
 
   """ window cursorline
     autocmd WinEnter    * setlocal cursorline
@@ -374,7 +388,6 @@ augroup vimrc
     autocmd FileType    c,cpp   setlocal  foldmethod=marker foldmarker={,}
     autocmd FileType    c,cpp   setlocal  ts=8 sts=8 sw=8
     autocmd FileType    python  setlocal  ts=4 sts=4 sw=4
-    autocmd Filetype    python  setlocal  omnifunc=v:lua.vim.lsp.omnifunc
 
   """ trailing spaces and blanks
     " remove trailing spaces at the end of the line
