@@ -1,8 +1,7 @@
 """ TODO
-  " lsp - documentation
-  " `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y
+  " lsp - documentation, references
+  " train `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y
   " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
-  " look into pasting - noautoindent on all terminals
 
 """ vimrc
   let mapleader       = " "
@@ -15,20 +14,17 @@
 call plug#begin('~/.vim/plugged')
 
   """ visuals
-    """ mastermedo/vim-tinge
-      Plug 'mastermedo/vim-tinge'
-
-    """ chrisbra/colorizer
+    Plug 'mastermedo/vim-tinge'
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'psliwka/vim-smoothie'
+    """  chrisbra/colorizer
       Plug 'chrisbra/colorizer'
       let g:colorizer_debug = 0
       let g:colorizer_colornames_disable = 1
       let g:colorizer_vimhighlight_disable = 1
       nnoremap <leader>C :ColorToggle<cr>
 
-    """ ryanoasis/vim-devicons
-      Plug 'ryanoasis/vim-devicons'
-
-    """ vim-airline/vim-airline
+    """ vim-airline/vim-airline 160.445ms startup
       Plug 'vim-airline/vim-airline'
       " let g:XkbSwitchLib = "/usr/lib/libxkbswitch.so"
       " let g:airline#extensions#xkblayout#enabled = 1
@@ -43,17 +39,12 @@ call plug#begin('~/.vim/plugged')
       autocmd! User GoyoLeave Limelight!
       nnoremap <silent> <F11> :Goyo<bar>set linebreak<cr>
 
-    """ Yggdroot/indentline               issue 298
+    """ Yggdroot/indentline 54.325ms startup and issue 298
       Plug 'Yggdroot/indentline'
       let g:indentLine_char_list = ['|', '¦', '┆', '┊']
       let g:indentLine_setColors = 0
       let g:indentLine_setConceal = 0
       let g:indentLine_fileTypeExclude = ['help']
-
-    """ psliwka/vim-smoothie
-      Plug 'psliwka/vim-smoothie'
-      nmap K <c-b>
-      nmap J <c-f>
 
   """ commands
     """ tpope/vim-repeat
@@ -69,6 +60,7 @@ call plug#begin('~/.vim/plugged')
       let g:sayonara_confirm_quit = 0
 
   """ interfaces
+    Plug 'chrisbra/recover.vim' " 36.988ms startup
     """ junegunn/fzf
       Plug 'junegunn/fzf.vim'
       Plug 'junegunn/fzf', {'do': './install --bin' }
@@ -82,19 +74,12 @@ call plug#begin('~/.vim/plugged')
       let g:undotree_SetFocusWhenToggle = 1
       nnoremap <leader>U :UndotreeToggle<cr>
 
-    """ preservim/nerdtree
+    """ preservim/nerdtree 55.537ms startup
       Plug 'preservim/nerdtree'
       Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
       " let NERDTreeMinimalUI=1
       " let NERDTreeShowHidden=1
       nnoremap <leader>N :NERDTreeToggleVCS<cr>
-
-    """ mhinz/vim-startify
-      Plug 'mhinz/vim-startify'
-      let g:startify_custom_header = ''
-
-    """ chrisbra/recover.vim
-      Plug 'chrisbra/recover.vim'
 
   """ text objects
     " Plug 'wellle/targets.vim'           issue 246
@@ -113,6 +98,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'dag/vim-fish'
     Plug 'vim-scripts/lua.vim'
     Plug 'PotatoesMaster/i3-vim-syntax'
+    """ tpope/vim-markdown
+      Plug 'tpope/vim-markdown'
+      let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+
     """ dense-analysis/ale
       Plug 'dense-analysis/ale'
       let g:ale_python_flake8_options = '--ignore=E501'
@@ -208,6 +197,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
   """ autocomplete
     set completeopt=menuone,longest
     set shortmess+=c
+    set shortmess+=I
 
   """ tabs and wrapping
     set shiftwidth=2
@@ -233,7 +223,6 @@ nnoremap <leader>pu :PlugUpdate<cr>
     inoremap <c-s> <cmd>w<cr>
     inoremap <c-u> <c-g>u<c-u>
     inoremap <c-w> <c-g>u<c-w>
-    inoremap <c-space> <c-x><c-o>
     nnoremap <c-s> :w<cr>
     nnoremap <c-t> :tabnew<cr>
     noremap! <c-a> <home>
@@ -275,6 +264,8 @@ nnoremap <leader>pu :PlugUpdate<cr>
     nnoremap  '       `
     nnoremap  *       *N
     nnoremap  Y       y$
+    nmap      K       <c-u>
+    nmap      J       <c-d>
     nnoremap  c*      *Ncgn
     nnoremap  vb      <c-v>
     nnoremap  Q       <nop>
@@ -318,20 +309,9 @@ nnoremap <leader>pu :PlugUpdate<cr>
     vnoremap > >gv
     vnoremap < <gv
 
-  """ text objects
-    """ folds
-      onoremap iz :<c-u>normal! [z0jV]zk<cr>
-      onoremap az :<c-u>normal! [zV]z<cr>
-      vnoremap iz :<c-u>normal! [z0jV]zk<cr>
-      vnoremap az :<c-u>normal! [zV]z<cr>
-      onoremap if :<c-u>normal! [z0jV]zk<cr>
-      onoremap af :<c-u>normal! [zV]z<cr>
-      vnoremap if :<c-u>normal! [z0jV]zk<cr>
-      vnoremap af :<c-u>normal! [zV]z<cr>
-
   """ relative motions
-    nnoremap  <expr> j  v:count == 0 ? 'gj' : 'j'
-    nnoremap  <expr> k  v:count == 0 ? 'gk' : 'k'
+    nnoremap  <expr> j v:count == 0 ? 'gj' : 'j'
+    nnoremap  <expr> k v:count == 0 ? 'gk' : 'k'
     nnoremap  gj  j
     nnoremap  gk  k
     nnoremap  B   g^
@@ -349,13 +329,12 @@ nnoremap <leader>pu :PlugUpdate<cr>
 """ autocmds
 augroup vimrc
   autocmd!
-  autocmd VimEnter * if !argc() | Startify | NERDTreeVCS | wincmd w | endif
   """ autocomplete
-    autocmd CompleteDone <buffer> if v:completed_item.word =~ '\.$'
+    autocmd CompleteDone <buffer> silent! if v:completed_item.word =~ '\.$'
                                \| call feedkeys("\<bs>")
                                \| endif
 
-    autocmd CompleteDone <buffer> if v:completed_item.word =~ '($'
+    autocmd CompleteDone <buffer> silent! if v:completed_item.word =~ '($'
                                \| call feedkeys(")\<Left>", 'in')
                                \| endif
 
@@ -365,12 +344,12 @@ augroup vimrc
     autocmd InsertEnter * setlocal nocursorline
     autocmd InsertEnter * setlocal cursorline
 
-  """ :h restore-cursor
-    autocmd VimEnter    * exec 'normal! zvzz'
+  """ :h restore-cursor 54.494ms startup
+    autocmd VimEnter * exe "normal! zvzz"
     autocmd BufReadPost *
-      \| if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-      \|   execute 'normal! g`"zvzz'
-      \| endif
+      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+      \ |   exe "normal! g`\""
+      \ | endif
 
   """ filetype specific
     autocmd SourcePost  *       set filetype+=
@@ -388,8 +367,8 @@ augroup vimrc
     autocmd BufWritePre * %s/\($\n\s*\)\+\%$//e
 
   """ commands that should be done by 'entr'
-    autocmd BufWritePost .Xresources,.Xdefaults silent exec '!xrdb %'
-    autocmd BufWritePost <buffer> if &ft=~'tex'|silent exec '!pdflatex %'|endif
+    autocmd BufWritePost .Xresources,.Xdefaults silent exec "!xrdb %"
+    autocmd BufWritePost <buffer> if &ft=~"tex"|silent exec "!pdflatex %"|endif
     autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
 
 augroup END
