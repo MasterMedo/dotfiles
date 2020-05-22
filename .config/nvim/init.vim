@@ -56,18 +56,13 @@ call plug#begin('~/.vim/plugged')
       nmap J <c-f>
 
   """ commands
-    """ nixon/vim-vmath
-      Plug 'nixon/vim-vmath'
-      nnoremap         ++  vip++
-      vnoremap <expr>  ++  VMATH_YankAndAnalyse()
-
     """ tpope/vim-repeat
       Plug 'tpope/vim-repeat'
-      nnoremap <silent> <plug>PasteBelowLine  o<esc>"+gp:call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
-      nnoremap <silent> <plug>MoveLineDown    ddp:call repeat#set("\<plug>MoveLineDown",   v:count)<cr>
-      nnoremap <silent> <plug>MoveLineUp      ddkP:call repeat#set("\<plug>MoveLineUp",     v:count)<cr>
-      nnoremap <silent> <plug>IndentWord      viWo<esc>i<tab><esc>llB:call repeat#set("\<plug>IndentWord",     v:count)<cr>
-      nnoremap <silent> <plug>UnIndentWord    viWo<esc>i<bs><esc>llB:call  repeat#set("\<plug>UnIndentWord",   v:count)<cr>
+      nnoremap <silent> <plug>PasteBelowLine o<esc>"+gp:call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
+      nnoremap <silent> <plug>MoveLineDown ddp:call repeat#set("\<plug>MoveLineDown", v:count)<cr>
+      nnoremap <silent> <plug>MoveLineUp ddkP:call repeat#set("\<plug>MoveLineUp", v:count)<cr>
+      nnoremap <silent> <plug>IndentWord viWo<esc>i<tab><esc>llB:call repeat#set("\<plug>IndentWord", v:count)<cr>
+      nnoremap <silent> <plug>UnIndentWord viWo<esc>i<bs><esc>llB:call repeat#set("\<plug>UnIndentWord", v:count)<cr>
 
     """ mhinz/vim-sayonara
       Plug 'mhinz/vim-sayonara'
@@ -121,8 +116,8 @@ call plug#begin('~/.vim/plugged')
     """ dense-analysis/ale
       Plug 'dense-analysis/ale'
       let g:ale_python_flake8_options = '--ignore=E501'
-      " let b:ale_linters = {'python': ['flake8', 'pyls']}
-      let b:ale_linters = {'python': ['flake8']}
+      let b:ale_linters = {'python': ['flake8', 'pyls']}
+      " let b:ale_linters = {'python': ['flake8']}
       let g:ale_sign_error = '☠'
       let g:ale_sign_warning = '⚠'
       let g:ale_sign_info = 'i'
@@ -132,22 +127,14 @@ call plug#begin('~/.vim/plugged')
       set omnifunc=ale#completion#OmniFunc
 
   """ plugins to check out
-    """ lifepillar/vim-mucomplete
-      " Plug 'lifepillar/vim-mucomplete' " remap tab, mapclear
-      " let g:mucomplete#tab_when_no_results = 1
-      " let g:mucomplete#enable_auto_at_startup = 0
-
     " Chiel92/vim-autoformat
-    " Shougo/deoplete.nvim
     " Xuyuanp/nerdtree-git-plugin
     " Yggdroot/LeaderF
     " airblade/vim-gutter
     " chrisbra/matchit
     " jreybert/vimagit
-    " terryma/vim-multiple-cursors
     " tpope/vim-fugitive
     " tpope/vim-unimpaired
-    " vim-syntastic/syntastic
 
 
 call plug#end()
@@ -160,7 +147,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     filetype plugin on
     set lazyredraw
     set encoding=utf-8
-    set scrolloff=5
+    set scrolloff=9
     set sidescrolloff=5
     set noshowmode
     set number
@@ -365,12 +352,12 @@ augroup vimrc
   autocmd VimEnter * if !argc() | Startify | NERDTreeVCS | wincmd w | endif
   """ autocomplete
     autocmd CompleteDone <buffer> if v:completed_item.word =~ '\.$'
-                              \| call feedkeys("\<bs>")
-                              \| endif
+                               \| call feedkeys("\<bs>")
+                               \| endif
 
     autocmd CompleteDone <buffer> if v:completed_item.word =~ '($'
-                              \| call feedkeys(")\<Left>", 'in')
-                              \| endif
+                               \| call feedkeys(")\<Left>", 'in')
+                               \| endif
 
   """ window cursorline
     autocmd WinEnter    * setlocal cursorline
@@ -381,9 +368,9 @@ augroup vimrc
   """ :h restore-cursor
     autocmd VimEnter    * exec 'normal! zvzz'
     autocmd BufReadPost *
-      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |
-      \   execute 'normal! g`"zvzz' |
-      \ endif
+      \| if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+      \|   execute 'normal! g`"zvzz'
+      \| endif
 
   """ filetype specific
     autocmd SourcePost  *       set filetype+=
@@ -402,7 +389,6 @@ augroup vimrc
 
   """ commands that should be done by 'entr'
     autocmd BufWritePost .Xresources,.Xdefaults silent exec '!xrdb %'
-    " autocmd FileType tex autocmd BufWritePost <buffer> silent exec '!pdflatex %'
     autocmd BufWritePost <buffer> if &ft=~'tex'|silent exec '!pdflatex %'|endif
     autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
 
@@ -442,14 +428,6 @@ augroup END
     highlight highlightedword5 guifg=#000000 guibg=#ff5faf
     highlight highlightedword6 guifg=#000000 guibg=#d7ffff
 
-  """ 256 colors
-    highlight highlightedword1 ctermfg=16 ctermbg=214
-    highlight highlightedword2 ctermfg=16 ctermbg=154
-    highlight highlightedword3 ctermfg=16 ctermbg=51
-    highlight highlightedword4 ctermfg=16 ctermbg=160
-    highlight highlightedword5 ctermfg=16 ctermbg=205
-    highlight highlightedword6 ctermfg=16 ctermbg=195
-
 """ abbreviations
   inoreabbrev #i    #include
   inoreabbrev #d    #define
@@ -458,13 +436,12 @@ augroup END
   inoreabbrev sec   \section{}<left><cmd>call getchar(0)<cr>
   inoreabbrev ssec  \subsection{}<left><cmd>call getchar(0)<cr>
   inoreabbrev fn    \footnote{}<left><cmd>call getchar(0)<cr>
-  inoreabbrev wop   with open('') as f:<cmd>call getchar(0)<cr>
 
-  cnoreabbrev         w!! w !sudo tee > /dev/null %
   cnoreabbrev         W   noa w
   cnoreabbrev <expr>  w   v:char =~ "!" ? "w" : "noa w"
   cnoreabbrev <expr>  q   v:char =~ "!" ? "q" : "Sayonara"
   cnoreabbrev <expr>  wq  v:char =~ "!" ? "wq" : "noa w<bar>Sayonara"
+  " cnoreabbrev         w!! exec 'sil w !sudo tee > % /dev/null' \| edit!
 
 """ folding
   set foldenable
