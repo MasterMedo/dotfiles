@@ -26,6 +26,10 @@ call plug#begin('~/.vim/plugged')
 
     """ vim-airline/vim-airline 160.445ms startup
       Plug 'vim-airline/vim-airline'
+      " let g:airline#extensions#disable_rtp_load = 1 " 13.6ms save startup
+      " let g:airline_extensions = [] " 11.38ms save startup
+      " let g:airline_highlighting_cache = 1 " 11ms save startup
+      " let g:airline_theme='dark_minimal' " 40ms worse startup
       " let g:XkbSwitchLib = "/usr/lib/libxkbswitch.so"
       " let g:airline#extensions#xkblayout#enabled = 1
 
