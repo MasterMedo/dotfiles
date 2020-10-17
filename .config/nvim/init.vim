@@ -106,18 +106,44 @@ call plug#begin('~/.vim/plugged')
       Plug 'tpope/vim-markdown'
       let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
+  """ autocomplete and lsp
+    """ neoclide/coc.nvim
+      " Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['json', 'python']}
+      let g:coc_global_extensions = [
+        \ 'coc-python',
+        \ 'coc-json',
+        \ 'coc-snippets',
+        \ 'coc-tabnine']
+
+      " ~/.config/nvim/coc-settings.json
+      "{
+      "  "suggest.keepCompleteopt": true,
+      "  "python.linting.enabled": false,
+      "  "python.analysis.diagnosticEnabled": false
+      "}
+
+      nmap <silent> gd <Plug>(coc-definition)
+      nmap <silent> gy <Plug>(coc-type-definition)
+      nmap <silent> gi <Plug>(coc-implementation)
+      nmap <silent> gr <Plug>(coc-references)
+      inoremap <expr> <tab> pumvisible() ? "\<c-y>" :
+               \ <sid>check_back_space() ? "\<tab>" : 
+               \ exists('*coc#refresh') ? coc#refresh() : "\<tab>"
+
+      function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~# '\s'
+      endfunction
+
     """ dense-analysis/ale
       Plug 'dense-analysis/ale'
-      let g:ale_python_flake8_options = '--ignore=E501'
-      let b:ale_linters = {'python': ['flake8', 'pyls']}
-      " let b:ale_linters = {'python': ['flake8']}
+      let g:ale_python_flake8_options = '--ignore=E121,E126,E226,E24,E501'
+      let b:ale_linters = {'python': ['flake8']}
       let g:ale_sign_error = '☠'
       let g:ale_sign_warning = '⚠'
       let g:ale_sign_info = 'i'
       let g:ale_sign_style_error = '☠s'
       let g:ale_sign_style_warning = '⚠s'
-      let g:ale_completion_enabled = 1
-      set omnifunc=ale#completion#OmniFunc
 
   """ plugins to check out
     " Chiel92/vim-autoformat
@@ -152,6 +178,9 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set hidden
     set splitbelow
     set splitright
+    set shortmess+=I
+    set updatetime=300
+    set report=0
 
   """ colors
     syntax on
@@ -166,6 +195,8 @@ nnoremap <leader>pu :PlugUpdate<cr>
 
   """ backups
     set backup
+    " setlocal nobackup
+    " setlocal nowritebackup
     set undofile
     set swapfile
 
@@ -199,9 +230,8 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set wildignore+=*.sw?                             " vim swap files
 
   """ autocomplete
-    set completeopt=menuone,longest
+    set completeopt=menuone,noinsert
     set shortmess+=c
-    set shortmess+=I
 
   """ tabs and wrapping
     set shiftwidth=2
@@ -245,24 +275,9 @@ nnoremap <leader>pu :PlugUpdate<cr>
       noremap <c-a-l> <c-w>L
 
   """ autocomplete
-    let select_first = "\<c-x>\<c-o>"
-      \ ."\<C-R>=pumvisible()?\"\\<down>\":\"\"\<cr>"
-      \ ."\<cmd>echo\<cr>"
-
-    function! s:check_back_space() abort
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~# '\s'
-    endfunction
-
-    inoremap <expr> .     "." . select_first
     inoremap <expr> <c-j> pumvisible() ? "\<down>" : "\<c-j>"
     inoremap <expr> <c-k> pumvisible() ? "\<up>"   : "\<c-k>"
     inoremap <expr> <esc> pumvisible() ? "\<c-e>"  : "\<esc>"
-    inoremap <expr> <tab> pumvisible() ? "\<c-y>"  :
-             \ <sid>check_back_space() ? "\<tab>"  : select_first
-
-    " inoremap <expr> <c-j> pumvisible() ? "\<c-n>"  : "\<c-j>"
-    " inoremap <expr> <c-k> pumvisible() ? "\<c-p>"  : "\<c-k>"
 
   """ common
     nnoremap  '       `
@@ -273,15 +288,19 @@ nnoremap <leader>pu :PlugUpdate<cr>
     nnoremap  c*      *Ncgn
     nnoremap  vb      <c-v>
     nnoremap  Q       <nop>
-    nnoremap  <cr>    o<esc>
+    nnoremap  <cr>    <nop>
     nnoremap  <F1>    <nop>
     nnoremap  <space> <nop>
+    nnoremap  č       ;
+    nnoremap  Č       :
+    nnoremap  ć       '
+    nnoremap  Ć       "
 
   """ leader
     nnoremap  <leader>a za
     nnoremap  <leader>c zc
     nnoremap  <leader>o zo
-    nnoremap  <leader>z zMzvzz
+    nnoremap  <leader>z zxzz
     nnoremap  <leader>n :cnext<cr>
     nnoremap  <leader>p :cprev<cr>
     nnoremap  <leader>w :w<cr>
@@ -298,8 +317,6 @@ nnoremap <leader>pu :PlugUpdate<cr>
 
   """ training
     nnoremap ``     <cmd>echo "use ''"<cr>
-    nnoremap $      <cmd>echo "use E"<cr>
-    nnoremap ^      <cmd>echo "use B"<cr>
     " inoremap <esc>  <cmd>echo "use jk"<cr>
 
   """ repeatable
@@ -349,7 +366,7 @@ augroup vimrc
     autocmd InsertEnter * setlocal cursorline
 
   """ :h restore-cursor 54.494ms startup
-    autocmd VimEnter * exe "normal! zvzz"
+    autocmd VimEnter * exe "normal! zxzz"
     autocmd BufReadPost *
       \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
       \ |   exe "normal! g`\""
@@ -372,7 +389,7 @@ augroup vimrc
 
   """ commands that should be done by 'entr'
     autocmd BufWritePost .Xresources,.Xdefaults silent exec "!xrdb %"
-    autocmd BufWritePost <buffer> if &ft=~"tex"|silent exec "!pdflatex %"|endif
+    autocmd BufWritePost <buffer> if &ft=~"tex"|silent exec "!pdflatex %:p"|endif
     autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
 
 augroup END
@@ -424,7 +441,7 @@ augroup END
   cnoreabbrev <expr>  w   v:char =~ "!" ? "w" : "noa w"
   cnoreabbrev <expr>  q   v:char =~ "!" ? "q" : "Sayonara"
   cnoreabbrev <expr>  wq  v:char =~ "!" ? "wq" : "noa w<bar>Sayonara"
-  " cnoreabbrev         w!! exec 'sil w !sudo tee > % /dev/null' \| edit!
+  cnoreabbrev         w!! exec 'sil w !sudo tee % > /dev/null' <bar> edit!
 
 """ folding
   set foldenable
