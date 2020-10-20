@@ -1,0 +1,132 @@
+install:
+  base
+  base-devel
+  vim
+  runit
+  elogind-runit
+  cryptsetup
+  device-mapper
+  lvm2
+  linux
+  linux-firmware
+  grub
+  efibootmgr
+  os-prober
+  dhcp
+  wpa_supplicant
+  connman
+  connman-runit
+
+post-install:
+  sudo
+  fish
+  curl
+  wget
+  unrar
+  unzip
+  zip
+  imagemagick
+  ripgrep
+  fzf
+  udisks2
+  arandr
+  ffmpeg
+  encfs
+  bluez
+  bluez-utils
+  bluez-runit
+  pulseaudio-bluetooth
+  alsa-utils
+  tree
+  openvpn
+  openssh
+  htop
+  xdg-user-dirs
+  xorg
+  w3m
+  xclip
+  git
+  yay (git)
+
+programming:
+  python
+  python-pywal
+  python-networkx
+  python-more-itertools
+  python-scikit-learn
+  python-numpy
+  python-sympy
+  python-z3
+  python-jedi
+  jupyter-notebook
+  flake8
+  pypy
+  texlive-most
+  tcc
+  go
+  r
+
+programs:
+  dwm (git)
+  dmenu (git)
+  st (git)
+  neovim-nightly (aur)
+  ungoogled-chromium (aur)
+  sxiv
+  feh
+  maim
+  flameshot
+  mplayer
+  zathura
+  zathura-pdf-mupdf
+  zathura-djvu
+  nemo (or vifm, lf)
+  libreoffice
+  gimp
+  sc-im
+  frotz
+  android-file-transfer?
+  steam?
+
+flare:
+  dotfiles (git)
+  san-francisco-font (git)
+  nerd-fonts-complete (aur)
+  adobe-source-code-pro-fonts (aur)
+  picom-rounded-corners (aur)
+  unclutter (or xbanish)
+  redshift
+
+visuals:
+  figlet
+  screenkey
+  cmatrix?
+  hollywood?
+  lolcat?
+  neofetch?
+  screenfetch?
+  conky?
+
+useful commands:
+  youtube-dl
+  sxhkd?
+  entr?
+  greenclip?
+  fakeroot?
+  acpid?
+  cronie?
+  brename?
+  tmux?
+  parallel?
+
+laptop specific:
+  xf86-input-libinput?
+  xf86-input-synaptics?
+  xf86-input-wacom?
+  xf86-video-intel?
+
+mpc?mpd?mpv?
+ncmpcpp?
+nodejs?
+tor-browser?
+ffcast?
