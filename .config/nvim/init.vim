@@ -2,6 +2,8 @@
   " lsp - documentation, references
   " train `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y
   " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
+  " check if neovim-nightly available for fillchars
+  " wrong fold color for lower level folds
 
 """ vimrc
   let mapleader       = " "
@@ -11,6 +13,12 @@
   let g:vimsyn_embed  = 'lP'
 
 """ plugins
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin('~/.vim/plugged')
 
   """ visuals
@@ -376,8 +384,8 @@ augroup vimrc
     autocmd SourcePost  *       set filetype+=
     autocmd FileType    *       setlocal  fo-=c fo-=r fo-=o fo+=1 fo+=t
     autocmd FileType    *       setlocal  textwidth=0
-    autocmd FileType    c,cpp   setlocal  foldmethod=marker foldmarker={,}
-    autocmd FileType    c,cpp   setlocal  ts=8 sts=8 sw=8
+    " autocmd FileType    c,cpp   setlocal  foldmethod=marker foldmarker={,}
+    " autocmd FileType    c,cpp   setlocal  ts=8 sts=8 sw=8
     autocmd FileType    python  setlocal  ts=4 sts=4 sw=4
 
   """ trailing spaces and blanks
