@@ -109,6 +109,7 @@ visuals:
 
 useful commands:
   youtube-dl
+  acpi
   sxhkd?
   entr?
   greenclip?
@@ -123,7 +124,9 @@ laptop specific:
   xf86-input-libinput?
   xf86-input-synaptics?
   xf86-input-wacom?
-  xf86-video-intel?
+  xf86-video-intel
+  vulkan-intel
+  mesa-demos
 
 mpc?mpd?mpv?
 ncmpcpp?
