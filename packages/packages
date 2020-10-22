@@ -36,6 +36,8 @@ post-install:
   bluez-utils
   bluez-runit
   pulseaudio-bluetooth
+  pulsemixer
+  pamixer
   alsa-utils
   tree
   openvpn
@@ -85,6 +87,7 @@ programs:
   gimp
   sc-im
   frotz
+  onboard
   android-file-transfer?
   steam?
 
@@ -92,6 +95,7 @@ flare:
   dotfiles (git)
   san-francisco-font (git)
   nerd-fonts-complete (aur)
+  ttf-font-awesome
   adobe-source-code-pro-fonts (aur)
   picom-rounded-corners (aur)
   unclutter (or xbanish)
