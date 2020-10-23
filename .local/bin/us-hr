@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ $(setxkbmap -query | grep layout | tail -c -3) != "us" ]
+then
+  setxkbmap us
+else
+  setxkbmap hr
+fi
+kill -64 $(pidof dwmblocks)
