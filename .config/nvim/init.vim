@@ -116,7 +116,7 @@ call plug#begin('~/.vim/plugged')
 
   """ autocomplete and lsp
     """ neoclide/coc.nvim
-      " Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['json', 'python']}
+      Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['json', 'python']}
       let g:coc_global_extensions = [
         \ 'coc-python',
         \ 'coc-json',
