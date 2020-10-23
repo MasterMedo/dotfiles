@@ -226,7 +226,7 @@ static Key keys[] = {
 /*{ MODKEY,           XK_k, spawn,      SHCMD("") }, */
 /*{ MODKEY|ShiftMask, XK_k, spawn,      SHCMD("") }, */
   { MODKEY,           XK_l, setmfact,   {.f = +0.05} },
-/*{ MODKEY,           XK_z, incrgaps,   {.i = +3 } }, */
+  { MODKEY,           XK_z, zoom,       {0} },
 /*{ MODKEY|ShiftMask, XK_z, spawn,      SHCMD("") }, */
 /*{ MODKEY,           XK_x, incrgaps,   {.i = -3 } }, */
   { MODKEY|ShiftMask, XK_x, spawn,      SHCMD("sudo shutdown -h now") },
@@ -296,12 +296,11 @@ static Key keys[] = {
 };
 
 /* button definitions */
-/* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
+/* click can be ClkTagBar, ClkLtSymbol, ClkStatusText,
    ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
   /* click          event mask  button    function      argument */
 #ifndef __OpenBSD__
-  { ClkWinTitle,    0,          Button2,  zoom,         {0} },
   { ClkStatusText,  0,          Button1,  sigdwmblocks, {.i = 1} },
   { ClkStatusText,  0,          Button2,  sigdwmblocks, {.i = 2} },
   { ClkStatusText,  0,          Button3,  sigdwmblocks, {.i = 3} },
