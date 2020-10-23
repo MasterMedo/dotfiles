@@ -1,3 +1,0 @@
-# scripts
-
-## self explanatory scripts
