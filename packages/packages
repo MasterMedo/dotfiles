@@ -29,6 +29,7 @@ post-install:
   ripgrep
   fzf
   udisks2
+  ntfs-3g
   arandr
   ffmpeg
   encfs
@@ -43,12 +44,13 @@ post-install:
   openvpn
   openssh
   htop
-  xdg-user-dirs
   xorg
   w3m
   xclip
   git
   yay (git)
+  xdg-user-dirs
+  perl-file-mimeinfo
 
 programming:
   python
@@ -60,10 +62,12 @@ programming:
   python-sympy
   python-z3
   python-jedi
+  python-neovim
   jupyter-notebook
   flake8
   pypy
   texlive-most
+  npm
   tcc
   go
   r
@@ -79,10 +83,12 @@ programs:
   maim
   flameshot
   mplayer
+  mpv
   zathura
   zathura-pdf-mupdf
   zathura-djvu
-  nemo (or vifm, lf)
+  nemo
+  lf-git (aur)
   libreoffice
   gimp
   sc-im
@@ -104,10 +110,10 @@ flare:
 visuals:
   figlet
   screenkey
+  neofetch
   cmatrix?
   hollywood?
   lolcat?
-  neofetch?
   screenfetch?
   conky?
 
