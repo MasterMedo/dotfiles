@@ -51,6 +51,7 @@ post-install:
   yay (git)
   xdg-user-dirs
   perl-file-mimeinfo
+  archlinux-keyring (re-download if necessary)
 
 programming:
   python
@@ -63,6 +64,7 @@ programming:
   python-z3
   python-jedi
   python-neovim
+  python-matplotlib
   jupyter-notebook
   flake8
   pypy
@@ -76,6 +78,10 @@ programs:
   dwm (git)
   dmenu (git)
   st (git)
+  slock (git)
+  xautolock
+  farbfeld (aur)
+  sent (git)
   neovim-nightly (aur)
   ungoogled-chromium (aur)
   sxiv
@@ -100,7 +106,7 @@ programs:
 flare:
   dotfiles (git)
   san-francisco-font (git)
-  nerd-fonts-complete (aur)
+  nerd-fonts-complete (git) - Noto Emoji Nerd Font Complete Mono
   ttf-font-awesome
   adobe-source-code-pro-fonts (aur)
   picom-rounded-corners (aur)
@@ -120,8 +126,8 @@ visuals:
 useful commands:
   youtube-dl
   acpi
+  entr
   sxhkd?
-  entr?
   greenclip?
   fakeroot?
   acpid?
