@@ -28,6 +28,7 @@
 
 /* define opaqueness */
 #define OPAQUE 0xFFU
+#define TRANSPARENT 0xE0
 
 /* enums */
 enum { SchemeNorm, SchemeSel, SchemeOut, SchemeLast }; /* color schemes */

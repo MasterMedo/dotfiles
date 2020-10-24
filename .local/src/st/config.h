@@ -5,8 +5,8 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "SF Mono:size=27";
-static char *font2[] = { "SF Mono:size=27" };
+static char *font = "SF Mono:style=Regular:size=27";
+static char *font2[] = { "SF Mono:style=Regular:size=27" };
 static int borderpx = 2;
 
 /*
