@@ -147,11 +147,15 @@ call plug#begin('~/.vim/plugged')
       Plug 'dense-analysis/ale'
       let g:ale_python_flake8_options = '--ignore=E121,E126,E226,E24,E501'
       let b:ale_linters = {'python': ['flake8']}
-      let g:ale_sign_error = '☠'
+      " 🐛❌💀💢💣📉☠
+      let g:ale_sign_error = '❌'
+      " 💡🔎🔔⚠☠⚡
       let g:ale_sign_warning = '⚠'
       let g:ale_sign_info = 'i'
-      let g:ale_sign_style_error = '☠s'
-      let g:ale_sign_style_warning = '⚠s'
+      " 👎💩📉📍🔎🔔🔖🔜☠
+      let g:ale_sign_style_error = '👎'
+      " 👉💄📍🔎🔖🔜☠
+      let g:ale_sign_style_warning = '👉'
 
   """ plugins to check out
     " Chiel92/vim-autoformat
