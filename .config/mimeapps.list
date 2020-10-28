@@ -1,2 +1,6 @@
 [Default Applications]
-image/png=sxiv.desktop;
+image/png=feh.desktop;
+image/jpg=feh.desktop;
+image/jpeg=feh.desktop;
+text/plain=nvim.desktop;
+application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;
