@@ -363,13 +363,13 @@ nnoremap <leader>pu :PlugUpdate<cr>
 augroup vimrc
   autocmd!
   """ autocomplete
-    autocmd CompleteDone <buffer> silent! if v:completed_item.word =~ '\.$'
-                               \| call feedkeys("\<bs>")
-                               \| endif
+    autocmd CompleteDone <buffer> if has_key(v:completed_item, 'word') && v:completed_item.word =~ '\.$'
+                              \| call feedkeys("\<bs>")
+                              \| endif
 
-    autocmd CompleteDone <buffer> silent! if v:completed_item.word =~ '($'
-                               \| call feedkeys(")\<Left>", 'in')
-                               \| endif
+    autocmd CompleteDone <buffer> if has_key(v:completed_item, 'word') && v:completed_item.word =~ '($'
+                              \| call feedkeys(")\<Left>", 'in')
+                              \| endif
 
   """ window cursorline
     autocmd WinEnter    * setlocal cursorline
