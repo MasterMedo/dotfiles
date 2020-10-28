@@ -6,9 +6,10 @@ if status is-login
   end
 end
 
-if status is-interactive
-  cat ~/.cache/wal/sequences
-end
+cat ~/.cache/wal/sequences
+# if status is-interactive
+#   cat ~/.cache/wal/sequences
+# end
 
 set fish_color_normal 'normal'
 set fish_color_command 'brwhite' --bold
