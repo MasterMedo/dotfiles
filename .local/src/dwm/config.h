@@ -194,7 +194,7 @@ static Key keys[] = {
 /*{ MODKEY|ShiftMask, XK_w, spawn,      SHCMD("") }, */
 /*{ MODKEY,           XK_e, spawn,      SHCMD("") }, */
 /*{ MODKEY|ShiftMask, XK_e, spawn,      SHCMD("") }, */
-  { MODKEY,           XK_r, spawn,      SHCMD(TERMINAL " -e lf") },
+  { MODKEY,           XK_r, spawn,      SHCMD(TERMINAL " -e fish -c lf") },
   { MODKEY|ShiftMask, XK_r, spawn,      SHCMD("kill -HUP $(pidof -s dwm)") },
   { MODKEY,           XK_t, setlayout,  {.v = &layouts[0]} }, // tile
   { MODKEY|ShiftMask, XK_t, setlayout,  {.v = &layouts[1]} }, // bstack
@@ -202,7 +202,7 @@ static Key keys[] = {
   { MODKEY|ShiftMask, XK_y, setlayout,  {.v = &layouts[3]} }, // dwindle
   { MODKEY,           XK_u, setlayout,  {.v = &layouts[4]} }, // deck
   { MODKEY|ShiftMask, XK_u, setlayout,  {.v = &layouts[5]} }, // monocle
-  { MODKEY,           XK_i, spawn,      SHCMD(TERMINAL " -e htop") },
+  { MODKEY,           XK_i, spawn,      SHCMD(TERMINAL " -e fish -c htop") },
 /*{ MODKEY|ShiftMask, XK_i, setlayout,  {.v = &layouts[7]} }, */
   { MODKEY,           XK_o, setlayout,  {.v = &layouts[6]} }, // centeredmaster
   { MODKEY|ShiftMask, XK_o, setlayout,  {.v = &layouts[7]} }, // centerFmaster
