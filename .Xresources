@@ -1,3 +1,5 @@
 *.alpha:220
+*.foreground: #a6a6a6
+*.background: #10161c
 /* *.font: Square:size=27 */
 *.font: SF Mono:style=Regular:size=27
