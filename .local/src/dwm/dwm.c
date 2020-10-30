@@ -1609,7 +1609,7 @@ runAutostart(void) {
         system("killall -q flameshot; flameshot &");
         system("killall -q unclutter; unclutter &");
         system("killall -q redshift; redshift &"); // TODO don't restart
-        system("pulseaudio -k; pulseaudio --start");
+        system("kilall pulseaudio; pulseaudio --start");
         system("killall -q picom; picom &");
 }
 
