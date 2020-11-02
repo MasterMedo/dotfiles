@@ -401,8 +401,8 @@ augroup vimrc
 
   """ commands that should be done by 'entr'
     autocmd BufWritePost .Xresources,.Xdefaults silent exec "!xrdb %"
-    autocmd BufWritePost <buffer> if &ft=~"tex"|silent exec "!pdflatex %:p"|endif
-    autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
+    autocmd BufWritePost *.tex silent exec "!pdflatex %:p"
+    " autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
 
 augroup END
 
@@ -450,9 +450,9 @@ augroup END
   inoreabbrev fn    \footnote{}<left><cmd>call getchar(0)<cr>
 
   cnoreabbrev         W   noa w
-  cnoreabbrev <expr>  w   v:char =~ "!" ? "w" : "noa w"
+  " cnoreabbrev <expr>  w   v:char =~ "!" ? "w" : "noa w"
   cnoreabbrev <expr>  q   v:char =~ "!" ? "q" : "Sayonara"
-  cnoreabbrev <expr>  wq  v:char =~ "!" ? "wq" : "noa w<bar>Sayonara"
+  cnoreabbrev <expr>  wq  v:char =~ "!" ? "wq" : "w<bar>Sayonara"
   cnoreabbrev         w!! exec 'sil w !sudo tee % > /dev/null' <bar> edit!
 
 """ folding
