@@ -141,7 +141,7 @@ call plug#begin('~/.vim/plugged')
       nmap <silent> gi <Plug>(coc-implementation)
       nmap <silent> gr <Plug>(coc-references)
       inoremap <expr> <tab> pumvisible() ? "\<c-y>" :
-               \ <sid>check_back_space() ? "\<tab>" : 
+               \ <sid>check_back_space() ? "\<tab>" :
                \ exists('*coc#refresh') ? coc#refresh() : "\<tab>"
 
       function! s:check_back_space() abort
