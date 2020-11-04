@@ -265,7 +265,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
 
   """ special characters
     set list
-    set showbreak=↪\
+    set showbreak=↪\  " this comment preserves a trailing whitespace
     set listchars=tab:‹-›,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
     set fillchars=vert:\ ,fold:\ ,foldopen:#,foldclose:#,eob:x
 
