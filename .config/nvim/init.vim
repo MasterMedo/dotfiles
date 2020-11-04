@@ -2,7 +2,6 @@
   " lsp - documentation, references
   " train `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y
   " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
-  " check if neovim-nightly available for fillchars
   " wrong fold color for lower level folds
 
 """ vimrc
@@ -267,7 +266,10 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set list
     set showbreak=↪\  " this comment preserves a trailing whitespace
     set listchars=tab:‹-›,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
-    set fillchars=vert:\ ,fold:\ ,foldopen:#,foldclose:#,eob:x
+    set fillchars=vert:\ ,fold:\ ,eob:x
+    if has('nvim-0.3')
+      set fillchars+=foldopen:▾,foldsep:│,foldclose:▸
+    endif
 
 """ mappings
   """ ctrl
