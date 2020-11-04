@@ -104,12 +104,6 @@ call plug#begin('~/.vim/plugged')
 
   """ miscellaneous
     Plug 'xolox/vim-misc'
-    """ glacambre/firenvim
-      Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
-      if exists('g:started_by_firenvim')
-        set laststatus=0
-        let w:airline_disable_statusline = 1
-      endif
 
   """ filetype specific
     Plug 'fatih/vim-go'
@@ -119,6 +113,13 @@ call plug#begin('~/.vim/plugged')
     """ tpope/vim-markdown
       Plug 'tpope/vim-markdown'
       let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+
+    """ glacambre/firenvim
+      Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+      if exists('g:started_by_firenvim')
+        set laststatus=0
+        let w:airline_disable_statusline = 1
+      endif
 
   """ autocomplete and lsp
     """ neoclide/coc.nvim
