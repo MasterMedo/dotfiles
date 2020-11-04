@@ -104,6 +104,12 @@ call plug#begin('~/.vim/plugged')
 
   """ miscellaneous
     Plug 'xolox/vim-misc'
+    """ glacambre/firenvim
+      Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+      if exists('g:started_by_firenvim')
+        set laststatus=0
+        let w:airline_disable_statusline = 1
+      endif
 
   """ filetype specific
     Plug 'fatih/vim-go'
