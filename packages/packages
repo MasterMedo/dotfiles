@@ -55,16 +55,19 @@ post-install:
 
 programming:
   python
-  python-pywal
-  python-networkx
+  python-beautifulsoup4
+  python-jedi
+  python-matplotlib
   python-more-itertools
-  python-scikit-learn
+  python-neovim
+  python-networkx
   python-numpy
+  python-pandas
+  python-pywal
+  python-requests
+  python-scikit-learn
   python-sympy
   python-z3
-  python-jedi
-  python-neovim
-  python-matplotlib
   jupyter-notebook
   flake8
   pypy
@@ -107,6 +110,7 @@ flare:
   dotfiles (git)
   san-francisco-font (git)
   nerd-fonts-complete (git) - Noto Emoji Nerd Font Complete Mono
+  noto-fonts-emoji
   ttf-font-awesome
   adobe-source-code-pro-fonts (aur)
   picom-rounded-corners (aur)
