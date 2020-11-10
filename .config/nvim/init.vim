@@ -104,7 +104,7 @@ call plug#begin('~/.vim/plugged')
   """ miscellaneous
     Plug 'xolox/vim-misc'
 
-  """ filetype specific
+  """ file type specific
     Plug 'fatih/vim-go'
     Plug 'dag/vim-fish'
     Plug 'vim-scripts/lua.vim'
@@ -155,12 +155,12 @@ call plug#begin('~/.vim/plugged')
       let b:ale_linters = {'python': ['flake8']}
       " 🐛❌💀💢💣📉☠
       let g:ale_sign_error = '❌'
-      " 💡🔎🔔⚠☠⚡
+      " 💡🔎🔔⚡⚠
       let g:ale_sign_warning = '⚠'
       let g:ale_sign_info = 'i'
-      " 👎💩📉📍🔎🔔🔖🔜☠
+      " 👎💩📉📍🔎🔔🔖🔜➡️ ⁉️
       let g:ale_sign_style_error = '👎'
-      " 👉💄📍🔎🔖🔜☠
+      " 👉💄📍🔎🔖🔜➡️ ‼️
       let g:ale_sign_style_warning = '👉'
 
   """ plugins to check out
@@ -182,6 +182,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
   """ basics
     set nobomb
     filetype plugin on
+    setlocal spell
     set lazyredraw
     set encoding=utf-8
     set scrolloff=9
@@ -203,7 +204,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
   """ colors
     syntax on
     set cursorline
-    set synmaxcol=300
+    set synmaxcol=1000
     set background=dark
     set termguicolors
     colorscheme vim-tinge
@@ -247,7 +248,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
     set wildignore+=*.sw?                             " vim swap files
 
-  """ autocomplete
+  """ auto-complete
     set completeopt=menuone,noinsert
     set shortmess+=c
 
@@ -267,7 +268,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set showbreak=↪\  " this comment preserves a trailing whitespace
     set listchars=tab:‹-›,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
     set fillchars=vert:\ ,fold:\ ,eob:x
-    if has('nvim-0.3')
+    if has('nvim-0.5')
       set fillchars+=foldopen:▾,foldsep:│,foldclose:▸
     endif
 
@@ -295,7 +296,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
       noremap <c-a-k> <c-w>K
       noremap <c-a-l> <c-w>L
 
-  """ autocomplete
+  """ auto-complete
     inoremap <expr> <c-j> pumvisible() ? "\<down>" : "\<c-j>"
     inoremap <expr> <c-k> pumvisible() ? "\<up>"   : "\<c-k>"
     inoremap <expr> <esc> pumvisible() ? "\<c-e>"  : "\<esc>"
@@ -368,10 +369,10 @@ nnoremap <leader>pu :PlugUpdate<cr>
     noremap!  JK    <esc>
     inoremap  <F1>  <esc>
 
-""" autocmds
+""" auto-commands
 augroup vimrc
   autocmd!
-  """ autocomplete
+  """ auto-complete
     autocmd CompleteDone <buffer> if has_key(v:completed_item, 'word') && v:completed_item.word =~ '\.$'
                               \| call feedkeys("\<bs>")
                               \| endif
@@ -380,7 +381,7 @@ augroup vimrc
                               \| call feedkeys(")\<Left>", 'in')
                               \| endif
 
-  """ window cursorline
+  """ window cursor line
     autocmd WinEnter    * setlocal cursorline
     autocmd WinLeave    * setlocal nocursorline
     autocmd InsertEnter * setlocal nocursorline
@@ -393,13 +394,13 @@ augroup vimrc
       \ |   exe "normal! g`\""
       \ | endif
 
-  """ filetype specific
-    autocmd SourcePost  *       set filetype+=
-    autocmd FileType    *       setlocal  fo-=c fo-=r fo-=o fo+=1 fo+=t
-    autocmd FileType    *       setlocal  textwidth=0
-    " autocmd FileType    c,cpp   setlocal  foldmethod=marker foldmarker={,}
-    " autocmd FileType    c,cpp   setlocal  ts=8 sts=8 sw=8
-    autocmd FileType    python  setlocal  ts=4 sts=4 sw=4
+  """ file type specific
+    autocmd FileType  * setlocal  formatoptions=tqjl1
+    autocmd FileType  * setlocal  textwidth=0
+    " autocmd SourcePost  * set filetype+=
+    " autocmd BufNewFile,BufRead * if &filetype == ''
+    "       \| setlocal filetype=noft
+    "       \| endif
 
   """ trailing spaces and blanks
     " remove trailing spaces at the end of the line
