@@ -228,7 +228,7 @@ static Key keys[] = {
   { MODKEY,           XK_l, setmfact,   {.f = +0.05} },
   { MODKEY,           XK_z, zoom,       {0} },
 /*{ MODKEY|ShiftMask, XK_z, spawn,      SHCMD("") }, */
-/*{ MODKEY,           XK_x, incrgaps,   {.i = -3 } }, */
+  { MODKEY,           XK_x, spawn,      SHCMD("slock") },
   { MODKEY|ShiftMask, XK_x, spawn,      SHCMD("sudo shutdown -h now") },
   { MODKEY,           XK_c, spawn,      SHCMD("dmenurecord") },
   { MODKEY|ShiftMask, XK_c, spawn,      SHCMD("camtoggle") },
