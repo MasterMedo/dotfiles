@@ -2,7 +2,8 @@
   " lsp - documentation, references
   " train `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y
   " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
-  " wrong fold color for lower level folds
+  " wrong fold color for lower level folds neovim/neovim #12982
+  " auto-command - turn off syntax and sync plugins for buffers with long lines
 
 """ vimrc
   let mapleader       = " "
@@ -22,8 +23,15 @@ call plug#begin('~/.vim/plugged')
 
   """ visuals
     Plug 'mastermedo/vim-tinge'
+    Plug 'romainl/vim-cool'
     Plug 'ryanoasis/vim-devicons'
-    Plug 'psliwka/vim-smoothie'
+    " Plug 'psliwka/vim-smoothie'
+    Plug 'subnut/vim-smoothie'
+    """ RRethy/vim-illuminate
+      Plug 'RRethy/vim-illuminate'
+      let g:Illuminate_ftHighlightGroups = {
+        \ '*:blacklist': ['Comment', 'String']
+        \ }
     """  chrisbra/colorizer
       Plug 'chrisbra/colorizer'
       let g:colorizer_debug = 0
@@ -94,6 +102,7 @@ call plug#begin('~/.vim/plugged')
 
   """ text objects
     " Plug 'wellle/targets.vim'           issue 246
+    Plug 'chaoren/vim-wordmotion'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-commentary'
     Plug 'kana/vim-textobj-line'
@@ -103,6 +112,7 @@ call plug#begin('~/.vim/plugged')
 
   """ miscellaneous
     Plug 'xolox/vim-misc'
+    Plug 'AndrewRadev/bufferize.vim'
 
   """ file type specific
     Plug 'fatih/vim-go'
@@ -164,14 +174,20 @@ call plug#begin('~/.vim/plugged')
       let g:ale_sign_style_warning = '👉'
 
   """ plugins to check out
-    " Chiel92/vim-autoformat
-    " Xuyuanp/nerdtree-git-plugin
-    " Yggdroot/LeaderF
-    " airblade/vim-gutter
+    " Konfekt/FastFold
+    " romgrk/winteract.vim
+    " justinmk/vim-sneak
+    " alok/notational-fzf-vim
+    " reedes/vim-pencil
     " chrisbra/matchit
-    " jreybert/vimagit
     " tpope/vim-fugitive
     " tpope/vim-unimpaired
+    " tpope/vim-abolish
+    " Chiel92/vim-autoformat
+    " Xuyuanp/nerdtree-git-plugin
+    " airblade/vim-gutter
+    " jreybert/vimagit
+    " svermeulen/vim-yoink
 
 
 call plug#end()
