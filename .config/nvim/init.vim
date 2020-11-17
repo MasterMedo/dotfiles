@@ -216,6 +216,8 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set shortmess+=I
     set updatetime=300
     set report=0
+    set gdefault
+    set inccommand=split
 
   """ colors
     syntax on
@@ -433,6 +435,10 @@ augroup vimrc
 augroup END
 
 """ word highlighter
+  """ function GetHighlightGroup
+    fun GetHighlightGroup()
+      echo synIDattr(synID(line('.'), col('.'), 1), 'name')
+    endfun
   """ function HighlightWord
     let g:word_id = 97531
     function! HighlightWord(n)
@@ -451,6 +457,7 @@ augroup END
     endfunction
 
   """ mappings
+    nnoremap <silent> <leader>H :call GetHighlightGroup()<cr>
     nnoremap <silent> <leader>1 :call HighlightWord(1)<cr>
     nnoremap <silent> <leader>2 :call HighlightWord(2)<cr>
     nnoremap <silent> <leader>3 :call HighlightWord(3)<cr>
