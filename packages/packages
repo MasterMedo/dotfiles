@@ -68,6 +68,10 @@ programming:
   python-scikit-learn
   python-sympy
   python-z3
+  python-gitpython
+  python-xlib
+  python-distro
+  python-pip
   jupyter-notebook
   flake8
   pypy
@@ -121,9 +125,9 @@ visuals:
   figlet
   screenkey
   neofetch
+  lolcat
   cmatrix?
   hollywood?
-  lolcat?
   screenfetch?
   conky?
 
@@ -153,3 +157,4 @@ ncmpcpp?
 nodejs?
 tor-browser?
 ffcast?
+tmux?
