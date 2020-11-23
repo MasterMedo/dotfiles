@@ -69,6 +69,7 @@ call plug#begin('~/.vim/plugged')
       let g:indentLine_fileTypeExclude = ['help']
 
   """ commands
+    Plug 'AndrewRadev/bufferize.vim'
     """ tpope/vim-repeat
       Plug 'tpope/vim-repeat'
       nnoremap <silent> <plug>PasteBelowLine o<esc>"+gp:call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
@@ -83,11 +84,17 @@ call plug#begin('~/.vim/plugged')
 
   """ interfaces
     Plug 'chrisbra/recover.vim' " 36.988ms startup
+    Plug 'stefandtw/quickfix-reflector.vim'
     """ junegunn/fzf
       Plug 'junegunn/fzf.vim'
       Plug 'junegunn/fzf', {'do': './install --bin' }
       nnoremap <silent> <leader>B :Buffers<cr>
       nnoremap <silent> <leader>F :Files<cr>
+    Plug 'jremmen/vim-ripgrep'
+    """ iamcco/markdown-preview.nvim
+      Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() },
+                                            \'for': ['markdown', 'vim-plug'] }
+      nnoremap <leader>P :MarkdownPreview<cr>
 
     """ mbbill/undotree
       Plug 'mbbill/undotree'
@@ -107,6 +114,9 @@ call plug#begin('~/.vim/plugged')
     " Plug 'wellle/targets.vim'           issue 246
     Plug 'chaoren/vim-wordmotion'
     Plug 'tpope/vim-surround'
+    """ tpope/vim-speeddating
+      Plug 'tpope/vim-speeddating'
+      autocmd VimEnter * SpeedDatingFormat %d.%m.%Y
     Plug 'tpope/vim-commentary'
     Plug 'kana/vim-textobj-line'
     Plug 'kana/vim-textobj-user'
@@ -115,7 +125,6 @@ call plug#begin('~/.vim/plugged')
 
   """ miscellaneous
     Plug 'xolox/vim-misc'
-    Plug 'AndrewRadev/bufferize.vim'
 
   """ file type specific
     Plug 'fatih/vim-go'
@@ -133,7 +142,7 @@ call plug#begin('~/.vim/plugged')
         let w:airline_disable_statusline = 1
       endif
 
-  """ autocomplete and lsp
+  """ auto-complete and language server protocol
     """ neoclide/coc.nvim
       Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['json', 'python']}
       let g:coc_global_extensions = [
