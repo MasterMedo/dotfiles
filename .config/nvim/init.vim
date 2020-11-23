@@ -185,8 +185,11 @@ call plug#begin('~/.vim/plugged')
       let g:ale_sign_style_error = '👎'
       " 👉💄📍🔎🔖🔜➡️ ‼️
       let g:ale_sign_style_warning = '👉'
+      autocmd VimEnter * highlight link alewarningsign  warningmsg
+      autocmd VimEnter * highlight link alestylewarning warningmsg
 
   """ plugins to check out
+    " nvim-treesitter/nvim-treesitter
     " Konfekt/FastFold
     " romgrk/winteract.vim
     " justinmk/vim-sneak
@@ -221,6 +224,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set relativenumber
     set ignorecase
     set smartcase
+    set noerrorbells
     set visualbell
     set helpheight=15
     set hidden
@@ -231,9 +235,12 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set report=0
     set gdefault
     set inccommand=split
+    set nostartofline
     set spell
     set spelllang=en_gb
     set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
+    set diffopt+=algorithm:patience,indent-heuristic
+    set shada='500,<10000,s1000,:1000 " marks, lines, KB, commands
 
   """ colours
     syntax on
@@ -281,6 +288,8 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg    " binary images
     set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
     set wildignore+=*.sw?                             " vim swap files
+    set suffixes+=.log,.aux,.bst,.out,.toc,.blg,.bbl
+    set suffixesadd+=.py,.tex,.c,.js
 
   """ auto-complete
     set completeopt=menuone,noinsert
@@ -305,6 +314,17 @@ nnoremap <leader>pu :PlugUpdate<cr>
     if has('nvim-0.5')
       set fillchars+=foldopen:▾,foldsep:│,foldclose:▸
     endif
+
+""" commands
+  function! s:DiffWithSaved()
+    setlocal nospell
+    let filetype=&ft
+    diffthis
+    vnew | r # | normal! 1Gdd
+    diffthis
+    exe "setlocal bt=nofile bh=wipe nobl noswf ro nospell ft=" . filetype
+  endfunction
+  com! DiffSaved call s:DiffWithSaved()
 
 """ mappings
   """ ctrl
@@ -437,6 +457,7 @@ augroup vimrc
   """ file type specific
     autocmd FileType  * setlocal  formatoptions=tqjl1
     autocmd FileType  * setlocal  textwidth=0
+    autocmd FileType  python nnoremap <f5> :!python %<cr>
     " autocmd SourcePost  * set filetype+=
     " autocmd BufNewFile,BufRead * if &filetype == ''
     "       \| setlocal filetype=noft
