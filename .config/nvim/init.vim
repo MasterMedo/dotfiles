@@ -1,8 +1,8 @@
 """ TODO
-  " lsp - documentation, references
-  " train `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y
+  " language server protocol - documentation, references
+  " train: `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y, z=
   " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
-  " wrong fold color for lower level folds neovim/neovim #12982
+  " wrong fold colour for lower level folds neovim/neovim #12982
   " auto-command - turn off syntax and sync plugins for buffers with long lines
 
 """ vimrc
@@ -42,12 +42,12 @@ call plug#begin('~/.vim/plugged')
       let g:colorizer_vimhighlight_disable = 1
       nnoremap <leader>C :ColorToggle<cr>
 
-    """ vim-airline/vim-airline 160.445ms startup
+    """ vim-airline/vim-airline 160.445ms start-up
       Plug 'vim-airline/vim-airline'
-      " let g:airline#extensions#disable_rtp_load = 1 " 13.6ms save startup
-      " let g:airline_extensions = [] " 11.38ms save startup
-      " let g:airline_highlighting_cache = 1 " 11ms save startup
-      " let g:airline_theme='dark_minimal' " 40ms worse startup
+      " let g:airline#extensions#disable_rtp_load = 1 " 13.6ms save start-up
+      " let g:airline_extensions = [] " 11.38ms save start-up
+      " let g:airline_highlighting_cache = 1 " 11ms save start-up
+      " let g:airline_theme='dark_minimal' " 40ms worse start-up
       " let g:XkbSwitchLib = "/usr/lib/libxkbswitch.so"
       " let g:airline#extensions#xkblayout#enabled = 1
 
@@ -61,7 +61,7 @@ call plug#begin('~/.vim/plugged')
       autocmd! User GoyoLeave Limelight!
       nnoremap <silent> <F11> :Goyo<bar>set linebreak<cr>
 
-    """ Yggdroot/indentline 54.325ms startup and issue 298
+    """ Yggdroot/indentline 54.325ms start-up and issue 298
       Plug 'Yggdroot/indentline'
       let g:indentLine_char_list = ['|', '¦', '┆', '┊']
       let g:indentLine_setColors = 0
@@ -83,13 +83,14 @@ call plug#begin('~/.vim/plugged')
       let g:sayonara_confirm_quit = 0
 
   """ interfaces
-    Plug 'chrisbra/recover.vim' " 36.988ms startup
+    Plug 'chrisbra/recover.vim' " 36.988ms start-up
     Plug 'stefandtw/quickfix-reflector.vim'
     """ junegunn/fzf
       Plug 'junegunn/fzf.vim'
       Plug 'junegunn/fzf', {'do': './install --bin' }
       nnoremap <silent> <leader>B :Buffers<cr>
       nnoremap <silent> <leader>F :Files<cr>
+
     Plug 'jremmen/vim-ripgrep'
     """ iamcco/markdown-preview.nvim
       Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() },
@@ -103,7 +104,7 @@ call plug#begin('~/.vim/plugged')
       let g:undotree_SetFocusWhenToggle = 1
       nnoremap <leader>U :UndotreeToggle<cr>
 
-    """ preservim/nerdtree 55.537ms startup
+    """ preservim/nerdtree 55.537ms start-up
       Plug 'preservim/nerdtree'
       Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
       " let NERDTreeMinimalUI=1
@@ -234,7 +235,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set spelllang=en_gb
     set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
 
-  """ colors
+  """ colours
     syntax on
     set cursorline
     set synmaxcol=1000
@@ -350,19 +351,21 @@ nnoremap <leader>pu :PlugUpdate<cr>
     nnoremap  Č       :
     nnoremap  ć       '
     nnoremap  Ć       "
+    nnoremap  q:     :q
 
   """ leader
     nnoremap  <leader>a za
     nnoremap  <leader>c zc
-    nnoremap  <leader>o zo
-    nnoremap  <leader>z zxzz
-    nnoremap  <leader>n :cnext<cr>
-    nnoremap  <leader>p :cprev<cr>
-    nnoremap  <leader>w :w<cr>
-    nnoremap  <leader>q :q<cr>
-    nnoremap  <leader>l :echo<cr>
     nnoremap  <leader>d :echo strftime('%c')<cr>
     nnoremap  <leader>i :echom 'battery: '.system('bat')[:-2].'%'<cr>
+    nnoremap  <leader>l :echo<cr>
+    nnoremap  <leader>n :cnext<cr>
+    nnoremap  <leader>o zo
+    nnoremap  <leader>p :cprev<cr>
+    nnoremap  <leader>q :q<cr>
+    vnoremap  <leader>s :!sort<cr>
+    nnoremap  <leader>w :w<cr>
+    nnoremap  <leader>z zxzz
 
     nnoremap  <leader><leader>      mzggg?G`z
     nnoremap  <silent>  <leader>/   :noh<bar>call UnHighlightWords()<cr>
@@ -424,7 +427,7 @@ augroup vimrc
     autocmd InsertEnter * setlocal nocursorline
     autocmd InsertEnter * setlocal cursorline
 
-  """ :h restore-cursor 54.494ms startup
+  """ :h restore-cursor 54.494ms start-up
     autocmd VimEnter * exe "normal! zxzz"
     autocmd BufReadPost *
       \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
@@ -484,7 +487,7 @@ augroup END
     nnoremap <silent> <leader>5 :call HighlightWord(5)<cr>
     nnoremap <silent> <leader>6 :call HighlightWord(6)<cr>
 
-  """ rgb colors
+  """ RGB colours
     highlight highlightedword1 guifg=#000000 guibg=#ffaf00
     highlight highlightedword2 guifg=#000000 guibg=#afff00
     highlight highlightedword3 guifg=#000000 guibg=#00ffff
