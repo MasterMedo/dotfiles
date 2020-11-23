@@ -32,6 +32,9 @@ call plug#begin('~/.vim/plugged')
       let g:Illuminate_ftHighlightGroups = {
         \ '*:blacklist': ['Comment', 'String']
         \ }
+      let g:Illuminate_highlightUnderCursor = 0
+      autocmd VimEnter * highlight IlluminatedWord gui=italic,bold
+
     """  chrisbra/colorizer
       Plug 'chrisbra/colorizer'
       let g:colorizer_debug = 0
