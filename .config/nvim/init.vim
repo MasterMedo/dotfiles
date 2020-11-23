@@ -208,11 +208,11 @@ nnoremap <leader>pu :PlugUpdate<cr>
 
 """ settings
   """ basics
+    set encoding=utf-8
     set nobomb
     filetype plugin on
-    setlocal spell
     set lazyredraw
-    set encoding=utf-8
+    set autoread
     set scrolloff=9
     set sidescrolloff=5
     set noshowmode
@@ -230,6 +230,9 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set report=0
     set gdefault
     set inccommand=split
+    set spell
+    set spelllang=en_gb
+    set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
 
   """ colors
     syntax on
@@ -363,8 +366,12 @@ nnoremap <leader>pu :PlugUpdate<cr>
 
     nnoremap  <leader><leader>      mzggg?G`z
     nnoremap  <silent>  <leader>/   :noh<bar>call UnHighlightWords()<cr>
-    nnoremap  <silent>  <leader>sp  :setlocal spell! spelllang=en_us<cr>
+    nnoremap  <silent>  <leader>gb  :setlocal spell spelllang=en_gb
+          \ spellfile=$HOME/.config/nvim/spell/en.utf-8.add<cr>
+    nnoremap  <silent>  <leader>hr  :setlocal spell spelllang=hr
+          \ spellfile=$HOME/.config/nvim/spell/hr.utf-8.add<cr>
     nnoremap  <silent>  <leader>ev  :vsp      $MYVIMRC<cr>
+    nnoremap  <silent>  <leader>es  :exec 'vsp' &g:spellfile<cr>
     nnoremap  <silent>  <leader>sv  m":source $MYVIMRC<cr>
 
   """ training
@@ -442,7 +449,7 @@ augroup vimrc
   """ commands that should be done by 'entr'
     autocmd BufWritePost .Xresources,.Xdefaults silent exec "!xrdb %"
     autocmd BufWritePost *.tex silent exec "!pdflatex %:p"
-    " autocmd BufWritePost $MYVIMRC silent source $MYVIMRC
+    execute 'autocmd BufWritePost ' . &g:spellfile . " silent exec 'mkspell! %'"
 
 augroup END
 
