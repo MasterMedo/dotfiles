@@ -211,36 +211,44 @@ nnoremap <leader>pi :PlugInstall<cr>
 nnoremap <leader>pu :PlugUpdate<cr>
 
 """ settings
-  """ basics
+  """ file
+    scriptencoding utf-8
     set encoding=utf-8
     set nobomb
     filetype plugin on
-    set lazyredraw
     set autoread
+
+  """ basics
+    set autochdir
+    set lazyredraw
     set scrolloff=9
     set sidescrolloff=5
-    set noshowmode
     set number
     set relativenumber
     set ignorecase
     set smartcase
     set noerrorbells
     set visualbell
+    set belloff=all
     set helpheight=15
     set hidden
     set splitbelow
     set splitright
+    set noshowmode
     set shortmess+=I
-    set updatetime=300
+    set updatetime=3000
     set report=0
     set gdefault
     set inccommand=split
     set nostartofline
-    set spell
-    set spelllang=en_gb
-    set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
     set diffopt+=algorithm:patience,indent-heuristic
     set shada='500,<10000,s1000,:1000 " marks, lines, KB, commands
+
+  """ spelling
+      set spell
+      set spelllang=en_gb
+      " set dictionary=/usr/share/dict/british
+      set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
 
   """ colours
     syntax on
@@ -257,6 +265,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set backup
     " setlocal nobackup
     " setlocal nowritebackup
+    set backupext=.bak
     set undofile
     set swapfile
 
@@ -305,6 +314,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set wrap
     set linebreak
     set breakindent
+    set breakat-=-
 
   """ special characters
     set list
@@ -478,10 +488,6 @@ augroup vimrc
 augroup END
 
 """ word highlighter
-  """ function GetHighlightGroup
-    fun GetHighlightGroup()
-      echo synIDattr(synID(line('.'), col('.'), 1), 'name')
-    endfun
   """ function HighlightWord
     let g:word_id = 97531
     function! HighlightWord(n)
@@ -500,7 +506,6 @@ augroup END
     endfunction
 
   """ mappings
-    nnoremap <silent> <leader>H :call GetHighlightGroup()<cr>
     nnoremap <silent> <leader>1 :call HighlightWord(1)<cr>
     nnoremap <silent> <leader>2 :call HighlightWord(2)<cr>
     nnoremap <silent> <leader>3 :call HighlightWord(3)<cr>
