@@ -1,3 +1,4 @@
+" vim: ts=2 sw=2 sts=2 fdm=expr fde=VimrcFoldExpr()
 """ TODO
   " language server protocol - documentation, references
   " train: `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y, z=
@@ -70,6 +71,10 @@ call plug#begin('~/.vim/plugged')
 
   """ commands
     Plug 'AndrewRadev/bufferize.vim'
+    """ tpope/vim-scriptease
+      Plug 'tpope/vim-scriptease'
+      nmap <silent> <leader>H zS
+
     """ tpope/vim-repeat
       Plug 'tpope/vim-repeat'
       nnoremap <silent> <plug>PasteBelowLine o<esc>"+gp:call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
@@ -244,12 +249,6 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set diffopt+=algorithm:patience,indent-heuristic
     set shada='500,<10000,s1000,:1000 " marks, lines, KB, commands
 
-  """ spelling
-      set spell
-      set spelllang=en_gb
-      " set dictionary=/usr/share/dict/british
-      set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
-
   """ colours
     syntax on
     set cursorline
@@ -284,6 +283,21 @@ nnoremap <leader>pu :PlugUpdate<cr>
     if !isdirectory(expand(&directory))
       call mkdir(expand(&directory), "p")
     endif
+
+  """ folding
+    set foldenable
+    set foldopen-=hor
+    set foldopen-=search
+    set foldlevelstart=0
+    set foldnestmax=10
+    set foldtext=PersonalFoldText()
+    set modelineexpr
+
+  """ spelling
+    set spell
+    set spelllang=en_gb
+    " set dictionary=/usr/share/dict/british
+    set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
 
   """ file finder
     set path=.,,**
@@ -325,16 +339,79 @@ nnoremap <leader>pu :PlugUpdate<cr>
       set fillchars+=foldopen:▾,foldsep:│,foldclose:▸
     endif
 
+""" functions
+  """ buffer width function
+    function! BufWidth()
+      let width = winwidth(0)
+      let numberwidth = max([&numberwidth, strlen(line('$')) + 1])
+      let numwidth = (&number || &relativenumber) ? numberwidth : 0
+      let foldwidth = &foldcolumn
+
+      if &signcolumn == 'yes'
+        let signwidth = 2
+      elseif &signcolumn == 'auto'
+        let signs = execute(printf('sign place buffer=%d', bufnr('')))
+        let signs = split(signs, '\n')
+        let signwidth = len(signs) > 1 ? 2 : 0
+      else
+        let signwidth = 0
+      endif
+      return width - numwidth - foldwidth - signwidth
+    endfunction
+
+  """ foldexpr function
+    let g:running_level = 1                           " last line fold level
+    function! VimrcFoldExpr()                         " fold expr function
+      let line      = getline(v:lnum)                 " current  line text
+      let prev_line = getline(v:lnum-1)               " previous line text
+      let level     = indent(v:lnum)/&shiftwidth+1    " expected fold level
+      let char = trim(split(&commentstring, '%s')[0]) " comment char
+      if line =~ '\v^\s*\'.char.'{3}.*$'              " is line a fold title?
+        let g:running_level = level
+        return '>'.level                              " create a fold
+      elseif line !~ '[^\s]' && prev_line !~ '[^\s]'  " are lines empty?
+        return -1                                     " return undefined
+      elseif line !~ '[^\s]'                          " is current line empty?
+        return '='                                    " use last fold level
+      elseif level == 1                               " has no indentation?
+        let g:running_level = 1                       " belongs to fold level 1
+        return 1
+      elseif level <= g:running_level                 " belongs to lower level?
+        let g:running_level = level-1                 " reduce the level
+        return level-1
+      else                                            " in all other cases
+        return '='                                    " keep folding
+      endif
+    endfunction
+
+  """ foldtext function
+    " doesn't handle fold column and sign column great, pull requests welcome
+    function! PersonalFoldText()                                " foldtext func
+      let line   = getline(v:foldstart)                         " get line text
+      let marker = split(&foldmarker, ',')[0]                   " fold marker
+      let line   = substitute(line, marker, '', 'g')            " remove marker
+      let cchar  = trim(split(&commentstring, '%s')[0])         " comment char
+      let line   = substitute(line, '\V'.cchar.' \*', '', 'g')  " remove cchar
+      let suffix = (v:foldend - v:foldstart).' lines'
+      let width  = BufWidth()
+      let count  = width - strdisplaywidth(line) - len(suffix)  " spaces count
+      let spaces = repeat(' ', count)                           " create filler
+      return line.spaces.suffix
+    endfunction
+
+  """ diff current buffer with saved file
+    " TODO: do diffoff when buffer gets closed?
+    function! s:DiffWithSaved()
+      setlocal nospell
+      let filetype=&ft
+      diffthis
+      vnew | r # | normal! 1Gdd
+      diffthis
+      exe "setlocal bt=nofile bh=wipe nobl noswf ro nospell ft=" . filetype
+    endfunction
+
 """ commands
-  function! s:DiffWithSaved()
-    setlocal nospell
-    let filetype=&ft
-    diffthis
-    vnew | r # | normal! 1Gdd
-    diffthis
-    exe "setlocal bt=nofile bh=wipe nobl noswf ro nospell ft=" . filetype
-  endfunction
-  com! DiffSaved call s:DiffWithSaved()
+  command! DiffSaved call s:DiffWithSaved()
 
 """ mappings
   """ ctrl
@@ -531,81 +608,6 @@ augroup END
   inoreabbrev fn    \footnote{}<left><cmd>call getchar(0)<cr>
 
   cnoreabbrev         W   noa w
-  " cnoreabbrev <expr>  w   v:char =~ "!" ? "w" : "noa w"
   cnoreabbrev <expr>  q   v:char =~ "!" ? "q" : "Sayonara"
   cnoreabbrev <expr>  wq  v:char =~ "!" ? "wq" : "w<bar>Sayonara"
   cnoreabbrev         w!! exec 'sil w !sudo tee % > /dev/null' <bar> edit!
-
-""" folding
-  set foldenable
-  set foldopen-=hor
-  set foldopen-=search
-  set foldlevelstart=0
-  set foldnestmax=10
-  set foldtext=Fdt()
-  set modelineexpr
-
-  """ buffer width function
-    function! BufWidth()
-      let width = winwidth(0)
-      let numberwidth = max([&numberwidth, strlen(line('$')) + 1])
-      let numwidth = (&number || &relativenumber) ? numberwidth : 0
-      let foldwidth = &foldcolumn
-
-      if &signcolumn == 'yes'
-        let signwidth = 2
-      elseif &signcolumn == 'auto'
-        let signs = execute(printf('sign place buffer=%d', bufnr('')))
-        let signs = split(signs, '\n')
-        let signwidth = len(signs) > 1 ? 2 : 0
-      else
-        let signwidth = 0
-      endif
-      return width - numwidth - foldwidth - signwidth
-    endfunction
-
-  """ foldexpr by paragraph
-    function Fde_paragraph()
-      return getline(v:lnum-1)=~'^\s*$'&&getline(v:lnum)=~'\S'?'>1':1
-    endfunction
-
-  """ foldexpr function
-    let g:running_level = 1                           " last line fold level
-    function Fde()                                    " fold expr function
-      let line      = getline(v:lnum)                 " current  line text
-      let prev_line = getline(v:lnum-1)               " previous line text
-      let level     = indent(v:lnum)/&shiftwidth+1    " expected fold level
-      let char = trim(split(&commentstring, '%s')[0]) " comment char
-      if line =~ '\v^\s*\'.char.'{3}.*$'              " is line a fold title?
-        let g:running_level = level
-        return '>'.level                              " create a fold
-      elseif line !~ '[^\s]' && prev_line !~ '[^\s]'  " are lines empty?
-        return -1                                     " return undefined
-      elseif line !~ '[^\s]'                          " is current line empty?
-        return '='                                    " use last fold level
-      elseif level == 1                               " has no indentation?
-        let g:running_level = 1                       " belongs to fold level 1
-        return 1
-      elseif level <= g:running_level                 " belongs to lower level?
-        let g:running_level = level-1                 " reduce the level
-        return level-1
-      else                                            " in all other cases
-        return '='                                    " keep folding
-      endif
-    endfunction
-
-  """ foldtext function
-    function Fdt()                                              " foldtext func
-      let line   = getline(v:foldstart)                         " get line text
-      let marker = split(&foldmarker, ',')[0]                   " fold marker
-      let line   = substitute(line, marker, '', 'g')            " remove marker
-      let cchar  = trim(split(&commentstring, '%s')[0])         " comment char
-      let line   = substitute(line, '\V'.cchar.' \*', '', 'g')  " remove cchar
-      let suffix = (v:foldend - v:foldstart).' lines'
-      let width  = BufWidth()
-      let count  = width - strdisplaywidth(line) - len(suffix)  " spaces count
-      let spaces = repeat(' ', count)                           " create filler
-      return line.spaces.suffix
-    endfunction
-
-" vim: ts=2 sw=2 sts=2 fdm=expr fde=Fde()
