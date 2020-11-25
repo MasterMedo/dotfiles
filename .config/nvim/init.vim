@@ -5,6 +5,7 @@
   " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
   " wrong fold colour for lower level folds neovim/neovim #12982
   " auto-command - turn off syntax and sync plugins for buffers with long lines
+  " find a dictionary plugin that will save encountered entries in a file
 
 """ vimrc
   let mapleader       = " "
@@ -232,56 +233,70 @@ nnoremap <leader>pu :PlugUpdate<cr>
 
 """ settings
   """ file
+    filetype plugin on
     scriptencoding utf-8
     set encoding=utf-8
     set nobomb
-    filetype plugin on
     set autoread
+    set helpheight=15
+
+  """ flare
+    set number
+    set relativenumber
+    set scrolloff=9
+    set sidescrolloff=5
+    set nostartofline
+    if has('nvim')
+      set pumblend=20
+      set winblend=15
+      highlight PmenuSel blend=0
+    endif
 
   """ basics
     set autochdir
     set lazyredraw
-    set scrolloff=9
-    set sidescrolloff=5
-    set number
-    set relativenumber
+
     set ignorecase
     set smartcase
+
     set noerrorbells
     set visualbell
     set belloff=all
-    set helpheight=15
+
     set hidden
     set splitbelow
     set splitright
+
     set noshowmode
+    set updatetime=800
     set shortmess+=I
-    set updatetime=3000
     set report=0
+
     set gdefault
     set inccommand=split
-    set nostartofline
+
     set diffopt+=algorithm:patience,indent-heuristic
     set shada='500,<10000,s1000,:1000 " marks, lines, KB, commands
 
   """ colours
     syntax on
+    colorscheme vim-tinge
+    set termguicolors
     set cursorline
     set synmaxcol=1000
     set background=dark
-    set termguicolors
-    colorscheme vim-tinge
     set conceallevel=2
     set concealcursor=inc
     call matchadd('ColorColumn', '\%81c') " set colorcolumn=+1
 
   """ backups
     set backup
+    set undofile
+    set swapfile
+
     " setlocal nobackup
     " setlocal nowritebackup
     set backupext=.bak
-    set undofile
-    set swapfile
 
     set undodir  =~/.vim/tmp/undo//
     set directory=~/.vim/tmp/swap//
@@ -312,6 +327,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set spell
     set spelllang=en_gb
     " set dictionary=/usr/share/dict/british
+    " set thesaurus
     set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
 
   """ file finder
@@ -495,6 +511,8 @@ nnoremap <leader>pu :PlugUpdate<cr>
           \ spellfile=$HOME/.config/nvim/spell/en.utf-8.add<cr>
     nnoremap  <silent>  <leader>hr  :setlocal spell spelllang=hr
           \ spellfile=$HOME/.config/nvim/spell/hr.utf-8.add<cr>
+    nnoremap  <silent>  <leader>us  :setlocal spell spelllang=en_us
+          \ spellfile=$HOME/.config/nvim/spell/en.utf-8.add<cr>
     nnoremap  <silent>  <leader>ev  :vsp      $MYVIMRC<cr>
     nnoremap  <silent>  <leader>es  :exec 'vsp' &g:spellfile<cr>
     nnoremap  <silent>  <leader>sv  m":source $MYVIMRC<cr>
@@ -534,6 +552,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
 """ auto-commands
 augroup vimrc
   autocmd!
+  autocmd CursorHold <buffer> exec "checktime"
   """ auto-complete
     autocmd CompleteDone <buffer> if has_key(v:completed_item, 'word') && v:completed_item.word =~ '\.$'
                               \| call feedkeys("\<bs>")
