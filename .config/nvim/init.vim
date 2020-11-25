@@ -23,60 +23,64 @@ endif
 call plug#begin('~/.vim/plugged')
 
   """ visuals
-    Plug 'mastermedo/vim-tinge'
-    Plug 'romainl/vim-cool'
-    Plug 'ryanoasis/vim-devicons'
-    " Plug 'psliwka/vim-smoothie'
-    Plug 'subnut/vim-smoothie'
+    Plug 'mastermedo/vim-tinge' " my colour scheme
+    Plug 'romainl/vim-cool' " stop highlighting when not searching
+    Plug 'ryanoasis/vim-devicons' " more icons (python files etc.)
+    Plug 'vim-airline/vim-airline' " alternative status line
+    """ airblade/vim-gitgutter
+      Plug 'airblade/vim-gitgutter' " adds git diff signs in the sign column
+      let g:gitgutter_enabled = 1
+      let g:gitgutter_map_keys = 0
+
+    """ psliwka/vim-smoothie
+      " Plug 'psliwka/vim-smoothie' " smooth scrolling
+      Plug 'subnut/vim-smoothie', { 'branch': 'devel' }
+      silent! map <unique> gg <Plug>(Smoothie_gg)
+      silent! map <unique> G  <Plug>(Smoothie_G)
+
     """ RRethy/vim-illuminate
-      Plug 'RRethy/vim-illuminate'
+      Plug 'RRethy/vim-illuminate' " highlight current word matches in file
       let g:Illuminate_ftHighlightGroups = {
         \ '*:blacklist': ['Comment', 'String']
         \ }
       let g:Illuminate_highlightUnderCursor = 0
-      autocmd VimEnter * highlight IlluminatedWord gui=italic,bold
+      augroup illuminate
+        autocmd!
+        autocmd VimEnter * highlight IlluminatedWord gui=italic,bold
+      augroup END
 
     """  chrisbra/colorizer
-      Plug 'chrisbra/colorizer'
+      Plug 'chrisbra/colorizer' " colour hex colour strings
       let g:colorizer_debug = 0
       let g:colorizer_colornames_disable = 1
       let g:colorizer_vimhighlight_disable = 1
       nnoremap <leader>C :ColorToggle<cr>
 
-    """ vim-airline/vim-airline 160.445ms start-up
-      Plug 'vim-airline/vim-airline'
-      " let g:airline#extensions#disable_rtp_load = 1 " 13.6ms save start-up
-      " let g:airline_extensions = [] " 11.38ms save start-up
-      " let g:airline_highlighting_cache = 1 " 11ms save start-up
-      " let g:airline_theme='dark_minimal' " 40ms worse start-up
-      " let g:XkbSwitchLib = "/usr/lib/libxkbswitch.so"
-      " let g:airline#extensions#xkblayout#enabled = 1
-
     """ junegunn/limelight.vim
-      Plug 'junegunn/limelight.vim'
+      Plug 'junegunn/limelight.vim' " decolour paragraphs not currently on
       let g:limelight_conceal_ctermfg = 240
 
     """ junegunn/goyo.vim
-      Plug 'junegunn/goyo.vim'
+      Plug 'junegunn/goyo.vim' " remove HUD (distraction free mode)
       autocmd! User GoyoEnter Limelight
       autocmd! User GoyoLeave Limelight!
       nnoremap <silent> <F11> :Goyo<bar>set linebreak<cr>
 
-    """ Yggdroot/indentline 54.325ms start-up and issue 298
-      Plug 'Yggdroot/indentline'
+    """ Yggdroot/indentline #298
+      Plug 'Yggdroot/indentline' " represent indents with symbols
       let g:indentLine_char_list = ['|', '¦', '┆', '┊']
       let g:indentLine_setColors = 0
       let g:indentLine_setConceal = 0
       let g:indentLine_fileTypeExclude = ['help']
 
   """ commands
-    Plug 'AndrewRadev/bufferize.vim'
+    Plug 'AndrewRadev/bufferize.vim' " store output of a command in a buffer
     """ tpope/vim-scriptease
-      Plug 'tpope/vim-scriptease'
+      Plug 'tpope/vim-scriptease' " get highlight groups for word under cursor
       nmap <silent> <leader>H zS
 
     """ tpope/vim-repeat
-      Plug 'tpope/vim-repeat'
+      Plug 'tpope/vim-repeat' " make commands repeatable
       nnoremap <silent> <plug>PasteBelowLine o<esc>"+gp:call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
       nnoremap <silent> <plug>MoveLineDown ddp:call repeat#set("\<plug>MoveLineDown", v:count)<cr>
       nnoremap <silent> <plug>MoveLineUp ddkP:call repeat#set("\<plug>MoveLineUp", v:count)<cr>
@@ -84,19 +88,21 @@ call plug#begin('~/.vim/plugged')
       nnoremap <silent> <plug>UnIndentWord viWo<esc>i<bs><esc>llB:call repeat#set("\<plug>UnIndentWord", v:count)<cr>
 
     """ mhinz/vim-sayonara
-      Plug 'mhinz/vim-sayonara'
+      Plug 'mhinz/vim-sayonara' " use one command for :bdelete, :close, :quit
       let g:sayonara_confirm_quit = 0
+      cnoreabbrev <expr>  q   v:char =~ "!" ? "q" : "Sayonara"
+      cnoreabbrev <expr>  wq  v:char =~ "!" ? "wq" : "w<bar>Sayonara"
 
   """ interfaces
-    Plug 'chrisbra/recover.vim' " 36.988ms start-up
-    Plug 'stefandtw/quickfix-reflector.vim'
+    Plug 'chrisbra/recover.vim' " adds a [d]iff option if swap file exists
+    Plug 'stefandtw/quickfix-reflector.vim' " change multiple files at once
     """ junegunn/fzf
-      Plug 'junegunn/fzf.vim'
+      Plug 'junegunn/fzf.vim' " list files and buffers in a pop-up window
       Plug 'junegunn/fzf', {'do': './install --bin' }
       nnoremap <silent> <leader>B :Buffers<cr>
       nnoremap <silent> <leader>F :Files<cr>
 
-    Plug 'jremmen/vim-ripgrep'
+    Plug 'jremmen/vim-ripgrep' " drop contents of :Rg in a quick-fix window
     """ iamcco/markdown-preview.nvim
       Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() },
                                             \'for': ['markdown', 'vim-plug'] }
@@ -109,28 +115,40 @@ call plug#begin('~/.vim/plugged')
       let g:undotree_SetFocusWhenToggle = 1
       nnoremap <leader>U :UndotreeToggle<cr>
 
-    """ preservim/nerdtree 55.537ms start-up
-      Plug 'preservim/nerdtree'
+    """ preservim/nerdtree
+      Plug 'preservim/nerdtree' " file explorer within vim
       Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
       " let NERDTreeMinimalUI=1
       " let NERDTreeShowHidden=1
       nnoremap <leader>N :NERDTreeToggleVCS<cr>
 
   """ text objects
-    " Plug 'wellle/targets.vim'           issue 246
-    Plug 'chaoren/vim-wordmotion'
-    Plug 'tpope/vim-surround'
+    " Plug 'wellle/targets.vim' " #246
+    Plug 'jiangmiao/auto-pairs'
+    Plug 'kana/vim-textobj-user' " create your own textobj
+    Plug 'kana/vim-textobj-line' " vil, val select a line
+    Plug 'kana/vim-textobj-indent' " vai select indentation
+    Plug 'kana/vim-textobj-entire' " vae, dae select entire buffer
+    Plug 'tpope/vim-surround' " cs{[, ds', ysiw}, ysae[, ysil)
+    Plug 'tpope/vim-commentary' " use gcc to (un)comment a line
     """ tpope/vim-speeddating
-      Plug 'tpope/vim-speeddating'
-      autocmd VimEnter * SpeedDatingFormat %d.%m.%Y
-    Plug 'tpope/vim-commentary'
-    Plug 'kana/vim-textobj-line'
-    Plug 'kana/vim-textobj-user'
-    Plug 'kana/vim-textobj-indent'
-    Plug 'kana/vim-textobj-entire'
+      Plug 'tpope/vim-speeddating' " ctrl-a, ctrl-x works on dates
+      augroup speeddating
+        autocmd!
+        autocmd VimEnter * SpeedDatingFormat %d.%m.%Y
+      augroup END
+
+    """ chaoren/vim-wordmotion
+      Plug 'chaoren/vim-wordmotion' " makes ILoveVim three words #41
+      nmap dw de
+      nmap cw ce
+
+    """ justinmk/vim-sneak
+      Plug 'justinmk/vim-sneak' " s{char}{char} like f and t but with 2 chars
+      let g:sneak#label = 1
 
   """ miscellaneous
-    Plug 'xolox/vim-misc'
+    Plug 'xolox/vim-misc' " scripts for other plugins
 
   """ file type specific
     Plug 'fatih/vim-go'
@@ -141,7 +159,7 @@ call plug#begin('~/.vim/plugged')
       Plug 'tpope/vim-markdown'
       let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
-    """ glacambre/firenvim
+    """ glacambre/firenvim - vim in the browser
       Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
       if exists('g:started_by_firenvim')
         set laststatus=0
@@ -178,7 +196,7 @@ call plug#begin('~/.vim/plugged')
       endfunction
 
     """ dense-analysis/ale
-      Plug 'dense-analysis/ale'
+      Plug 'dense-analysis/ale' " asynchronous linter
       let g:ale_python_flake8_options = '--ignore=E121,E126,E226,E24,E501'
       let b:ale_linters = {'python': ['flake8']}
       " 🐛❌💀💢💣📉☠
@@ -190,25 +208,22 @@ call plug#begin('~/.vim/plugged')
       let g:ale_sign_style_error = '👎'
       " 👉💄📍🔎🔖🔜➡️ ‼️
       let g:ale_sign_style_warning = '👉'
-      autocmd VimEnter * highlight link alewarningsign  warningmsg
-      autocmd VimEnter * highlight link alestylewarning warningmsg
+      augroup ale
+        autocmd!
+        autocmd VimEnter * highlight link alewarningsign  warningmsg
+        autocmd VimEnter * highlight link alestylewarning warningmsg
+      augroup END
 
   """ plugins to check out
-    " nvim-treesitter/nvim-treesitter
-    " Konfekt/FastFold
-    " romgrk/winteract.vim
-    " justinmk/vim-sneak
-    " alok/notational-fzf-vim
-    " reedes/vim-pencil
-    " chrisbra/matchit
-    " tpope/vim-fugitive
-    " tpope/vim-unimpaired
-    " tpope/vim-abolish
-    " Chiel92/vim-autoformat
-    " Xuyuanp/nerdtree-git-plugin
-    " airblade/vim-gutter
-    " jreybert/vimagit
-    " svermeulen/vim-yoink
+    " nvim-treesitter/nvim-treesitter " better syntax highlighting
+    " reedes/vim-pencil " auto-format prose as you're writing
+    " tpope/vim-fugitive " git integration within vim
+    " tpope/vim-unimpaired " useful for pairs of commands next, previous
+    " tpope/vim-abolish " powerful replacements /building{,s}/facilit{y,ies}/
+    " Chiel92/vim-autoformat " auto-format code with your favourite linter
+    " Xuyuanp/nerdtree-git-plugin " git plugin for nerdtree
+    " svermeulen/vim-yoink " holds history of yanks
+    " liuchengxu/vista.vim " view and search lsp symbols and tags
 
 
 call plug#end()
@@ -534,7 +549,7 @@ augroup vimrc
     autocmd InsertEnter * setlocal nocursorline
     autocmd InsertEnter * setlocal cursorline
 
-  """ :h restore-cursor 54.494ms start-up
+  """ :h restore-cursor
     autocmd VimEnter * exe "normal! zxzz"
     autocmd BufReadPost *
       \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
@@ -608,6 +623,4 @@ augroup END
   inoreabbrev fn    \footnote{}<left><cmd>call getchar(0)<cr>
 
   cnoreabbrev         W   noa w
-  cnoreabbrev <expr>  q   v:char =~ "!" ? "q" : "Sayonara"
-  cnoreabbrev <expr>  wq  v:char =~ "!" ? "wq" : "w<bar>Sayonara"
   cnoreabbrev         w!! exec 'sil w !sudo tee % > /dev/null' <bar> edit!
