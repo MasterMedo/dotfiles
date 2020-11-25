@@ -26,7 +26,6 @@ call plug#begin('~/.vim/plugged')
   """ visuals
     Plug 'mastermedo/vim-tinge' " my colour scheme
     Plug 'romainl/vim-cool' " stop highlighting when not searching
-    Plug 'ryanoasis/vim-devicons' " more icons (python files etc.)
     Plug 'vim-airline/vim-airline' " alternative status line
     """ airblade/vim-gitgutter
       Plug 'airblade/vim-gitgutter' " adds git diff signs in the sign column
@@ -57,15 +56,15 @@ call plug#begin('~/.vim/plugged')
       let g:colorizer_vimhighlight_disable = 1
       nnoremap <leader>C :ColorToggle<cr>
 
-    """ junegunn/limelight.vim
-      Plug 'junegunn/limelight.vim' " decolour paragraphs not currently on
-      let g:limelight_conceal_ctermfg = 240
-
     """ junegunn/goyo.vim
       Plug 'junegunn/goyo.vim' " remove HUD (distraction free mode)
       autocmd! User GoyoEnter Limelight
       autocmd! User GoyoLeave Limelight!
       nnoremap <silent> <F11> :Goyo<bar>set linebreak<cr>
+
+    """ junegunn/limelight.vim
+      Plug 'junegunn/limelight.vim' " decolour paragraphs not currently on
+      let g:limelight_conceal_ctermfg = 240
 
     """ Yggdroot/indentline #298
       Plug 'Yggdroot/indentline' " represent indents with symbols
@@ -97,30 +96,37 @@ call plug#begin('~/.vim/plugged')
   """ interfaces
     Plug 'chrisbra/recover.vim' " adds a [d]iff option if swap file exists
     Plug 'stefandtw/quickfix-reflector.vim' " change multiple files at once
-    """ junegunn/fzf
+    """ junegunn/fzf, jremmen/vim-ripgrep
       Plug 'junegunn/fzf.vim' " list files and buffers in a pop-up window
       Plug 'junegunn/fzf', {'do': './install --bin' }
+      Plug 'jremmen/vim-ripgrep' " drop contents of :Rg in a quick-fix window
       nnoremap <silent> <leader>B :Buffers<cr>
       nnoremap <silent> <leader>F :Files<cr>
 
-    Plug 'jremmen/vim-ripgrep' " drop contents of :Rg in a quick-fix window
     """ iamcco/markdown-preview.nvim
       Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() },
                                             \'for': ['markdown', 'vim-plug'] }
       nnoremap <leader>P :MarkdownPreview<cr>
 
-    """ mbbill/undotree
+    """ mbbill/undotree - has some severe bugs
       Plug 'mbbill/undotree'
       let g:undotree_DiffAutoOpen = 0
       let g:undotree_RelativeTimestamp = 0
       let g:undotree_SetFocusWhenToggle = 1
       nnoremap <leader>U :UndotreeToggle<cr>
 
-    """ preservim/nerdtree
-      Plug 'preservim/nerdtree' " file explorer within vim
-      Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-      " let NERDTreeMinimalUI=1
-      " let NERDTreeShowHidden=1
+    """ preservim/nerdtree and plugins (tiagofumo, Xuyuanp, ryanoasis)
+      Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggleVCS' } |
+            \ Plug 'tiagofumo/vim-nerdtree-syntax-highlight' |
+            \ Plug 'Xuyuanp/nerdtree-git-plugin' |
+            \ Plug 'ryanoasis/vim-devicons' " icons for numerous file types
+
+      " let NERDTreeMinimalUI = 1
+      let g:NERDTreeShowHidden = 1
+      let g:NERDTreeGitStatusUseNerdFonts = 1
+      let g:NERDTreeFileExtensionHighlightFullName = 1
+      let g:NERDTreeExactMatchHighlightFullName = 1
+      let g:NERDTreePatternMatchHighlightFullName = 1
       nnoremap <leader>N :NERDTreeToggleVCS<cr>
 
   """ text objects
@@ -139,14 +145,14 @@ call plug#begin('~/.vim/plugged')
         autocmd VimEnter * SpeedDatingFormat %d.%m.%Y
       augroup END
 
+    """ justinmk/vim-sneak
+      Plug 'justinmk/vim-sneak' " s{char}{char} like f and t but with 2 chars
+      let g:sneak#label = 1
+
     """ chaoren/vim-wordmotion
       Plug 'chaoren/vim-wordmotion' " makes ILoveVim three words #41
       nmap dw de
       nmap cw ce
-
-    """ justinmk/vim-sneak
-      Plug 'justinmk/vim-sneak' " s{char}{char} like f and t but with 2 chars
-      let g:sneak#label = 1
 
   """ miscellaneous
     Plug 'xolox/vim-misc' " scripts for other plugins
@@ -222,7 +228,6 @@ call plug#begin('~/.vim/plugged')
     " tpope/vim-unimpaired " useful for pairs of commands next, previous
     " tpope/vim-abolish " powerful replacements /building{,s}/facilit{y,ies}/
     " Chiel92/vim-autoformat " auto-format code with your favourite linter
-    " Xuyuanp/nerdtree-git-plugin " git plugin for nerdtree
     " svermeulen/vim-yoink " holds history of yanks
     " liuchengxu/vista.vim " view and search lsp symbols and tags
 
@@ -275,6 +280,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set gdefault
     set inccommand=split
 
+    set backspace="indent,eol,start"
     set diffopt+=algorithm:patience,indent-heuristic
     set shada='500,<10000,s1000,:1000 " marks, lines, KB, commands
 
@@ -359,6 +365,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set wrap
     set linebreak
     set breakindent
+    set autoindent
     set breakat-=-
 
   """ special characters
