@@ -15,11 +15,12 @@
   let g:vimsyn_embed  = 'lP'
 
 """ plugins
-if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
+  """ autoload
+    if empty(glob('~/.vim/autoload/plug.vim'))
+      silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
 
 call plug#begin('~/.vim/plugged')
 
@@ -41,13 +42,9 @@ call plug#begin('~/.vim/plugged')
     """ RRethy/vim-illuminate
       Plug 'RRethy/vim-illuminate' " highlight current word matches in file
       let g:Illuminate_ftHighlightGroups = {
-        \ '*:blacklist': ['Comment', 'String']
-        \ }
+            \ '*:blacklist': ['Comment', 'String'] }
       let g:Illuminate_highlightUnderCursor = 0
-      augroup illuminate
-        autocmd!
-        autocmd VimEnter * highlight IlluminatedWord gui=italic,bold
-      augroup END
+      highlight default IlluminatedWord gui=italic,bold
 
     """  chrisbra/colorizer
       Plug 'chrisbra/colorizer' " colour hex colour strings
@@ -81,11 +78,16 @@ call plug#begin('~/.vim/plugged')
 
     """ tpope/vim-repeat
       Plug 'tpope/vim-repeat' " make commands repeatable
-      nnoremap <silent> <plug>PasteBelowLine o<esc>"+gp:call repeat#set("\<plug>PasteBelowLine", v:count)<cr>
-      nnoremap <silent> <plug>MoveLineDown ddp:call repeat#set("\<plug>MoveLineDown", v:count)<cr>
-      nnoremap <silent> <plug>MoveLineUp ddkP:call repeat#set("\<plug>MoveLineUp", v:count)<cr>
-      nnoremap <silent> <plug>IndentWord viWo<esc>i<tab><esc>llB:call repeat#set("\<plug>IndentWord", v:count)<cr>
-      nnoremap <silent> <plug>UnIndentWord viWo<esc>i<bs><esc>llB:call repeat#set("\<plug>UnIndentWord", v:count)<cr>
+      nnoremap <silent> <plug>PasteBelowLine o<esc>"+gp:call
+            \ repeat#set("\<plug>PasteBelowLine", v:count)<cr>
+      nnoremap <silent> <plug>MoveLineDown ddp:call
+            \ repeat#set("\<plug>MoveLineDown", v:count)<cr>
+      nnoremap <silent> <plug>MoveLineUp ddkP:call
+            \ repeat#set("\<plug>MoveLineUp", v:count)<cr>
+      nnoremap <silent> <plug>IndentWord viWo<esc>i<tab><esc>llB:call
+            \ repeat#set("\<plug>IndentWord", v:count)<cr>
+      nnoremap <silent> <plug>UnIndentWord viWo<esc>i<bs><esc>llB:call
+            \ repeat#set("\<plug>UnIndentWord", v:count)<cr>
 
     """ mhinz/vim-sayonara
       Plug 'mhinz/vim-sayonara' " use one command for :bdelete, :close, :quit
@@ -100,13 +102,8 @@ call plug#begin('~/.vim/plugged')
       Plug 'junegunn/fzf.vim' " list files and buffers in a pop-up window
       Plug 'junegunn/fzf', {'do': './install --bin' }
       Plug 'jremmen/vim-ripgrep' " drop contents of :Rg in a quick-fix window
-      nnoremap <silent> <leader>B :Buffers<cr>
       nnoremap <silent> <leader>F :Files<cr>
-
-    """ iamcco/markdown-preview.nvim
-      Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() },
-                                            \'for': ['markdown', 'vim-plug'] }
-      nnoremap <leader>P :MarkdownPreview<cr>
+      nnoremap <silent> <leader>B :Buffers<cr>
 
     """ mbbill/undotree - has some severe bugs
       Plug 'mbbill/undotree'
@@ -124,14 +121,14 @@ call plug#begin('~/.vim/plugged')
       " let NERDTreeMinimalUI = 1
       let g:NERDTreeShowHidden = 1
       let g:NERDTreeGitStatusUseNerdFonts = 1
-      let g:NERDTreeFileExtensionHighlightFullName = 1
       let g:NERDTreeExactMatchHighlightFullName = 1
       let g:NERDTreePatternMatchHighlightFullName = 1
+      let g:NERDTreeFileExtensionHighlightFullName = 1
       nnoremap <leader>N :NERDTreeToggleVCS<cr>
 
   """ text objects
     " Plug 'wellle/targets.vim' " #246
-    Plug 'jiangmiao/auto-pairs'
+    Plug 'jiangmiao/auto-pairs' " automatically closes matching pair #305
     Plug 'kana/vim-textobj-user' " create your own textobj
     Plug 'kana/vim-textobj-line' " vil, val select a line
     Plug 'kana/vim-textobj-indent' " vai select indentation
@@ -165,6 +162,11 @@ call plug#begin('~/.vim/plugged')
     """ tpope/vim-markdown
       Plug 'tpope/vim-markdown'
       let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+
+    """ iamcco/markdown-preview.nvim
+      Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() },
+                                            \'for': ['markdown', 'vim-plug'] }
+      nnoremap <leader>P :MarkdownPreview<cr>
 
     """ glacambre/firenvim - vim in the browser
       Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
@@ -215,11 +217,8 @@ call plug#begin('~/.vim/plugged')
       let g:ale_sign_style_error = '👎'
       " 👉💄📍🔎🔖🔜➡️ ‼️
       let g:ale_sign_style_warning = '👉'
-      augroup ale
-        autocmd!
-        autocmd VimEnter * highlight link alewarningsign  warningmsg
-        autocmd VimEnter * highlight link alestylewarning warningmsg
-      augroup END
+      highlight default link alewarningsign  warningmsg
+      highlight default link alestylewarning warningmsg
 
   """ plugins to check out
     " nvim-treesitter/nvim-treesitter " better syntax highlighting
@@ -280,7 +279,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set gdefault
     set inccommand=split
 
-    set backspace="indent,eol,start"
+    set backspace=indent,eol,start
     set diffopt+=algorithm:patience,indent-heuristic
     set shada='500,<10000,s1000,:1000 " marks, lines, KB, commands
 
