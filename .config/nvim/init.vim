@@ -1,7 +1,8 @@
 " vim: ts=2 sw=2 sts=2 fdm=expr fde=VimrcFoldExpr()
 """ TODO
-  " language server protocol - documentation, references
+  " language server protocol - documentation, references, definition
   " train: `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y, z=
+  " useful commands: zz, i_ctrl+j, ctrl_o, ctrl_i,
   " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
   " wrong fold colour for lower level folds neovim/neovim #12982
   " auto-command - turn off syntax and sync plugins for buffers with long lines
@@ -25,8 +26,8 @@
 call plug#begin('~/.vim/plugged')
 
   """ visuals
-    Plug 'mastermedo/vim-tinge' " my colour scheme
     Plug 'romainl/vim-cool' " stop highlighting when not searching
+    Plug 'mastermedo/vim-tinge' " my colour scheme
     Plug 'vim-airline/vim-airline' " alternative status line
     """ airblade/vim-gitgutter
       Plug 'airblade/vim-gitgutter' " adds git diff signs in the sign column
@@ -72,6 +73,7 @@ call plug#begin('~/.vim/plugged')
 
   """ commands
     Plug 'AndrewRadev/bufferize.vim' " store output of a command in a buffer
+    Plug 'dstein64/vim-startuptime' " check start-up times with :StartupTime
     """ tpope/vim-scriptease
       Plug 'tpope/vim-scriptease' " get highlight groups for word under cursor
       nmap <silent> <leader>H zS
@@ -144,6 +146,10 @@ call plug#begin('~/.vim/plugged')
 
     """ justinmk/vim-sneak
       Plug 'justinmk/vim-sneak' " s{char}{char} like f and t but with 2 chars
+      map f <Plug>Sneak_f
+      map F <Plug>Sneak_F
+      map t <Plug>Sneak_t
+      map T <Plug>Sneak_T
       let g:sneak#label = 1
 
     """ chaoren/vim-wordmotion
@@ -153,6 +159,8 @@ call plug#begin('~/.vim/plugged')
 
   """ miscellaneous
     Plug 'xolox/vim-misc' " scripts for other plugins
+    Plug 'airblade/vim-rooter' " chdir to project root
+    let g:rooter_silent_chdir = 1
 
   """ file type specific
     Plug 'fatih/vim-go'
@@ -229,6 +237,8 @@ call plug#begin('~/.vim/plugged')
     " Chiel92/vim-autoformat " auto-format code with your favourite linter
     " svermeulen/vim-yoink " holds history of yanks
     " liuchengxu/vista.vim " view and search lsp symbols and tags
+    " norcalli/nvim-colorizer.lua " faster colourizer for neovim
+    " junegunn/vim-emoji " Emoji for vim
 
 
 call plug#end()
@@ -334,6 +344,9 @@ nnoremap <leader>pu :PlugUpdate<cr>
     " set dictionary=/usr/share/dict/british
     " set thesaurus
     set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
+    " syntax match String ".*" contains=@Spell
+    " syntax match String '.*' contains=@Spell
+    " syntax cluster String add=@NoSpell
 
   """ file finder
     set path=.,,**
@@ -525,6 +538,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
 
   """ training
     nnoremap ``     <cmd>echo "use ''"<cr>
+    " inoremap <cr>   <cmd>echo "use ctrl-j"<cr>
     " inoremap <esc>  <cmd>echo "use jk"<cr>
 
   """ repeatable
