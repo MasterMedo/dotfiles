@@ -97,19 +97,29 @@ call plug#begin('~/.vim/plugged')
       cnoreabbrev <expr>  q   v:char =~ "!" ? "q" : "Sayonara"
       cnoreabbrev <expr>  wq  v:char =~ "!" ? "wq" : "w<bar>Sayonara"
 
+    """ inkarkat/SyntaxAttr.vim
+      Plug 'inkarkat/SyntaxAttr.vim'
+      nnoremap <leader>S :call SyntaxAttr#SyntaxAttr()<CR>
+
   """ interfaces
     Plug 'chrisbra/recover.vim' " adds a [d]iff option if swap file exists
     Plug 'stefandtw/quickfix-reflector.vim' " change multiple files at once
     """ junegunn/fzf, jremmen/vim-ripgrep
       Plug 'junegunn/fzf.vim' " list files and buffers in a pop-up window
       Plug 'junegunn/fzf', {'do': './install --bin' }
-      Plug 'jremmen/vim-ripgrep' " drop contents of :Rg in a quick-fix window
+      " Plug 'jremmen/vim-ripgrep' " drop contents of :Rg in a quick-fix window
+      let g:fzf_layout = { 'window': {'width': 0.9, 'height': 0.8} }
+      let g:fzf_action = {
+            \ 'ctrl-x': 'split',
+            \ 'ctrl-v': 'vsplit'
+            \ }
       nnoremap <silent> <leader>F :Files<cr>
       nnoremap <silent> <leader>B :Buffers<cr>
 
     """ mbbill/undotree - has some severe bugs
-      Plug 'mbbill/undotree'
+      Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
       let g:undotree_DiffAutoOpen = 0
+      let g:undotree_WindowLayout = 2
       let g:undotree_RelativeTimestamp = 0
       let g:undotree_SetFocusWhenToggle = 1
       nnoremap <leader>U :UndotreeToggle<cr>
@@ -260,14 +270,10 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set scrolloff=9
     set sidescrolloff=5
     set nostartofline
-    if has('nvim')
-      set pumblend=20
-      set winblend=15
-      highlight PmenuSel blend=0
-    endif
+    set pumblend=20
+    set winblend=15
 
   """ basics
-    set autochdir
     set lazyredraw
 
     set ignorecase
@@ -354,12 +360,13 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set wildmenu
     set wildmode=longest:full,full
     set wildignore+=**/node_modules/**                " javascript modules
-    set wildignore+=**/env/**                         " python environment
+    set wildignore+=**/__pycache__/**,*.pyc,**/env/** " python cache and env
     set wildignore+=.hg,.git,.svn                     " version control
     set wildignore+=*.aux,*.out,*.toc                 " LaTeX
     set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg    " binary images
     set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
     set wildignore+=*.sw?                             " vim swap files
+    set wildignore+=*~,*.bak                          " back up files
     set suffixes+=.log,.aux,.bst,.out,.toc,.blg,.bbl
     set suffixesadd+=.py,.tex,.c,.js
 
@@ -509,6 +516,8 @@ nnoremap <leader>pu :PlugUpdate<cr>
     nnoremap  ć       '
     nnoremap  Ć       "
     nnoremap  q:     :q
+    nnoremap  g;     g,
+    nnoremap  g,     g;
 
   """ leader
     nnoremap  <leader>a za
@@ -573,6 +582,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
 augroup vimrc
   autocmd!
   autocmd CursorHold <buffer> exec "checktime"
+  autocmd VimEnter * highlight PmenuSel blend=0
   """ auto-complete
     autocmd CompleteDone <buffer> if has_key(v:completed_item, 'word') && v:completed_item.word =~ '\.$'
                               \| call feedkeys("\<bs>")
