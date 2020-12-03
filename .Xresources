@@ -1,6 +1,7 @@
 ! font
 ! *.font: Square:size=27
 *.font: SF Mono:style=Regular:size=27
+! *.font: Operator Mono Lig Light:style=Light Italic:size=27
 
 ! special
 ! *.alpha:220
@@ -15,26 +16,38 @@
 ! red
 *.color1: #e35430
 *.color9: #ff0000
+/* #fa5252 */
+/* #e64980 */
 
 ! green
 *.color2: #f2a846
 *.color10: #00aa00
+/* #12b886 */
+/* #40c057 */
 
 ! yellow
 *.color3: #f5d65a
 *.color11: #f3d409
+/* #fab005 */
+/* #fd7e14 */
 
 ! blue
 *.color4: #5692d6
 *.color12: #0000ff
+/* #4c6ef5 */
+/* #228be6 */
 
 ! magenta
 *.color5: #976eff
 *.color13: #ff03de
+/* #be4bdb */
+/* #7950f2 */
 
 ! cyan
 *.color6: #83bdde
 *.color14: #069e9c
+/* #15aabf */
+/* #74c0fc */
 
 ! white
 *.color7: #e0e8f3
