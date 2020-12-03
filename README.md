@@ -7,4 +7,4 @@ The stack I use consists of;
 - [neovim](https://neovim.io/), *the* file editor
 - [ungoogled chromium](https://github.com/Eloston/ungoogled-chromium), a web browser
 
-[nvim](./img/nvim-init.png)
+![nvim](./img/nvim-init.png)
