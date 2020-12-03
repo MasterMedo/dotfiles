@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+import requests
+
+from bs4 import BeautifulSoup
+
+url = 'https://meteo.hr/prognoze.php?section=prognoze_metp&param=zgdanas'
+r = requests.get(url)
+soup = BeautifulSoup(r.text, 'html.parser')
+
+text = soup.select_one('h5').select_one('strong').text
+print(text.replace(' ', '').replace('|', ' '))
