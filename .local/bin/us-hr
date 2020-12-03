@@ -5,4 +5,5 @@ then
 else
   setxkbmap hr
 fi
-kill -64 $(pidof dwmblocks)
+killall dwmblocks
+dwmblocks&
