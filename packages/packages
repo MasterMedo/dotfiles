@@ -52,6 +52,7 @@ post-install:
   xdg-user-dirs
   perl-file-mimeinfo
   archlinux-keyring (re-download if necessary)
+  words
 
 programming:
   python
@@ -76,8 +77,11 @@ programming:
   flake8
   pypy
   texlive-most
+  ruby
+  rubygems
   npm
   tcc
+  gcc
   go
   r
 
