@@ -73,6 +73,7 @@ programming:
   python-xlib
   python-distro
   python-pip
+  python2-click
   jupyter-notebook
   flake8
   pypy
@@ -139,6 +140,7 @@ useful commands:
   youtube-dl
   acpi
   entr
+  asciinema
   sxhkd?
   greenclip?
   fakeroot?
