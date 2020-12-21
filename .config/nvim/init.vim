@@ -680,13 +680,13 @@ augroup END
     highlight highlightedword6 guifg=#000000 guibg=#d7ffff
 
 """ abbreviations
-  inoreabbrev #i    #include
-  inoreabbrev #d    #define
+  " inoreabbrev #i    #include
+  " inoreabbrev #d    #define
   inoreabbrev todo  TODO
-  inoreabbrev cap   \chapter{}<left><cmd>call getchar(0)<cr>
-  inoreabbrev sec   \section{}<left><cmd>call getchar(0)<cr>
-  inoreabbrev ssec  \subsection{}<left><cmd>call getchar(0)<cr>
-  inoreabbrev fn    \footnote{}<left><cmd>call getchar(0)<cr>
+  " inoreabbrev cap   \chapter{}<left><cmd>call getchar(0)<cr>
+  " inoreabbrev sec   \section{}<left><cmd>call getchar(0)<cr>
+  " inoreabbrev ssec  \subsection{}<left><cmd>call getchar(0)<cr>
+  " inoreabbrev fn    \footnote{}<left><cmd>call getchar(0)<cr>
 
   cnoreabbrev         W   noa w
   cnoreabbrev         w!! exec 'sil w !sudo tee % > /dev/null' <bar> edit!
