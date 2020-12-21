@@ -56,24 +56,37 @@ post-install:
 
 programming:
   python
+  python2-click
   python-beautifulsoup4
+  python-distro
+  python-flask
+  python-flask-cors
+  python-flask-marshmallow
+  python-flask-restx
+  python-flask-sqlalchemy
+  python-flask-wtf
+  python-fonttools
+  python-gitpython
+  python-google-auth
   python-jedi
+  python-lark
+  python-marshmallow
+  python-marshmallow-sqlalchemy
   python-matplotlib
   python-more-itertools
   python-neovim
   python-networkx
   python-numpy
   python-pandas
+  python-pip
   python-pywal
   python-requests
+  python-rockstar-py
   python-scikit-learn
   python-sympy
-  python-z3
-  python-gitpython
+  python-werkzeug
   python-xlib
-  python-distro
-  python-pip
-  python2-click
+  python-z3
   jupyter-notebook
   flake8
   pypy
@@ -81,10 +94,20 @@ programming:
   ruby
   rubygems
   npm
+  yarn
   tcc
   gcc
   go
+  ghc
+  elixir
+  dotnet-sdk
   r
+  julia
+  qt5
+  rust
+  jdk-openjdk
+  sqlitebrowser
+  astah-community (aur)
 
 programs:
   dwm (git)
@@ -137,6 +160,8 @@ visuals:
   conky?
 
 useful commands:
+  ntp
+  ntp-runit
   youtube-dl
   acpi
   entr
