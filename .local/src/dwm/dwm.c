@@ -1608,8 +1608,6 @@ runAutostart(void) {
         system("sudo rmmod pcspkr");
         system("killall -q flameshot; flameshot &");
         system("killall -q unclutter; unclutter &");
-        system("killall -q redshift; redshift &"); // TODO don't restart
-        system("kilall pulseaudio; pulseaudio --start");
         system("killall -q picom; picom &");
 }
 

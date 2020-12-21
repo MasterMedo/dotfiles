@@ -97,7 +97,7 @@ static const Layout layouts[] = {
 /*{ MOD,  XK_x, ACTION##stack,  {.i = -1 } }, */
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/fish", "-c", cmd, NULL } }
 
 /* commands */
 static char dmenumon[2] = "0"; // component of dmenucmd, manipulated in spawn()
@@ -176,7 +176,7 @@ static Key keys[] = {
 /*{ MODKEY,           XK_Page_Down,     shiftview,      {.i = +1 } }, */
 /*{ MODKEY|ShiftMask, XK_Page_Down,     shifttag,       {.i = +1 } }, */
 /*{ MODKEY,           XK_Insert,        spawn,          SHCMD("") }, */
-  { MODKEY,           XK_space,         spawn,          SHCMD("us-hr") },
+  { MODKEY,           XK_space,         spawn,    SHCMD("us-hr") },
 /*{ MODKEY|ShiftMask, XK_space,         togglefloating, {0} }, */
   { 0,                XK_Print,         spawn,    SHCMD("flameshot gui") },
 /*{ ShiftMask,        XK_Print,         spawn,    SHCMD("maimpick") }, */
