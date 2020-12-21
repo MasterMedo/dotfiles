@@ -1,6 +1,5 @@
 " vim: ts=2 sw=2 sts=2 fdm=expr fde=VimrcFoldExpr()
 """ TODO
-  " language server protocol - documentation, references, definition
   " train: `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y, z=
   " useful commands: zz, i_ctrl+j, ctrl_o, ctrl_i,
   " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
@@ -66,7 +65,7 @@ call plug#begin('~/.vim/plugged')
 
     """ Yggdroot/indentline #298
       Plug 'Yggdroot/indentline' " represent indents with symbols
-      let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+      let g:indentLine_char_list = ['∣', '¦', '┆', '┊']
       let g:indentLine_setColors = 0
       let g:indentLine_setConceal = 0
       let g:indentLine_fileTypeExclude = ['help']
@@ -140,7 +139,7 @@ call plug#begin('~/.vim/plugged')
 
   """ text objects
     " Plug 'wellle/targets.vim' " #246
-    Plug 'jiangmiao/auto-pairs' " automatically closes matching pair #305
+    " Plug 'jiangmiao/auto-pairs' " automatically closes matching pair #305
     Plug 'kana/vim-textobj-user' " create your own textobj
     Plug 'kana/vim-textobj-line' " vil, val select a line
     Plug 'kana/vim-textobj-indent' " vai select indentation
@@ -174,9 +173,15 @@ call plug#begin('~/.vim/plugged')
 
   """ file type specific
     Plug 'fatih/vim-go'
+    let g:go_doc_keywordprg_enabled = 0
+
     Plug 'dag/vim-fish'
     Plug 'vim-scripts/lua.vim'
     Plug 'PotatoesMaster/i3-vim-syntax'
+    Plug 'pangloss/vim-javascript'
+    Plug 'leafgarland/typescript-vim'
+    Plug 'peitalin/vim-jsx-typescript'
+    Plug 'MaxMEllon/vim-jsx-pretty'
     """ tpope/vim-markdown
       Plug 'tpope/vim-markdown'
       let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
@@ -195,12 +200,21 @@ call plug#begin('~/.vim/plugged')
 
   """ auto-complete and language server protocol
     """ neoclide/coc.nvim
-      Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['json', 'python']}
+      Plug 'neoclide/coc.nvim', {'branch': 'release' }
       let g:coc_global_extensions = [
+        \ 'coc-tsserver',
         \ 'coc-python',
         \ 'coc-json',
         \ 'coc-snippets',
         \ 'coc-tabnine']
+
+      if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+        let g:coc_global_extensions += ['coc-prettier']
+      endif
+
+      if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+        let g:coc_global_extensions += ['coc-eslint']
+      endif
 
       " ~/.config/nvim/coc-settings.json
       "{
@@ -213,6 +227,7 @@ call plug#begin('~/.vim/plugged')
       nmap <silent> gy <Plug>(coc-type-definition)
       nmap <silent> gi <Plug>(coc-implementation)
       nmap <silent> gr <Plug>(coc-references)
+      nmap <leader>grn <Plug>(coc-rename)
       inoremap <expr> <tab> pumvisible() ? "\<c-y>" :
                \ <sid>check_back_space() ? "\<tab>" :
                \ exists('*coc#refresh') ? coc#refresh() : "\<tab>"
@@ -226,7 +241,7 @@ call plug#begin('~/.vim/plugged')
       Plug 'dense-analysis/ale' " asynchronous linter
       let g:ale_python_flake8_options = '--ignore=E121,E126,E226,E24,E501'
       let b:ale_linters = {'python': ['flake8']}
-      " 🐛❌💀💢💣📉☠
+      " 🐛❌💀💢💣⛔🚫📉☠ ☢ ☣
       let g:ale_sign_error = '❌'
       " 💡🔎🔔⚡⚠
       let g:ale_sign_warning = '⚠'
@@ -345,7 +360,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set modelineexpr
 
   """ spelling
-    set spell
+    " set spell
     set spelllang=en_gb
     " set dictionary=/usr/share/dict/british
     " set thesaurus
@@ -529,6 +544,8 @@ nnoremap <leader>pu :PlugUpdate<cr>
     nnoremap  <leader>o zo
     nnoremap  <leader>p :cprev<cr>
     nnoremap  <leader>q :q<cr>
+    nnoremap  <leader>ss :set spell<cr>
+    nnoremap  <leader>ns :set nospell<cr>
     vnoremap  <leader>s :!sort<cr>
     nnoremap  <leader>w :w<cr>
     nnoremap  <leader>z zxzz
