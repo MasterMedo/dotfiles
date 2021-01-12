@@ -60,8 +60,13 @@ programming:
   python-beautifulsoup4
   python-distro
   python-flask
+  python-flask-bcrypt
   python-flask-cors
+  python-flask-dotenv
+  python-flask-jwt
+  python-flask-jwt-extended
   python-flask-marshmallow
+  python-flask-migrate
   python-flask-restx
   python-flask-sqlalchemy
   python-flask-wtf
@@ -72,6 +77,7 @@ programming:
   python-lark
   python-marshmallow
   python-marshmallow-sqlalchemy
+  python-marshmallow-sqlalchemy
   python-matplotlib
   python-more-itertools
   python-neovim
@@ -79,10 +85,12 @@ programming:
   python-numpy
   python-pandas
   python-pip
+  python-pipenv
   python-pywal
   python-requests
   python-rockstar-py
   python-scikit-learn
+  python-seaborn
   python-sympy
   python-werkzeug
   python-xlib
