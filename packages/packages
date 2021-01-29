@@ -116,6 +116,7 @@ programming:
   jdk-openjdk
   sqlitebrowser
   astah-community (aur)
+  firebase-tools (aur)
 
 programs:
   dwm (git)
