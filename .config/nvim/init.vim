@@ -6,6 +6,7 @@
   " wrong fold colour for lower level folds neovim/neovim #12982
   " auto-command - turn off syntax and sync plugins for buffers with long lines
   " find a dictionary plugin that will save encountered entries in a file
+  " when saving a file if there are trailing spaces the cursor jumps there instead of staying where it is
 
 """ vimrc
   let mapleader       = " "
@@ -200,13 +201,13 @@ call plug#begin('~/.vim/plugged')
 
   """ auto-complete and language server protocol
     """ neoclide/coc.nvim
-      Plug 'neoclide/coc.nvim', {'branch': 'release' }
+      " Plug 'neoclide/coc.nvim', {'branch': 'release' }
       let g:coc_global_extensions = [
         \ 'coc-tsserver',
-        \ 'coc-python',
         \ 'coc-json',
         \ 'coc-snippets',
         \ 'coc-tabnine']
+        " \ 'coc-python',
 
       if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
         let g:coc_global_extensions += ['coc-prettier']
@@ -246,7 +247,7 @@ call plug#begin('~/.vim/plugged')
       " 💡🔎🔔⚡⚠
       let g:ale_sign_warning = '⚠'
       let g:ale_sign_info = 'i'
-      " 👎💩📉📍🔎🔔🔖🔜➡️ ⁉️
+      " 👎💩📉📍🔎🔔🔖🔴🔜➡️ ⁉️
       let g:ale_sign_style_error = '👎'
       " 👉💄📍🔎🔖🔜➡️ ‼️
       let g:ale_sign_style_warning = '👉'
