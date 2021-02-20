@@ -147,6 +147,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'kana/vim-textobj-entire' " vae, dae select entire buffer
     Plug 'tpope/vim-surround' " cs{[, ds', ysiw}, ysae[, ysil)
     Plug 'tpope/vim-commentary' " use gcc to (un)comment a line
+    Plug 'nelstrom/vim-visual-star-search' " search and replace selected text
     """ tpope/vim-speeddating
       Plug 'tpope/vim-speeddating' " ctrl-a, ctrl-x works on dates
       augroup speeddating
