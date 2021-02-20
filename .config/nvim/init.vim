@@ -202,12 +202,13 @@ call plug#begin('~/.vim/plugged')
 
   """ auto-complete and language server protocol
     """ neoclide/coc.nvim
-      " Plug 'neoclide/coc.nvim', {'branch': 'release' }
+      Plug 'neoclide/coc.nvim', {'branch': 'release' }
       let g:coc_global_extensions = [
         \ 'coc-tsserver',
         \ 'coc-json',
         \ 'coc-snippets',
-        \ 'coc-tabnine']
+        \ 'coc-tabnine',
+        \ 'coc-omnisharp']
         " \ 'coc-python',
 
       if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
