@@ -629,6 +629,7 @@ augroup vimrc
     autocmd FileType  * setlocal  formatoptions=tqjl1
     autocmd FileType  * setlocal  textwidth=0
     autocmd FileType  python nnoremap <f5> :!python %<cr>
+    autocmd FileType  cs nnoremap <f5> :!dotnet run<cr>
     " autocmd SourcePost  * set filetype+=
     " autocmd BufNewFile,BufRead * if &filetype == ''
     "       \| setlocal filetype=noft
