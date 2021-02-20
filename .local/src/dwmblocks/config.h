@@ -5,7 +5,7 @@ static const Block blocks[] = {
   {"% ", "setxkbmap -query | grep layout | tail -c -3", 0, 30}, //⌨
   {" ",  "weather", 18000,  5},
   {" 📆",  "date '+%d.%m.%Y. (%a)'",  60, 1},
-  {" 🕗",  "date '+%H:%M '",  60, 1},
+  {" 🕗",  "date '+%H:%M '",  10, 1},
 };
 
 //Sets delimiter between status commands.
