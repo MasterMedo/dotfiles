@@ -77,7 +77,6 @@ programming:
   python-lark
   python-marshmallow
   python-marshmallow-sqlalchemy
-  python-marshmallow-sqlalchemy
   python-matplotlib
   python-more-itertools
   python-neovim
