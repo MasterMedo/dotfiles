@@ -33,11 +33,10 @@ call plug#begin('~/.vim/plugged')
       Plug 'airblade/vim-gitgutter' " adds git diff signs in the sign column
       let g:gitgutter_enabled = 1
       let g:gitgutter_map_keys = 0
-      vnoremap <leader>ga :GitGutterStageHunk<cr>
+      noremap <leader>ga :GitGutterStageHunk<cr>
 
     """ psliwka/vim-smoothie
-      " Plug 'psliwka/vim-smoothie' " smooth scrolling
-      Plug 'subnut/vim-smoothie', { 'branch': 'devel' }
+      Plug 'psliwka/vim-smoothie' " smooth scrolling
       silent! map <unique> gg <Plug>(Smoothie_gg)
       silent! map <unique> G  <Plug>(Smoothie_G)
 
