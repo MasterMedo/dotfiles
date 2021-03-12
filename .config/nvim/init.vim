@@ -202,7 +202,7 @@ call plug#begin('~/.vim/plugged')
 
   """ auto-complete and language server protocol
     """ neoclide/coc.nvim
-      Plug 'neoclide/coc.nvim', {'branch': 'release' }
+      Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['cs', 'tsx', 'ts', 'js'] }
       let g:coc_global_extensions = [
         \ 'coc-tsserver',
         \ 'coc-json',
@@ -242,8 +242,9 @@ call plug#begin('~/.vim/plugged')
 
     """ dense-analysis/ale
       Plug 'dense-analysis/ale' " asynchronous linter
-      let g:ale_python_flake8_options = '--ignore=E121,E126,E226,E24,E501'
+      let g:ale_python_flake8_options = '--ignore=E121,E126,E226,E24,E501,W503'
       let b:ale_linters = {'python': ['flake8']}
+      let g:ale_fixers = {'python': ['black']}
       " 🐛❌💀💢💣⛔🚫📉☠ ☢ ☣
       let g:ale_sign_error = '❌'
       " 💡🔎🔔⚡⚠
@@ -255,6 +256,8 @@ call plug#begin('~/.vim/plugged')
       let g:ale_sign_style_warning = '👉'
       highlight default link alewarningsign  warningmsg
       highlight default link alestylewarning warningmsg
+      nnoremap ]e :ALENext<cr>
+      nnoremap [e :ALEPrevious<cr>
 
   """ plugins to check out
     " nvim-treesitter/nvim-treesitter " better syntax highlighting
@@ -262,7 +265,6 @@ call plug#begin('~/.vim/plugged')
     " tpope/vim-fugitive " git integration within vim
     " tpope/vim-unimpaired " useful for pairs of commands next, previous
     " tpope/vim-abolish " powerful replacements /building{,s}/facilit{y,ies}/
-    " Chiel92/vim-autoformat " auto-format code with your favourite linter
     " svermeulen/vim-yoink " holds history of yanks
     " liuchengxu/vista.vim " view and search lsp symbols and tags
     " norcalli/nvim-colorizer.lua " faster colourizer for neovim
