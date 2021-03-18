@@ -56,9 +56,11 @@ post-install:
 
 programming:
   python
-  python-black
   python2-click
+  python-aiohttp
+  python-aioredis
   python-beautifulsoup4
+  python-black
   python-distro
   python-flask
   python-flask-bcrypt
@@ -75,11 +77,16 @@ programming:
   python-gitpython
   python-google-auth
   python-jedi
+  python-kafka-python
   python-lark
   python-marshmallow
   python-marshmallow-sqlalchemy
   python-matplotlib
   python-more-itertools
+  python-mpi-master-slave
+  python-neo4j
+  python-neo4j==1.7.6
+  python-neo4j-python-driver
   python-neovim
   python-networkx
   python-numpy
@@ -92,7 +99,9 @@ programming:
   python-scikit-learn
   python-seaborn
   python-sympy
+  python-unidecode
   python-werkzeug
+  python-wordcloud
   python-xlib
   python-z3
   jupyter-notebook
@@ -169,6 +178,7 @@ visuals:
   conky?
 
 useful commands:
+  pdftotext
   ntp
   ntp-runit
   youtube-dl
