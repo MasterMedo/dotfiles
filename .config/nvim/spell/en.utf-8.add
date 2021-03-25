@@ -29,6 +29,7 @@ API
 APIs
 argmax
 argmin
+ascii
 autoload
 avocadoes
 AWS
@@ -69,6 +70,7 @@ C
 cappella
 cartpole
 cathedra
+center
 centillion
 checkbox
 chiffonade
@@ -78,6 +80,8 @@ clickable
 clifftop
 clifftops
 codebase
+colormap
+colormaps
 com
 config
 contactless
@@ -205,7 +209,6 @@ internships
 iOS
 iPad
 iPhone
-Jakšića
 javascript
 Jr
 json
@@ -220,6 +223,7 @@ LibreOffice
 linted
 linter
 linting
+localhost
 lowercase
 lua
 mage
@@ -238,6 +242,7 @@ medo
 melee
 meme
 memes
+Memgraph
 middleware
 might've
 Miniluv
@@ -253,11 +258,11 @@ MongoDB
 monologophobe
 monologophobia
 Montenegrins
+movie
 movies
 muggle
 munchkin
 mutualism
-N
 nanobot
 nanobots
 Narnia
@@ -300,6 +305,7 @@ pathography
 paysanne
 PDF
 perl
+pernickety
 PhD
 plugin
 plugins
@@ -310,6 +316,8 @@ Pokémon
 Poznań
 predate
 prepend
+prepending
+programmatically
 prole
 pyplot
 quadrilliard
@@ -366,7 +374,11 @@ SQL
 stdin
 stdout
 strongpoint
+subdomain
+subdomains
 submatrix
+substring
+substrings
 synonymomania
 teammate
 teammates
@@ -396,7 +408,6 @@ tunneling
 txt
 Übermensch
 UI
-Ulica
 unclutter
 uncluttering
 unclutters
@@ -415,6 +426,7 @@ uninstalls
 unix
 unknowable
 unputdownable
+unsecure
 unsubscribe
 unsubscribed
 unsubscribes
@@ -423,6 +435,7 @@ untrigintillion
 unvigintillion
 upheave
 upheaving
+USD
 username
 usernames
 utopians
@@ -458,15 +471,10 @@ whitespace
 whodunit
 whodunits
 wiki
+Wikipedia
 wikis
 WIP
 woolies
 workflow
 workflows
 Zarathustra
-ascii
-center
-subdomains
-subdomain
-colormap
-colormaps
