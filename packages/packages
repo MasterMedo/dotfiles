@@ -91,13 +91,16 @@ programming:
   python-networkx
   python-numpy
   python-pandas
+  python-geopandas
   python-pip
   python-pipenv
+  python-poetry
   python-pywal
   python-requests
   python-rockstar-py
   python-scikit-learn
   python-seaborn
+  python-setuptools
   python-sympy
   python-unidecode
   python-werkzeug
@@ -108,6 +111,11 @@ programming:
   flake8
   pypy
   texlive-most
+  pacman-contrib
+  iptables
+  iptables-runit
+  docker
+  docker-compose
   ruby
   rubygems
   npm
@@ -126,6 +134,7 @@ programming:
   sqlitebrowser
   astah-community (aur)
   firebase-tools (aur)
+  readline
 
 programs:
   dwm (git)
@@ -153,6 +162,7 @@ programs:
   sc-im
   frotz
   onboard
+  slack (yay)
   android-file-transfer?
   steam?
 
@@ -196,6 +206,7 @@ useful commands:
 
 laptop specific:
   xf86-input-libinput?
+  libinput
   xf86-input-synaptics?
   xf86-input-wacom?
   xf86-video-intel
