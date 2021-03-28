@@ -29,11 +29,15 @@ call plug#begin('~/.vim/plugged')
     Plug 'romainl/vim-cool' " stop highlighting when not searching
     Plug 'mastermedo/vim-tinge' " my colour scheme
     Plug 'vim-airline/vim-airline' " alternative status line
+
     """ airblade/vim-gitgutter
       Plug 'airblade/vim-gitgutter' " adds git diff signs in the sign column
       let g:gitgutter_enabled = 1
       let g:gitgutter_map_keys = 0
       noremap <leader>ga :GitGutterStageHunk<cr>
+      noremap <leader>gp :GitGutterPreviewHunk<cr>
+      nnoremap ]g :GitGutterNextHunk<cr>
+      nnoremap [g :GitGutterPrevHunk<cr>
 
     """ psliwka/vim-smoothie
       Plug 'psliwka/vim-smoothie' " smooth scrolling
@@ -202,14 +206,14 @@ call plug#begin('~/.vim/plugged')
 
   """ auto-complete and language server protocol
     """ neoclide/coc.nvim
-      Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['cs', 'tsx', 'ts', 'js'] }
+      Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['cs', 'tsx', 'ts', 'js', 'python'] }
       let g:coc_global_extensions = [
         \ 'coc-tsserver',
         \ 'coc-json',
         \ 'coc-snippets',
         \ 'coc-tabnine',
-        \ 'coc-omnisharp']
-        " \ 'coc-python',
+        \ 'coc-omnisharp',
+        \ 'coc-python']
 
       if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
         let g:coc_global_extensions += ['coc-prettier']
@@ -538,6 +542,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     nnoremap  q:     :q
     nnoremap  g;     g,
     nnoremap  g,     g;
+    nnoremap <F2>    viw~
 
   """ leader
     nnoremap  <leader>a za
