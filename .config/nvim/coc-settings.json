@@ -2,6 +2,7 @@
   "suggest.keepCompleteopt": true,
   "python.linting.enabled": false,
   "python.analysis.diagnosticEnabled": false,
+  "python.jediEnabled": true,
   "eslint.autoFixOnSave": true,
   "eslint.filetypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"]
 }
