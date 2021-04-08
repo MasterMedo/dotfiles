@@ -36,6 +36,8 @@ post-install:
   bluez
   bluez-utils
   bluez-runit
+  pulseaudio
+  pulseaudio-alsa
   pulseaudio-bluetooth
   pulsemixer
   pamixer
@@ -53,10 +55,12 @@ post-install:
   perl-file-mimeinfo
   archlinux-keyring (re-download if necessary)
   words
+  linux-headers
 
 programming:
   python
   python2-click
+  python-pygraphviz
   python-aiohttp
   python-aioredis
   python-beautifulsoup4
@@ -165,6 +169,9 @@ programs:
   slack (yay)
   android-file-transfer?
   steam?
+  v4l-utils
+  v4l2loopback-dkms
+  gphoto2
 
 flare:
   dotfiles (git)
@@ -195,6 +202,7 @@ useful commands:
   acpi
   entr
   asciinema
+  usbutils
   sxhkd?
   greenclip?
   fakeroot?
