@@ -1,11 +1,10 @@
 " vim: ts=2 sw=2 sts=2 fdm=expr fde=VimrcFoldExpr()
 """ TODO
-  " train: `[, ^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y, z=
-  " useful commands: zz, i_ctrl+j, ctrl_o, ctrl_i,
+  " train: `[, i_^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y, z=
+  " useful commands: zz, i_ctrl+j, ctrl_o, ctrl_i
   " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
-  " wrong fold colour for lower level folds neovim/neovim #12982
+  " fold colour conflict with cursorline when going up?
   " auto-command - turn off syntax and sync plugins for buffers with long lines
-  " find a dictionary plugin that will save encountered entries in a file
   " when saving a file if there are trailing spaces the cursor jumps there instead of staying where it is
 
 """ vimrc
@@ -473,7 +472,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     endfunction
 
   """ foldtext function
-    " doesn't handle fold column and sign column great, pull requests welcome
+    " doesn't handle fold and sign column great, pull requests are welcome
     function! PersonalFoldText()                                " foldtext func
       let line   = getline(v:foldstart)                         " get line text
       let marker = split(&foldmarker, ',')[0]                   " fold marker
