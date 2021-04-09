@@ -78,6 +78,13 @@ call plug#begin('~/.vim/plugged')
   """ commands
     Plug 'AndrewRadev/bufferize.vim' " store output of a command in a buffer
     Plug 'dstein64/vim-startuptime' " check start-up times with :StartupTime
+    """ arthurxavierx/vim-caser
+      Plug 'arthurxavierx/vim-caser'
+      map <leader>cp *gn<Plug>CaserVMixedCase
+      map <leader>cc *gn<Plug>CaserVCamelCase
+      map <leader>cs *gn<Plug>CaserVSnakeCase
+      map <leader>cu *gn<Plug>CaserVUpperCase
+
     """ tpope/vim-scriptease
       Plug 'tpope/vim-scriptease' " get highlight groups for word under cursor
       nmap <silent> <leader>H zS
