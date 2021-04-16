@@ -6,6 +6,7 @@
   " fold colour conflict with cursorline when going up?
   " auto-command - turn off syntax and sync plugins for buffers with long lines
   " when saving a file if there are trailing spaces the cursor jumps there instead of staying where it is
+  " create a call matchdelete mapping for colorcolumn, (find a way to create a window based id)
 
 """ vimrc
   let mapleader       = " "
@@ -194,6 +195,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'leafgarland/typescript-vim'
     Plug 'peitalin/vim-jsx-typescript'
     Plug 'MaxMEllon/vim-jsx-pretty'
+    Plug 'neo4j-contrib/cypher-vim-syntax'
     """ tpope/vim-markdown
       Plug 'tpope/vim-markdown'
       let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
