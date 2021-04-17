@@ -96,6 +96,7 @@ programming:
   python-numpy
   python-pandas
   python-geopandas
+  python-geopy
   python-pip
   python-pipenv
   python-poetry
