@@ -1,7 +1,7 @@
 ! font
 ! *.font: Square:size=27
 *.font: SF Mono:style=Regular:size=27
-! *.font: Operator Mono Lig Light:style=Light Italic:size=27
+/* *.font: Operator Mono Lig Light:style=Light Italic:size=27 */
 
 ! special
 ! *.alpha:220
