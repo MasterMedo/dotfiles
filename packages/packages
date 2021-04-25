@@ -16,6 +16,7 @@ install:
   wpa_supplicant
   connman
   connman-runit
+  usb_modeswitch (for ethernet over an usb dock)
 
 post-install:
   sudo
