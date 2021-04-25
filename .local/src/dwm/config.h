@@ -177,7 +177,7 @@ static Key keys[] = {
 /*{ MODKEY|ShiftMask, XK_Page_Down,     shifttag,       {.i = +1 } }, */
 /*{ MODKEY,           XK_Insert,        spawn,          SHCMD("") }, */
   { MODKEY,           XK_space,         spawn,    SHCMD("us-hr") },
-/*{ MODKEY|ShiftMask, XK_space,         togglefloating, {0} }, */
+  { MODKEY|ShiftMask, XK_space,         togglefloating, {0} },
   { 0,                XK_Print,         spawn,    SHCMD("flameshot gui") },
 /*{ ShiftMask,        XK_Print,         spawn,    SHCMD("maimpick") }, */
 /*{ MODKEY,           XK_Print,         spawn,    SHCMD("dmenurecord") }, */
