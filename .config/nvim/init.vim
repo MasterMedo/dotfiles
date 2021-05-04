@@ -28,6 +28,7 @@ call plug#begin('~/.vim/plugged')
   """ visuals
     Plug 'romainl/vim-cool' " stop highlighting when not searching
     Plug 'mastermedo/vim-tinge' " my colour scheme
+    Plug 'tomasiser/vim-code-dark' " vs code colour scheme
     Plug 'vim-airline/vim-airline' " alternative status line
 
     """ airblade/vim-gitgutter
@@ -334,6 +335,8 @@ nnoremap <leader>pu :PlugUpdate<cr>
   """ colours
     syntax on
     colorscheme vim-tinge
+    colorscheme codedark
+    " let g:airline_theme = 'codedark'
     set termguicolors
     set cursorline
     set synmaxcol=1000
@@ -341,6 +344,9 @@ nnoremap <leader>pu :PlugUpdate<cr>
     set conceallevel=2
     set concealcursor=inc
     call matchadd('ColorColumn', '\%81c') " set colorcolumn=+1
+    highlight foldcolumn      guifg=#585858 guibg=none    gui=none
+    highlight folded          guifg=#A8A8A8 guibg=#303030 gui=italic
+    highlight conceal         guifg=#303030 guibg=none    gui=none
 
   """ backups
     set backup
