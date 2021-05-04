@@ -74,7 +74,7 @@ call plug#begin('~/.vim/plugged')
       let g:indentLine_char_list = ['∣', '¦', '┆', '┊']
       let g:indentLine_setColors = 0
       let g:indentLine_setConceal = 0
-      let g:indentLine_fileTypeExclude = ['help']
+      let g:indentLine_fileTypeExclude = ['help', 'tex']
 
   """ commands
     Plug 'AndrewRadev/bufferize.vim' " store output of a command in a buffer
@@ -196,7 +196,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'leafgarland/typescript-vim'
     Plug 'peitalin/vim-jsx-typescript'
     Plug 'MaxMEllon/vim-jsx-pretty'
-    Plug 'neo4j-contrib/cypher-vim-syntax'
+    Plug 'memgraph/cypher.vim'
     """ tpope/vim-markdown
       Plug 'tpope/vim-markdown'
       let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
@@ -290,7 +290,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
 
 """ settings
   """ file
-    filetype plugin on
+    filetype plugin indent on
     scriptencoding utf-8
     set encoding=utf-8
     set nobomb
