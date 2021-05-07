@@ -137,7 +137,7 @@ static const char *colorname[] = {
  * foreground, background, cursor, reverse cursor
  */
 unsigned int defaultfg = 7;
-unsigned int defaultbg = 255;
+unsigned int defaultbg = 0;
 unsigned int defaultcs = 15;
 unsigned int defaultrcs = 8;
 
@@ -191,7 +191,7 @@ ResourcePref resources[] = {
     { "color13",      STRING,  &colorname[13] },
     { "color14",      STRING,  &colorname[14] },
     { "color15",      STRING,  &colorname[15] },
-    { "background",   STRING,  &colorname[256] },
+    { "background",   STRING,  &colorname[0] },
     { "foreground",   STRING,  &colorname[257] },
     { "cursorColor",  STRING,  &colorname[258] },
     { "termname",     STRING,  &termname },
