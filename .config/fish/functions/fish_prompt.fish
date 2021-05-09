@@ -21,9 +21,9 @@ function fish_prompt
   set -l cwd (basename (prompt_pwd))
 
   if test $last_status = 0
-      set cwd "$green$cwd"
+      set cwd "$yellow$cwd"
   else
-      set cwd "$magenta$cwd"
+      set cwd "$red$cwd"
   end
 
   if test $USER = "root"
