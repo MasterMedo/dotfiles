@@ -1,6 +1,6 @@
 " vim: ts=2 sw=2 sts=2 fdm=expr fde=VimrcFoldExpr()
 """ TODO
-  " train: `[, i_^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y, z=
+  " train: `[, i_^r=, c_^f, c_^r^w, c_^r0, c_^r^l, ^e, ^y, z=, gf
   " useful commands: zz, i_ctrl+j, ctrl_o, ctrl_i
   " macro to the end of the file mapping -> 1000@k or qj@k@jq@j
   " fold colour conflict with cursorline when going up?
@@ -347,6 +347,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     highlight foldcolumn      guifg=#585858 guibg=none    gui=none
     highlight folded          guifg=#A8A8A8 guibg=#303030 gui=italic
     highlight conceal         guifg=#303030 guibg=none    gui=none
+    highlight spellcap        guifg=#F3D409 guibg=none    gui=undercurl
 
   """ backups
     set backup
@@ -690,6 +691,7 @@ augroup END
     endfunction
 
   """ mappings
+    nnoremap <silent> <leader>0 :call HighlightWord(0)<cr>
     nnoremap <silent> <leader>1 :call HighlightWord(1)<cr>
     nnoremap <silent> <leader>2 :call HighlightWord(2)<cr>
     nnoremap <silent> <leader>3 :call HighlightWord(3)<cr>
@@ -698,6 +700,7 @@ augroup END
     nnoremap <silent> <leader>6 :call HighlightWord(6)<cr>
 
   """ RGB colours
+    highlight link highlightedword0 normal
     highlight highlightedword1 guifg=#000000 guibg=#ffaf00
     highlight highlightedword2 guifg=#000000 guibg=#afff00
     highlight highlightedword3 guifg=#000000 guibg=#00ffff
