@@ -30,6 +30,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'mastermedo/vim-tinge' " my colour scheme
     Plug 'tomasiser/vim-code-dark' " vs code colour scheme
     Plug 'vim-airline/vim-airline' " alternative status line
+    Plug 'morhetz/gruvbox' " gruvbox colour scheme
+    Plug 'cormacrelf/vim-colors-github' " github colour scheme sort-of
 
     """ airblade/vim-gitgutter
       Plug 'airblade/vim-gitgutter' " adds git diff signs in the sign column
@@ -77,8 +79,13 @@ call plug#begin('~/.vim/plugged')
       let g:indentLine_fileTypeExclude = ['help', 'tex']
 
   """ commands
+    Plug 'mattn/emmet-vim' " html generator
     Plug 'AndrewRadev/bufferize.vim' " store output of a command in a buffer
     Plug 'dstein64/vim-startuptime' " check start-up times with :StartupTime
+    """ vim-scripts/loremipsum
+      Plug 'vim-scripts/loremipsum' " 'generates' text
+      nmap <leader>L :Loremipsum! 69<cr>
+
     """ arthurxavierx/vim-caser
       Plug 'arthurxavierx/vim-caser'
       map <leader>cp *gn<Plug>CaserVMixedCase
