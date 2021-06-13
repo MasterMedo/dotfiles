@@ -98,6 +98,7 @@ programming:
   python-pandas
   python-geopandas
   python-geopy
+  python-opencv
   python-pip
   python-pipenv
   python-poetry
@@ -105,6 +106,7 @@ programming:
   python-requests
   python-rockstar-py
   python-scikit-learn
+  python-scikit-image
   python-seaborn
   python-setuptools
   python-sympy
