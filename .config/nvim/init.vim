@@ -523,6 +523,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
     inoremap <c-s> <cmd>w<cr>
     inoremap <c-u> <c-g>u<c-u>
     inoremap <c-w> <c-g>u<c-w>
+    inoremap <c-p> <c-v>
     nnoremap <c-s> :w<cr>
     nnoremap <c-t> :tabnew<cr>
     noremap! <c-a> <home>
