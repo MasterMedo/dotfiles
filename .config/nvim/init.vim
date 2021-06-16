@@ -7,6 +7,7 @@
   " auto-command - turn off syntax and sync plugins for buffers with long lines
   " when saving a file if there are trailing spaces the cursor jumps there instead of staying where it is
   " create a call matchdelete mapping for colorcolumn, (find a way to create a window based id)
+  " get coc#float#scroll working
 
 """ vimrc
   let mapleader       = " "
@@ -260,6 +261,9 @@ call plug#begin('~/.vim/plugged')
         return !col || getline('.')[col - 1]  =~# '\s'
       endfunction
 
+      " inoremap <nowait><expr> <c-f> coc#float#scroll(1, 1) " doesn't work
+      " inoremap <nowait><expr> <c-b> coc#float#scroll(0, 1) " doesn't work
+
     """ dense-analysis/ale
       Plug 'dense-analysis/ale' " asynchronous linter
       let g:ale_python_flake8_options = '--ignore=E121,E126,E226,E24,E501,W503'
@@ -289,6 +293,7 @@ call plug#begin('~/.vim/plugged')
     " liuchengxu/vista.vim " view and search lsp symbols and tags
     " norcalli/nvim-colorizer.lua " faster colourizer for neovim
     " junegunn/vim-emoji " Emoji for vim
+    " jpalardy/vim-slime " send selected text to another terminal
 
 
 call plug#end()
