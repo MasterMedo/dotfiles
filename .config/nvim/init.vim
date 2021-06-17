@@ -124,6 +124,7 @@ call plug#begin('~/.vim/plugged')
   """ interfaces
     Plug 'chrisbra/recover.vim' " adds a [d]iff option if swap file exists
     Plug 'stefandtw/quickfix-reflector.vim' " change multiple files at once
+    Plug 'rhysd/git-messenger.vim' " read git messages on the line
     """ junegunn/fzf, jremmen/vim-ripgrep
       Plug 'junegunn/fzf.vim' " list files and buffers in a pop-up window
       Plug 'junegunn/fzf', {'do': './install --bin' }
