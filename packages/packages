@@ -66,6 +66,7 @@ programming:
   python-aioredis
   python-beautifulsoup4
   python-black
+  python-dash
   python-distro
   python-flask
   python-flask-bcrypt
@@ -126,6 +127,9 @@ programming:
   docker-compose
   ruby
   rubygems
+  gem
+    jekyll
+    bundler
   npm
   yarn
   tcc
