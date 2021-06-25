@@ -16,6 +16,10 @@
   " highlight embedded lua and python code
   let g:vimsyn_embed  = 'lP'
 
+  " enable python plugins in vim
+  let g:python3_host_prog = '/usr/bin/python3'
+  let g:python_host_prog = '/usr/bin/python2'
+
 """ plugins
   """ autoload
     if empty(glob('~/.vim/autoload/plug.vim'))
