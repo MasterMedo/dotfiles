@@ -38,6 +38,11 @@ call plug#begin('~/.vim/plugged')
     Plug 'morhetz/gruvbox' " gruvbox colour scheme
     Plug 'cormacrelf/vim-colors-github' " github colour scheme sort-of
 
+    """  mastermedo/anonymizer.vim
+      Plug 'mastermedo/anonymizer.vim' " anonymize buffer
+      " characters for anonymizing:  ﱢ
+      " nnoremap  <leader><leader>      :call AnonymizeBuffer()<cr>
+
     """ airblade/vim-gitgutter
       Plug 'airblade/vim-gitgutter' " adds git diff signs in the sign column
       let g:gitgutter_enabled = 1
