@@ -62,7 +62,7 @@ static const Rule rules[] = {
 
 /* layout(s) */
 static const float mfact     = 0.55; // factor of master area size [0.05..0.95]
-static const int nmaster     = 1;    // number of clients in master area
+static const int nmaster     = 2;    // number of clients in master area
 static const int resizehints = 1;    // respect size hints in tiled resizals
 #define FORCE_VSPLIT 1  // nrowgrid layout: force vertical split
 #include "vanitygaps.c"
@@ -217,7 +217,7 @@ static Key keys[] = {
   { MODKEY,           XK_f, togglefullscr,  {0} },
   { MODKEY|ShiftMask, XK_f, setlayout,  {.v = &layouts[8]} }, // float
   { MODKEY,           XK_g, togglegaps, {0} },
-/*{ MODKEY|ShiftMask, XK_g, defaultgaps,{0} }, */
+  { MODKEY|ShiftMask, XK_g, defaultgaps,{0} },
 /*{ MODKEY,           XK_g, shiftview,  { .i = -1 } }, */
 /*{ MODKEY|ShiftMask, XK_g, shifttag,   { .i = -1 } }, */
   { MODKEY,           XK_h, setmfact,   {.f = -0.05} },
