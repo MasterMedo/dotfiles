@@ -116,6 +116,9 @@ programming:
   python-wordcloud
   python-xlib
   python-z3
+  python-google-api-python-client
+  python-google-auth-httplib2
+  python-google-auth-oauthlib
   jupyter-notebook
   flake8
   pypy
