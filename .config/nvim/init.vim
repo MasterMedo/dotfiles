@@ -19,6 +19,7 @@
   " enable python plugins in vim
   let g:python3_host_prog = '/usr/bin/python3'
   let g:python_host_prog = '/usr/bin/python2'
+  set runtimepath +=~/.vim
 
 """ plugins
   """ autoload
@@ -233,14 +234,15 @@ call plug#begin('~/.vim/plugged')
 
   """ auto-complete and language server protocol
     """ neoclide/coc.nvim
-      Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['cs', 'tsx', 'ts', 'js', 'python'] }
+      Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['cs', 'tsx', 'ts', 'js', 'python', 'java'] }
       let g:coc_global_extensions = [
         \ 'coc-tsserver',
         \ 'coc-json',
         \ 'coc-snippets',
         \ 'coc-tabnine',
         \ 'coc-omnisharp',
-        \ 'coc-python']
+        \ 'coc-python',
+        \ 'coc-java']
 
       if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
         let g:coc_global_extensions += ['coc-prettier']
