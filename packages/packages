@@ -146,6 +146,8 @@ programming:
   qt5
   rust
   jdk-openjdk
+  jdk (aur)
+  archlinux-java
   sqlitebrowser
   astah-community (aur)
   firebase-tools (aur)
