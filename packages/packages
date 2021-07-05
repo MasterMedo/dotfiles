@@ -147,6 +147,7 @@ programming:
   rust
   jdk-openjdk
   jdk (aur)
+  maven
   archlinux-java
   sqlitebrowser
   astah-community (aur)
