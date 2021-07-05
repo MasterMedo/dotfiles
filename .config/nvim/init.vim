@@ -90,6 +90,8 @@ call plug#begin('~/.vim/plugged')
       let g:indentLine_fileTypeExclude = ['help', 'tex']
 
   """ commands
+    Plug 'google/vim-maktaba' " code formater
+    Plug 'google/vim-codefmt' " code formater
     Plug 'mattn/emmet-vim' " html generator
     Plug 'AndrewRadev/bufferize.vim' " store output of a command in a buffer
     Plug 'dstein64/vim-startuptime' " check start-up times with :StartupTime
@@ -205,6 +207,7 @@ call plug#begin('~/.vim/plugged')
     let g:rooter_silent_chdir = 1
 
   """ file type specific
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'fatih/vim-go'
     let g:go_doc_keywordprg_enabled = 0
 
@@ -358,7 +361,7 @@ nnoremap <leader>pu :PlugUpdate<cr>
 
   """ colours
     syntax on
-    colorscheme vim-tinge
+    " colorscheme vim-tinge
     colorscheme codedark
     " let g:airline_theme = 'codedark'
     set termguicolors
@@ -745,3 +748,15 @@ augroup END
 
   cnoreabbrev         W   noa w
   cnoreabbrev         w!! exec 'sil w !sudo tee % > /dev/null' <bar> edit!
+
+""" lua
+highlight! link TSVariable Normal
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    custom_captures = {
+    },
+  },
+}
+EOF
