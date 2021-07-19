@@ -1,11 +1,12 @@
 # Defined in /home/medo/.config/fish/functions/fish_prompt.fish @ line 2
 
 function _git_branch_name
-  echo (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
+  # echo (command git symbolic-ref HEAD | sed -e 's|^refs/heads/||')
+  printf '%s' (fish_git_prompt)
 end
 
 function _is_git_dirty
-  echo (command git status -s --ignore-submodules=dirty ^/dev/null)
+  echo (command git status -s --ignore-submodules=dirty 2> /dev/null)
 end
 
 function fish_prompt
@@ -40,7 +41,7 @@ function fish_prompt
 
   if [ (_git_branch_name) ]
     set -l git_branch $cyan(_git_branch_name)
-    set git_info " $git_branch"
+    set git_info "$git_branch"
 
     if [ (_is_git_dirty) ]
       set -l dirty "$yellow ✗"
@@ -48,5 +49,5 @@ function fish_prompt
     end
   end
 
-  echo -n -s $venv $user ' ' $cwd $git_info $normal ' '
+  echo -n -s $venv $user $cwd $git_info $normal ' '
 end
