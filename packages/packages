@@ -116,6 +116,7 @@ programming:
   python-wordcloud
   python-xlib
   python-z3
+  python-pygithub
   python-google-api-python-client
   python-google-auth-httplib2
   python-google-auth-oauthlib
@@ -153,6 +154,8 @@ programming:
   astah-community (aur)
   firebase-tools (aur)
   readline
+  node
+  prettier
 
 programs:
   dwm (git)
