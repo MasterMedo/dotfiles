@@ -57,6 +57,7 @@ post-install:
   archlinux-keyring (re-download if necessary)
   words
   linux-headers
+  netcat?
 
 programming:
   python
