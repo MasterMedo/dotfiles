@@ -1,8 +1,12 @@
 [user]
-	name = MasterMedo
-	email = mislav@duck.com
+  name = MasterMedo
+  email = mislav@duck.com
 [core]
-	excludesfile = /Users/medo/.gitignore
+  excludesfile = /Users/medo/.gitignore
 [alias]
   up = pull --all --autostash --prune --rebase --tags
-	squash = "!f(){ git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\";};f"
+  squash = "!f(){ git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\";};f"
+[push]
+  default = current
+[merge]
+  ff = false
