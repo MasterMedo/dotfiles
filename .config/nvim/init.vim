@@ -311,6 +311,8 @@ call plug#begin('~/.vim/plugged')
     " norcalli/nvim-colorizer.lua " faster colourizer for neovim
     " junegunn/vim-emoji " Emoji for vim
     " jpalardy/vim-slime " send selected text to another terminal
+    " github/copilot.vim
+    " editorconfig/editorconfig-vim
 
 
 call plug#end()
