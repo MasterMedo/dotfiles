@@ -31,3 +31,12 @@ set fish_color_user 'magenta' --bold
 set fish_color_host 'yellow' --bold
 set fish_color_host_remote 'red' --bold
 set fish_color_cancel 'ff0000' --bold
+
+# status is-login; and pyenv init --path | source
+# status is-interactive; and pyenv init - | source
+# set -xg PYTHONPATH ~/repos/junction/python $PYTHONPATH
+# set -xg PYTHONPATH ~/repos/junction/dist/codegen/python $PYTHONPATH
+# set -xg PYTHON_CONFIGURE_OPTS "--enable-shared"
+# set -xg LDFLAGS -L/opt/homebrew/opt/xz/lib $LDFLAGS
+# set -xg CPPFLAGS -I/opt/homebrew/opt/xz/include $CPPFLAGS
+# set -xg PKG_CONFIG_PATH /opt/homebrew/opt/xz/lib/pkgconfig $PKG_CONFIG_PATH
