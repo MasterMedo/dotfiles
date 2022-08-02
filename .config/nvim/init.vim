@@ -17,6 +17,7 @@
   let g:vimsyn_embed  = 'lP'
 
   " enable python plugins in vim
+  " for macOS it's '/.pyenv/shims/python3'
   let g:python3_host_prog = '/usr/bin/python3'
   let g:python_host_prog = '/usr/bin/python2'
   set runtimepath +=~/.vim
@@ -55,8 +56,10 @@ call plug#begin('~/.vim/plugged')
 
     """ psliwka/vim-smoothie
       Plug 'psliwka/vim-smoothie' " smooth scrolling
-      silent! map <unique> gg <Plug>(Smoothie_gg)
-      silent! map <unique> G  <Plug>(Smoothie_G)
+      let g:smoothie_enabled = 1
+      let g:smoothie_experimental_mappings = 1
+      " silent! map <unique> gg <Plug>(Smoothie_gg)
+      " silent! map <unique> G  <Plug>(Smoothie_G)
 
     """ RRethy/vim-illuminate
       Plug 'RRethy/vim-illuminate' " highlight current word matches in file
@@ -208,8 +211,8 @@ call plug#begin('~/.vim/plugged')
 
   """ file type specific
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    Plug 'fatih/vim-go'
-    let g:go_doc_keywordprg_enabled = 0
+    " Plug 'fatih/vim-go'
+    " let g:go_doc_keywordprg_enabled = 0
 
     Plug 'dag/vim-fish'
     Plug 'vim-scripts/lua.vim'
